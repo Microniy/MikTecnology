@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MIKUnitTestProject", "MIKUnitTestProject\MIKUnitTestProject.csproj", "{B10CADE7-9DD2-4165-890C-3F9080C72D7D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B10CADE7-9DD2-4165-890C-3F9080C72D7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B10CADE7-9DD2-4165-890C-3F9080C72D7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B10CADE7-9DD2-4165-890C-3F9080C72D7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B10CADE7-9DD2-4165-890C-3F9080C72D7D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {17B3A6EB-F5D4-47C7-BE00-4E43FD479367}
+	EndGlobalSection
+EndGlobal
