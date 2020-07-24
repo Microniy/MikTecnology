@@ -18,6 +18,7 @@ namespace MikTecnology
         void SetBaseVersion(IVersion version);
         void SetOldVersion(IList<IVersion> versions);
         void SetNextVersion(IVersion version);
+        void RemoveVersion(IVersion node);
     }
     public abstract class BaseNode : INode,IVersion
     {
@@ -89,6 +90,13 @@ namespace MikTecnology
         public void SetNextVersion(IVersion version)//Add next version
         {
             _nextVersion.Add(version);
+        }
+
+        public void RemoveVersion(IVersion node)
+        {
+            //Remove don't try to deleted no conteined nodes
+            if (_versions.Contains(node))
+                _versions.Remove(node);
         }
     }
 }
