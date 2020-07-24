@@ -95,8 +95,17 @@ namespace MikTecnology
         public void RemoveVersion(IVersion node)
         {
             //Remove don't try to deleted no conteined nodes
-            if (_versions.Contains(node))
-                _versions.Remove(node);
+            if (_baseVersion == null)
+            {
+                if (_versions.Contains(node))
+                    _versions.Remove(node);
+            }
+            else
+            {
+                //Remove also to first version
+                _baseVersion.RemoveVersion(node);
+            }
+                
         }
     }
 }
