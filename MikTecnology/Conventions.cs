@@ -23,6 +23,8 @@ namespace MikTecnology
         private IList<INode> _nodes = new List<INode>();
         // List children nodes
         public IList<INode> Nodes => _nodes;
+        private INode _parent;
+        public INode Parent => _parent;
         private IList<IVersion> _versions = new List<IVersion>();
         protected IList<IVersion> Versions => _versions;
         //First version this parameter to be null
@@ -34,10 +36,21 @@ namespace MikTecnology
         public virtual void Add(INode node)
         {
             //Children don't have to self and repeated nodes
-            if ((!this.Equals(node))&&(!_nodes.Contains(node)))
+            if ((!this.Equals(node)) && (!_nodes.Contains(node)))
+            {
                 _nodes.Add(node);
+                (node as BaseNode).AddParent(this);
+            }
+                
         }
-
+        protected void AddParent(INode node)
+        {
+            this._parent = node;
+        }
+        protected void CleanParent()
+        {
+            this._parent = null;
+        }
         public void AddVersion(IVersion node)
         {
             //Children don't have to self and repeated versions
@@ -71,7 +84,11 @@ namespace MikTecnology
         {
             //Remove don't try to deleted no conteined nodes
             if (_nodes.Contains(node))
+            {
                 _nodes.Remove(node);
+                (node as BaseNode).CleanParent();
+            }
+               
         }
 
         protected void SetBaseVersion(IVersion version)//Next version always receive link to first version

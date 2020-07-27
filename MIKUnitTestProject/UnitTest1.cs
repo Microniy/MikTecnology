@@ -522,5 +522,17 @@ namespace MIKUnitTestProject
             Assert.AreEqual(n1.NextVersions.Count, 0);
             Assert.AreEqual(n1.OldVersions.Count, 0);
         }
+        [Test(Description = "INode test property Parent")]
+        public void TestINodeParentAddRemove()
+        {
+            TestNode n1 = new TestNode();
+            TestNode n2 = new TestNode();
+            Assert.AreEqual(n2.Parent, null);
+            n1.Add(n2);
+            Assert.AreEqual(n2.Parent, n1);
+            Assert.AreEqual(n1.Parent, null);
+            n1.Remove(n2);
+            Assert.AreEqual(n2.Parent, null);
+        }
     }
 }
