@@ -11,12 +11,13 @@ namespace MikTecnology
     {      
         void Add(INode node);
         void Remove(INode node);
+        bool FindCyclicLink(INode node);
     }
     public interface IVersion
     {
         void AddVersion(IVersion node); 
         void RemoveVersion();
-        void RemoveVersion(IVersion node);
+        void RemoveVersion(IVersion node);        
     }
     public abstract class BaseNode : INode,IVersion
     {
@@ -38,8 +39,17 @@ namespace MikTecnology
         public IList<IVersion> NextVersions => _nextVersion;
         public virtual void Add(INode node)
         {
-            //Children don't have to self and repeated nodes
-            if ((!this.Equals(node)) && (!_nodes.Contains(node)))
+            bool findCyclicLink = false;
+            foreach(INode node2 in this.GrandParents) // Find cyclic links parents and children
+            {
+                if (this.FindCyclicLink(node2))
+                {
+                    findCyclicLink = true;
+                    break;
+                }
+            }
+            //Children don't have to self and repeated nodes, and not nodes in parents
+            if ((!this.Equals(node)) && (!findCyclicLink) && (!_nodes.Contains(node)) && (!_grandparents.Contains(node)))
             {
                 _nodes.Add(node);
                 (node as BaseNode).AddParent(this);
@@ -190,6 +200,15 @@ namespace MikTecnology
         public void RemoveVersion()
         {
             RemoveVersion(this);
+        }
+
+        public bool FindCyclicLink(INode node)
+        {
+           foreach(INode node1 in this.Nodes)
+            {
+                if (node1.FindCyclicLink(node)) { return true; }//this cicle to be recursive find cyclic link
+            }
+            return false;
         }
     }
 }

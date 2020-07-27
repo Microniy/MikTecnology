@@ -603,5 +603,30 @@ namespace MIKUnitTestProject
             Assert.IsTrue(n4.GrandParents.Contains(n2));
             Assert.IsTrue(n4.GrandParents.Contains(n3));
         }
+        [Test(Description = "INode test cyclic links")]
+        public void TestINodeCyclicLinks()
+        {
+            TestNode n1 = new TestNode();
+            TestNode n2 = new TestNode();
+            Assert.AreEqual(n1.Nodes.Count, 0);
+            n1.Add(n2);
+            Assert.AreEqual(n1.Nodes.Count, 1);
+            n2.Add(n1);
+            Assert.AreEqual(n2.Nodes.Count, 0);
+            TestNode n3 = new TestNode();
+            TestNode n4 = new TestNode();
+            TestNode n5 = new TestNode();
+            TestNode n6 = new TestNode();
+            n3.Add(n4);
+            Assert.AreEqual(n3.Nodes.Count, 1);
+            n4.Add(n5);
+            Assert.AreEqual(n4.Nodes.Count, 1);
+            n4.Add(n6);
+            Assert.AreEqual(n4.Nodes.Count, 2);
+            n4.Add(n1);
+            Assert.AreEqual(n4.Nodes.Count, 3);
+            n2.Add(n3);
+            Assert.AreEqual(n2.Nodes.Count, 0);
+        }
     }
 }
