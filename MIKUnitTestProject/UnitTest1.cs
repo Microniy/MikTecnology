@@ -534,5 +534,74 @@ namespace MIKUnitTestProject
             n1.Remove(n2);
             Assert.AreEqual(n2.Parent, null);
         }
+        [Test(Description = "INode test property GrandParents")]
+        public void TestINodeGrandParentsAddRemove()
+        {
+            TestNode n1 = new TestNode();
+            TestNode n2 = new TestNode();
+            TestNode n3 = new TestNode();
+            TestNode n4 = new TestNode();
+            n1.Add(n2);
+            Assert.AreEqual(n2.GrandParents.Count, 1);
+            Assert.IsTrue(n2.GrandParents.Contains(n1));
+            n2.Add(n3);
+            Assert.AreEqual(n3.GrandParents.Count, 2);
+            Assert.IsTrue(n3.GrandParents.Contains(n1));
+            Assert.IsTrue(n3.GrandParents.Contains(n2));
+            n3.Add(n4);
+            Assert.AreEqual(n4.GrandParents.Count, 3);
+            Assert.IsTrue(n4.GrandParents.Contains(n1));
+            Assert.IsTrue(n4.GrandParents.Contains(n2));
+            Assert.IsTrue(n4.GrandParents.Contains(n3));
+            n1.Remove(n2);
+            Assert.AreEqual(n2.GrandParents.Count, 0);
+            Assert.IsFalse(n2.GrandParents.Contains(n1));
+            Assert.AreEqual(n3.GrandParents.Count, 1);
+            Assert.IsFalse(n3.GrandParents.Contains(n1));
+            Assert.IsTrue(n3.GrandParents.Contains(n2));
+            Assert.AreEqual(n4.GrandParents.Count, 2);
+            Assert.IsFalse(n4.GrandParents.Contains(n1));
+            Assert.IsTrue(n4.GrandParents.Contains(n2));
+            Assert.IsTrue(n4.GrandParents.Contains(n3));
+            n2.Remove(n3);
+            Assert.AreEqual(n3.GrandParents.Count, 0);
+            Assert.IsFalse(n3.GrandParents.Contains(n1));
+            Assert.IsFalse(n3.GrandParents.Contains(n2));
+            Assert.AreEqual(n4.GrandParents.Count, 1);
+            Assert.IsFalse(n4.GrandParents.Contains(n1));
+            Assert.IsFalse(n4.GrandParents.Contains(n2));
+            Assert.IsTrue(n4.GrandParents.Contains(n3));
+            n1.Add(n2);
+            n2.Add(n3);
+            Assert.AreEqual(n2.GrandParents.Count, 1);
+            Assert.IsTrue(n2.GrandParents.Contains(n1));
+            Assert.AreEqual(n3.GrandParents.Count, 2);
+            Assert.IsTrue(n3.GrandParents.Contains(n1));
+            Assert.IsTrue(n3.GrandParents.Contains(n2));
+            Assert.AreEqual(n4.GrandParents.Count, 3);
+            Assert.IsTrue(n4.GrandParents.Contains(n1));
+            Assert.IsTrue(n4.GrandParents.Contains(n2));
+            Assert.IsTrue(n4.GrandParents.Contains(n3));
+            n2.Remove(n3);
+            Assert.AreEqual(n2.GrandParents.Count, 1);
+            Assert.IsTrue(n2.GrandParents.Contains(n1));
+            Assert.AreEqual(n3.GrandParents.Count, 0);
+            Assert.IsFalse(n3.GrandParents.Contains(n1));
+            Assert.IsFalse(n3.GrandParents.Contains(n2));
+            Assert.AreEqual(n4.GrandParents.Count, 1);
+            Assert.IsFalse(n4.GrandParents.Contains(n1));
+            Assert.IsFalse(n4.GrandParents.Contains(n2));
+            Assert.IsTrue(n4.GrandParents.Contains(n3));
+            n2.Add(n3);
+            Assert.AreEqual(n2.GrandParents.Count, 1);
+            Assert.IsTrue(n2.GrandParents.Contains(n1));
+            Assert.AreEqual(n3.GrandParents.Count, 2);
+            Assert.IsTrue(n3.GrandParents.Contains(n1));
+            Assert.IsTrue(n3.GrandParents.Contains(n2));
+            Assert.AreEqual(n4.GrandParents.Count, 3);
+            Assert.IsTrue(n4.GrandParents.Contains(n1));
+            Assert.IsTrue(n4.GrandParents.Contains(n2));
+            Assert.IsTrue(n4.GrandParents.Contains(n3));
+        }
     }
 }

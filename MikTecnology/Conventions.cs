@@ -25,6 +25,9 @@ namespace MikTecnology
         public IList<INode> Nodes => _nodes;
         private INode _parent;
         public INode Parent => _parent;
+        private IList<INode> _grandparents = new List<INode>();
+        // List parent nodes
+        public IList<INode> GrandParents => _grandparents;
         private IList<IVersion> _versions = new List<IVersion>();
         protected IList<IVersion> Versions => _versions;
         //First version this parameter to be null
@@ -40,6 +43,12 @@ namespace MikTecnology
             {
                 _nodes.Add(node);
                 (node as BaseNode).AddParent(this);
+                // Add all parents
+                foreach(INode node1 in this.GrandParents)
+                {
+                    (node as BaseNode).AddGrandParent(node1);
+                }
+                (node as BaseNode).AddGrandParent(this);
             }
                 
         }
@@ -47,9 +56,30 @@ namespace MikTecnology
         {
             this._parent = node;
         }
+        protected void AddGrandParent(INode node)
+        {
+            this._grandparents.Add(node);
+            //Added children nodes this grandparent
+            foreach(BaseNode baseNode in this.Nodes)
+            {
+                baseNode.AddGrandParent(node);
+            }
+        }
         protected void CleanParent()
         {
             this._parent = null;
+            this._grandparents.Clear();
+        }
+        protected void CleanGrandParent(INode node)
+        {
+            if(this._grandparents.Contains(node))
+            {
+                foreach(INode node1 in this.Nodes)
+                {
+                    (node1 as BaseNode).CleanGrandParent(node);
+                }
+                this._grandparents.Remove(node);
+            }          
         }
         public void AddVersion(IVersion node)
         {
@@ -86,6 +116,11 @@ namespace MikTecnology
             if (_nodes.Contains(node))
             {
                 _nodes.Remove(node);
+                foreach(BaseNode grparent in this.GrandParents) //Remove for children nodes all grand parent this node
+                {
+                    (node as BaseNode).CleanGrandParent(grparent);
+                }
+                (node as BaseNode).CleanGrandParent(this);//Remove for children node this node
                 (node as BaseNode).CleanParent();
             }
                
