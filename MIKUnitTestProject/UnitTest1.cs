@@ -298,5 +298,33 @@ namespace MIKUnitTestProject
             n1.RemoveVersion(n2);
             Assert.AreEqual(n1.Versions.Count, 0);
         }
+        [Test(Description = "IVersion test method RemoveVersion")]
+        public void TestIVersionRemoveManyVersion()
+        {
+            TestNode n1 = new TestNode();
+            TestNode n2 = new TestNode();
+            TestNode n3 = new TestNode();
+            TestNode n4 = new TestNode();
+            TestNode n5 = new TestNode();
+            TestNode n6 = new TestNode();
+            TestNode n7 = new TestNode();
+            n1.AddVersion(n2);
+            n1.AddVersion(n3);
+            n1.AddVersion(n4);
+            n3.AddVersion(n5);
+            n5.AddVersion(n6);
+            n2.AddVersion(n7);
+            Assert.AreEqual(n1.Versions.Count, 6);
+            n7.RemoveVersion(n7);
+            Assert.AreEqual(n1.Versions.Count, 5);
+            n3.RemoveVersion(n3);
+            Assert.AreEqual(n1.Versions.Count, 4);
+            n7.RemoveVersion(n6);//n7 already deleted n6 not delete
+            Assert.AreEqual(n1.Versions.Count, 4);
+            n6.RemoveVersion();
+            Assert.AreEqual(n1.Versions.Count, 3);
+            n4.RemoveVersion(n2);
+            Assert.AreEqual(n1.Versions.Count, 2);
+        }
     }
 }
