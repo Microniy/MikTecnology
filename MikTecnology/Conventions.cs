@@ -88,10 +88,20 @@ namespace MikTecnology
             foreach (IVersion version in versions)
                 _oldVersion.Add(version);
         }
+        protected void RemoveOldVersion(IVersion version)//Next version receive all versions before
+        {
+            if (_oldVersion.Contains(version))
+                _oldVersion.Remove(version);
+        }
 
         protected void SetNextVersion(IVersion version)//Add next version
         {
             _nextVersion.Add(version);
+        }
+        protected void RemoveNextVersion(IVersion version)//Remove next version
+        {
+            if(_nextVersion.Contains(version))
+            _nextVersion.Remove(version);
         }
 
         public void RemoveVersion(IVersion node)
@@ -101,6 +111,15 @@ namespace MikTecnology
             {
                 if (_versions.Contains(node))
                 {
+                    this.RemoveNextVersion(node);
+                    foreach(BaseNode version in this.Versions)
+                    {
+                        version.RemoveNextVersion(node);
+                    }
+                    foreach (BaseNode version in this.Versions)
+                    {
+                        version.RemoveOldVersion(node);
+                    }
                     _versions.Remove(node);
                     (node as BaseNode).DeleteBaseVersion();//this cleanup prevents other nodes from being removed
                 }
