@@ -78,9 +78,11 @@ namespace MikTecnology
         {
             _baseVersion = version;
         }
-        protected void DeleteBaseVersion()//Clean base version
+        protected void CleanVersionState()//Clean base version
         {
             _baseVersion = null;
+            _oldVersion.Clear();
+            _nextVersion.Clear();
         }
 
         protected void SetOldVersion(IList<IVersion> versions)//Next version receive all versions before
@@ -121,7 +123,7 @@ namespace MikTecnology
                         version.RemoveOldVersion(node);
                     }
                     _versions.Remove(node);
-                    (node as BaseNode).DeleteBaseVersion();//this cleanup prevents other nodes from being removed
+                    (node as BaseNode).CleanVersionState();//this cleanup prevents other nodes from being removed
                 }
                     
             }
