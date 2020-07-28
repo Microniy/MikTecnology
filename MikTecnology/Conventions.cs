@@ -10,8 +10,7 @@ namespace MikTecnology
     public interface INode
     {      
         void Add(INode node);
-        void Remove(INode node);
-        bool FindCyclicLink(INode node);
+        void Remove(INode node);        
     }
     public interface IVersion
     {
@@ -37,7 +36,7 @@ namespace MikTecnology
         private IList<IVersion> _nextVersion = new List<IVersion>();
         public IList<IVersion> OldVersions => _oldVersion;
         public IList<IVersion> NextVersions => _nextVersion;
-        public virtual void Add(INode node)
+        public void Add(INode node)
         {
             bool findCyclicLink = false;
             foreach(INode node2 in this.GrandParents) // Find cyclic links parents and children
@@ -175,13 +174,10 @@ namespace MikTecnology
             {
                 if (_versions.Contains(node))
                 {
-                    this.RemoveNextVersion(node);
-                    foreach(BaseNode version in this.Versions)
-                    {
-                        version.RemoveNextVersion(node);
-                    }
+                    this.RemoveNextVersion(node);                    
                     foreach (BaseNode version in this.Versions)
                     {
+                        version.RemoveNextVersion(node);
                         version.RemoveOldVersion(node);
                     }
                     _versions.Remove(node);
@@ -202,9 +198,9 @@ namespace MikTecnology
             RemoveVersion(this);
         }
 
-        public bool FindCyclicLink(INode node)
+        protected bool FindCyclicLink(INode node)
         {
-           foreach(INode node1 in this.Nodes)
+           foreach(BaseNode node1 in this.Nodes)
             {
                 if (node1.FindCyclicLink(node)) { return true; }//this cicle to be recursive find cyclic link
             }

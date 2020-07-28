@@ -51,5 +51,5 @@ using System.Windows;
 // Можно задать все значения или принять номера сборки и редакции по умолчанию 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.52.52")]
-[assembly: AssemblyFileVersion("1.0.52.52")]
+[assembly: AssemblyVersion("1.0.54.54")]
+[assembly: AssemblyFileVersion("1.0.54.54")]
