@@ -36,6 +36,17 @@ namespace MikTecnology
         private IList<IVersion> _nextVersion = new List<IVersion>();
         public IList<IVersion> OldVersions => _oldVersion;
         public IList<IVersion> NextVersions => _nextVersion;
+
+        public abstract int TypeNode 
+        {
+            get;
+        }
+        public abstract string Name
+        {
+            get;
+        }
+        public abstract void Delete();//this method should clear static collections of inherited classes
+
         public void Add(INode node)
         {
             bool findCyclicLink = false;
@@ -206,5 +217,6 @@ namespace MikTecnology
             }
             return false;
         }
+       
     }
 }

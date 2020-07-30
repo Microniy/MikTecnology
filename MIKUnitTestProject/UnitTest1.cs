@@ -1,6 +1,8 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using MikTecnology;
+using System;
+using System.Linq;
 
 namespace MIKUnitTestProject
 {
@@ -10,12 +12,23 @@ namespace MIKUnitTestProject
         public void Setup()
         {
         }
-        class TestNode : BaseNode
+        public class TestNode : BaseNode
         {
+            private static int _idType = 0;
+            private string _name;
             public new IList<IVersion> Versions;
             public TestNode()
             {
                 this.Versions = base.Versions;
+                _name = string.Empty;
+            }
+            public override int TypeNode => _idType;
+
+            public override string Name => _name;
+
+            public override void Delete()
+            {
+                throw new NotImplementedException();
             }
         }
         [Test(Description ="INode test method Add")]
@@ -627,6 +640,20 @@ namespace MIKUnitTestProject
             Assert.AreEqual(n4.Nodes.Count, 3);
             n2.Add(n3);
             Assert.AreEqual(n2.Nodes.Count, 0);
+        }
+        [Test(Description = "test property TypeID ")]
+        public void TestBaseNodeTypeIdRealization()
+        {
+            TestNode n1 = new TestNode();
+            TestNode n2 = new TestNode();
+            Assert.IsNotNull(n1.TypeNode);
+            Assert.AreEqual(n1.TypeNode, n2.TypeNode);
+        }
+        [Test(Description = "test property Name ")]
+        public void TestBaseNodeNameRealization()
+        {
+            TestNode n1 = new TestNode();           
+            Assert.IsNotNull(n1.Name);            
         }
     }
 }
