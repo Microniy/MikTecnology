@@ -5,9 +5,9 @@
 
     <IsPackable>false</IsPackable>
 
-    <AssemblyVersion>1.0.157.157</AssemblyVersion>
+    <AssemblyVersion>1.0.158.158</AssemblyVersion>
 
-    <FileVersion>1.0.157.157</FileVersion>
+    <FileVersion>1.0.158.158</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MikTecnology\MikTecnologyOld.csproj" />
+    <ProjectReference Include="..\MikTecnologyNew\MikTecnologyNew.csproj" />
   </ItemGroup>
 
 </Project>
