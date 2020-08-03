@@ -671,6 +671,9 @@ namespace MIKUnitTestProject
             Assert.IsTrue(n1 is AssemblyNode);
             Assert.IsTrue(n1 is BaseNode);
             Assert.IsTrue(n1 is INode);
+            Assert.IsTrue(n1 is IVersion);
+            Assert.IsTrue(n1 is INumberNomenclature);
+            Assert.IsTrue(n1 is ICaption);
         }
     }
 }
