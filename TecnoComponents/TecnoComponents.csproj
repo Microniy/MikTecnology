@@ -3,6 +3,12 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
+    <AssemblyVersion>1.0.8.8</AssemblyVersion>
+    <FileVersion>1.0.8.8</FileVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MikTecnologyNew\MikTecnologyNew.csproj" />
+  </ItemGroup>
 
 </Project>

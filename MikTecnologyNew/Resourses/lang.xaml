@@ -1,0 +1,8 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:MikTecnologyNew.Resourses"
+                    xmlns:sys1="clr-namespace:System;assembly=System.Runtime">
+    <!-- This template for changing languages (alfa) -->
+    <sys1:String x:Key="Win_Title_Name">Пока пустое</sys1:String>
+    
+</ResourceDictionary>

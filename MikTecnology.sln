@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MIKUnitTestProject", "MIKUnitTestProject\MIKUnitTestProject.csproj", "{B10CADE7-9DD2-4165-890C-3F9080C72D7D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TecnoComponents", "TecnoComponents\TecnoComponents.csproj", "{5897D599-B2D4-4EBD-AF5B-3A27071C49F1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FA780B16-8059-496D-B4E4-197FCAC211BE} = {FA780B16-8059-496D-B4E4-197FCAC211BE}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MikTecnologyNew", "MikTecnologyNew\MikTecnologyNew.csproj", "{FA780B16-8059-496D-B4E4-197FCAC211BE}"
 EndProject

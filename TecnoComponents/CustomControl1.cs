@@ -19,14 +19,14 @@ namespace TecnoComponents
     /// Follow steps 1a or 1b and then 2 to use this custom control in a XAML file.
     ///
     /// Step 1a) Using this custom control in a XAML file that exists in the current project.
-    /// Add this XmlNamespace attribute to the root element of the markup file where it is 
+    /// AddNode this XmlNamespace attribute to the root element of the markup file where it is 
     /// to be used:
     ///
     ///     xmlns:MyNamespace="clr-namespace:TecnoComponents"
     ///
     ///
     /// Step 1b) Using this custom control in a XAML file that exists in a different project.
-    /// Add this XmlNamespace attribute to the root element of the markup file where it is 
+    /// AddNode this XmlNamespace attribute to the root element of the markup file where it is 
     /// to be used:
     ///
     ///     xmlns:MyNamespace="clr-namespace:TecnoComponents;assembly=TecnoComponents"
@@ -35,7 +35,7 @@ namespace TecnoComponents
     /// to this project and Rebuild to avoid compilation errors:
     ///
     ///     Right click on the target project in the Solution Explorer and
-    ///     "Add Reference"->"Projects"->[Select this project]
+    ///     "AddNode Reference"->"Projects"->[Select this project]
     ///
     ///
     /// Step 2)

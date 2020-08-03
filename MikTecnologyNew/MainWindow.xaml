@@ -5,8 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MikTecnologyNew"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
-    </Grid>
+        Title="{DynamicResource Win_Title_Name}" Style="{StaticResource WindStyle}" Height="450" Width="800" Loaded="Window_Loaded">
+    <DockPanel>
+        
+        <Expander ExpandDirection="Down" HorizontalAlignment="Left" DockPanel.Dock="Left">
+            <Expander.Header>fgfg</Expander.Header>
+            <StackPanel HorizontalAlignment="Left">
+                <TreeView x:Name="MenuProjects">
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate ItemsSource="{Binding Path=Nodes}">
+                            <TextBlock Text="{Binding Name}"></TextBlock>
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                </TreeView>
+            </StackPanel>
+        </Expander>
+    </DockPanel>
 </Window>

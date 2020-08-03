@@ -4,6 +4,11 @@
              xmlns:local="clr-namespace:MikTecnologyNew"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/DefaultWinStyle.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/Resourses/lang.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
