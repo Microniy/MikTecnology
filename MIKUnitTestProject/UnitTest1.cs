@@ -664,7 +664,7 @@ namespace MIKUnitTestProject
             AssemblyNode n1 = new AssemblyNode();
             Assert.IsNotNull(n1.TypeNode);
         }
-        [Test(Description = "Test AssemblyNode int TypeNode not null")]
+        [Test(Description = "Test ITecnologyNodeFactory create object AssemblyNode all type realization")]
         public void ITecnologyNodeFactory_AseemblyNode_Created()
         {
             INode n1 = factory.MakeAssembly("test");
@@ -674,6 +674,26 @@ namespace MIKUnitTestProject
             Assert.IsTrue(n1 is IVersion);
             Assert.IsTrue(n1 is INumberNomenclature);
             Assert.IsTrue(n1 is ICaption);
+        }
+        [Test(Description = "Test AssemblyNode string INumberNomenclature correct")]
+        public void AseemblyNode_INumberNomenclature_NumberCorrect()
+        {
+            INode n1 = factory.MakeAssembly("number_1");
+            Assert.IsNotNull((n1 as INumberNomenclature).Number);
+            Assert.AreEqual((n1 as INumberNomenclature).Number, "number_1");
+        }
+        [Test(Description = "Test AssemblyNode string ICaption correct")]
+        public void AseemblyNode_ICaption_NameCorrect()
+        {
+            INode n1 = factory.MakeAssembly("number_1");
+            Assert.IsNotNull((n1 as ICaption).Name);
+            Assert.AreEqual((n1 as ICaption).Name, "number_1");
+        }
+        [Test(Description = "Test AssemblyNode Number equal Name")]
+        public void AseemblyNode_Number_Name()
+        {
+            INode n1 = factory.MakeAssembly("number_1");           
+            Assert.AreEqual((n1 as INumberNomenclature).Number, (n1 as ICaption).Name);
         }
     }
 }
