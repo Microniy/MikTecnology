@@ -37,6 +37,10 @@ namespace TecnoComponents
 
         public int Ver => _ver;
 
+       
+
+      
+
         public abstract void Delete();//this method should clear static collections of inherited classes
 
         public void AddNode(INode node)

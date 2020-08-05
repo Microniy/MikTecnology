@@ -40,7 +40,7 @@ namespace MikTecnologyNew
     }
     public interface IFindCollection
     {
-        ICollection<INode> FullItemsCollection { get; }       
+        IEnumerable<INode> FullItemsCollection { get; }       
     }
     public interface IRepository
     {      

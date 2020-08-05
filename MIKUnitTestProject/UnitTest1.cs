@@ -28,6 +28,7 @@ namespace MIKUnitTestProject
             public override int TypeNode => _idType;
 
             public override string Name => _name;
+         
 
             public override void Delete()
             {
@@ -702,22 +703,39 @@ namespace MIKUnitTestProject
             Assert.IsNotNull((n1 as IVersion).Ver);
             Assert.AreEqual((n1 as IVersion).Ver, 0);
         }
-        [Test(Description = "IVersion test property Ver new versions")]
-        public void AseemblyNode_MakeAsembly_NotNewVersions()
+        [Test(Description = "IVersion test property Ver new versions and test IFindCollection count")]
+        public void AseemblyNode_MakeAsembly_GenerateNewVersions()
         {
             INode n1 = factory.MakeAssembly("number_1");
-            INode n2 = factory.MakeAssembly("number_1");           
+            INode n2 = factory.MakeAssembly("number_1");
+            Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 1);
+            Assert.AreEqual((n2 as IFindCollection).FullItemsCollection.Count(), 1);
             Assert.AreEqual(n1,n2);
             INode n3 = factory.MakeAssembly("number_1",1);
             Assert.AreNotEqual(n1, n3);
             Assert.AreEqual((n1 as IVersion).Ver, 0);
+            Assert.AreEqual((n2 as IVersion).Ver, 0);
             Assert.AreEqual((n3 as IVersion).Ver, 1);
+            Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 2);
+            Assert.AreEqual((n3 as IFindCollection).FullItemsCollection.Count(), 2);
             INode n4 = factory.MakeAssembly("number_1", 1);
             Assert.AreEqual(n3, n4);
-            INode n5 = factory.MakeAssembly("number_1", -1);
+            Assert.AreEqual((n4 as IVersion).Ver, 1);
+            Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 2);
+            Assert.AreEqual((n4 as IFindCollection).FullItemsCollection.Count(), 2);
+            INode n5 = factory.MakeAssembly("number_1", 2000);
             Assert.AreEqual((n5 as IVersion).Ver, 2);
+            Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 3);
+            Assert.AreEqual((n5 as IFindCollection).FullItemsCollection.Count(), 3);
             INode n6 = factory.MakeAssembly("number_1", -1);
             Assert.AreEqual((n6 as IVersion).Ver, 3);
+            Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 4);
+            Assert.AreEqual((n6 as IFindCollection).FullItemsCollection.Count(), 4);
+            INode n7 = factory.MakeAssembly("number_2", -1);
+            Assert.AreEqual((n7 as IVersion).Ver, 0);
+            Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 5);
+            Assert.AreEqual((n7 as IFindCollection).FullItemsCollection.Count(), 5);
         }
+      
     }
 }
