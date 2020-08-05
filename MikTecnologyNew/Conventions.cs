@@ -38,6 +38,11 @@ namespace MikTecnologyNew
     {
         string Name { get; }
     }
+    public interface IDescription
+    {
+        string Description { get; }
+        string SetDescription { set; }
+    }
     public interface IFindCollection
     {
         IEnumerable<INode> FullItemsCollection { get; }       

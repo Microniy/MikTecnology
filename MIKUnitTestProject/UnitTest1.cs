@@ -736,6 +736,20 @@ namespace MIKUnitTestProject
             Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 5);
             Assert.AreEqual((n7 as IFindCollection).FullItemsCollection.Count(), 5);
         }
-      
+        [Test(Description = "IDescription test property Description")]
+        public void IDescription_AseemblyNode_DescriptionCreate()
+        {
+            INode n1 = factory.MakeAssembly("number_1");          
+            Assert.IsNotNull((n1 as IDescription).Description);
+            INode n2 = factory.MakeAssembly("number_2");
+            Assert.IsNotNull((n2 as IDescription).Description);
+            (n1 as IDescription).SetDescription = "test1";
+            Assert.AreEqual((n1 as IDescription).Description, "test1");            
+            Assert.AreEqual((n2 as IDescription).Description, "");
+            (n2 as IDescription).SetDescription = "test2";
+            Assert.AreEqual((n2 as IDescription).Description, "test2");
+            (n1 as IDescription).SetDescription = "test3";
+            Assert.AreEqual((n1 as IDescription).Description, "test3");
+        }
     }
 }
