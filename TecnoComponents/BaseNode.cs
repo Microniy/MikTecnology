@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using MikTecnologyNew;
 
@@ -23,7 +24,8 @@ namespace TecnoComponents
         private IList<IVersion> _nextVersion = new List<IVersion>();
         public IList<IVersion> OldVersions => _oldVersion;
         public IList<IVersion> NextVersions => _nextVersion;
-
+        private int _ver;
+        
         public abstract int TypeNode
         {
             get;
@@ -32,6 +34,9 @@ namespace TecnoComponents
         {
             get;
         }
+
+        public int Ver => _ver;
+
         public abstract void Delete();//this method should clear static collections of inherited classes
 
         public void AddNode(INode node)
@@ -92,20 +97,20 @@ namespace TecnoComponents
         {
             //Children don't have to self and repeated versions
             if ((!this.Equals(node)) && (!_versions.Contains(node)))
-            {
+            {               
                 if (_baseVersion == null)
-                {
+                {                    
                     //Write Next version for all old nodes (before added)
                     foreach (BaseNode version in this.Versions)
                     {
-                        version.SetNextVersion(node);
+                        version.SetNextVersion(node);                       
                     }
                     //AddNode to first version
                     _versions.Add(node);
                     (node as BaseNode).SetBaseVersion(this);
                     (node as BaseNode).SetOldVersion(this.Versions);
                     this.SetNextVersion(node);//Write Next version for first  node
-
+                    node.SetVersion();//initialization version number
                 }
                 else
                 {
@@ -205,6 +210,11 @@ namespace TecnoComponents
             return false;
         }
 
+        public void SetVersion()
+        {
+            int i = this.OldVersions.Max(x => x.Ver);
+            this._ver = i + 1;
+        }
     }
 
 }

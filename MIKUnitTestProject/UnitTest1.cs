@@ -695,5 +695,29 @@ namespace MIKUnitTestProject
             INode n1 = factory.MakeAssembly("number_1");           
             Assert.AreEqual((n1 as INumberNomenclature).Number, (n1 as ICaption).Name);
         }
+        [Test(Description = "IVersion test property Ver")]
+        public void IVersion_Ver_New()
+        {
+            INode n1 = factory.MakeAssembly("number_1");
+            Assert.IsNotNull((n1 as IVersion).Ver);
+            Assert.AreEqual((n1 as IVersion).Ver, 0);
+        }
+        [Test(Description = "IVersion test property Ver new versions")]
+        public void AseemblyNode_MakeAsembly_NotNewVersions()
+        {
+            INode n1 = factory.MakeAssembly("number_1");
+            INode n2 = factory.MakeAssembly("number_1");           
+            Assert.AreEqual(n1,n2);
+            INode n3 = factory.MakeAssembly("number_1",1);
+            Assert.AreNotEqual(n1, n3);
+            Assert.AreEqual((n1 as IVersion).Ver, 0);
+            Assert.AreEqual((n3 as IVersion).Ver, 1);
+            INode n4 = factory.MakeAssembly("number_1", 1);
+            Assert.AreEqual(n3, n4);
+            INode n5 = factory.MakeAssembly("number_1", -1);
+            Assert.AreEqual((n5 as IVersion).Ver, 2);
+            INode n6 = factory.MakeAssembly("number_1", -1);
+            Assert.AreEqual((n6 as IVersion).Ver, 3);
+        }
     }
 }

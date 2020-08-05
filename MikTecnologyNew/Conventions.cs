@@ -23,10 +23,12 @@ namespace MikTecnologyNew
         void RemoveVersion(IVersion node);
         IList<IVersion> OldVersions { get; }
         IList<IVersion> NextVersions { get; }
+        int Ver { get; }
+        void SetVersion();
     }
     public interface ITecnologyNodeFactory
     {
-        INode MakeAssembly(string name);
+        INode MakeAssembly(string name,int vers =0);
     }
     public interface INumberNomenclature
     {
@@ -35,6 +37,10 @@ namespace MikTecnologyNew
     public interface ICaption
     {
         string Name { get; }
+    }
+    public interface IFindCollection
+    {
+        ICollection<INode> FullItemsCollection { get; }       
     }
     public interface IRepository
     {      
