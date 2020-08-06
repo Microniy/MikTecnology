@@ -7,9 +7,15 @@ namespace TecnoComponents
 {
     public class TecnologyNodeFactoryImplementation : ITecnologyNodeFactory
     {
-        public INode MakeAssembly(string name, int vers=0)
+        public INode Make(string type, string name, int vers = 0)
         {
-            return AssemblyNode.CreateNode(name,vers);
+            switch (type)
+            {
+                case "AssemblyNode":
+                    return AssemblyNode.CreateNode(name, vers);
+                default:
+                    return null;
+            }           
         }
     }
 }

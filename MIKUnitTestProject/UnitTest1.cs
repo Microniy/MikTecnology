@@ -668,7 +668,7 @@ namespace MIKUnitTestProject
         [Test(Description = "Test ITecnologyNodeFactory create object AssemblyNode all type realization")]
         public void ITecnologyNodeFactory_AseemblyNode_Created()
         {
-            INode n1 = factory.MakeAssembly("test");
+            INode n1 = factory.Make("AssemblyNode", "test");
             Assert.IsTrue(n1 is AssemblyNode);
             Assert.IsTrue(n1 is BaseNode);
             Assert.IsTrue(n1 is INode);
@@ -679,59 +679,59 @@ namespace MIKUnitTestProject
         [Test(Description = "Test AssemblyNode string INumberNomenclature correct")]
         public void AseemblyNode_INumberNomenclature_NumberCorrect()
         {
-            INode n1 = factory.MakeAssembly("number_1");
+            INode n1 = factory.Make("AssemblyNode", "number_1");
             Assert.IsNotNull((n1 as INumberNomenclature).Number);
             Assert.AreEqual((n1 as INumberNomenclature).Number, "number_1");
         }
         [Test(Description = "Test AssemblyNode string ICaption correct")]
         public void AseemblyNode_ICaption_NameCorrect()
         {
-            INode n1 = factory.MakeAssembly("number_1");
+            INode n1 = factory.Make("AssemblyNode", "number_1");
             Assert.IsNotNull((n1 as ICaption).Name);
             Assert.AreEqual((n1 as ICaption).Name, "number_1");
         }
         [Test(Description = "Test AssemblyNode Number equal Name")]
         public void AseemblyNode_Number_Name()
         {
-            INode n1 = factory.MakeAssembly("number_1");           
+            INode n1 = factory.Make("AssemblyNode", "number_1");           
             Assert.AreEqual((n1 as INumberNomenclature).Number, (n1 as ICaption).Name);
         }
         [Test(Description = "IVersion test property Ver")]
         public void IVersion_Ver_New()
         {
-            INode n1 = factory.MakeAssembly("number_1");
+            INode n1 = factory.Make("AssemblyNode", "number_1");
             Assert.IsNotNull((n1 as IVersion).Ver);
             Assert.AreEqual((n1 as IVersion).Ver, 0);
         }
         [Test(Description = "IVersion test property Ver new versions and test IFindCollection count")]
         public void AseemblyNode_MakeAsembly_GenerateNewVersions()
         {
-            INode n1 = factory.MakeAssembly("number_1");
-            INode n2 = factory.MakeAssembly("number_1");
+            INode n1 = factory.Make("AssemblyNode", "number_1");
+            INode n2 = factory.Make("AssemblyNode", "number_1");
             Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 1);
             Assert.AreEqual((n2 as IFindCollection).FullItemsCollection.Count(), 1);
             Assert.AreEqual(n1,n2);
-            INode n3 = factory.MakeAssembly("number_1",1);
+            INode n3 = factory.Make("AssemblyNode", "number_1",1);
             Assert.AreNotEqual(n1, n3);
             Assert.AreEqual((n1 as IVersion).Ver, 0);
             Assert.AreEqual((n2 as IVersion).Ver, 0);
             Assert.AreEqual((n3 as IVersion).Ver, 1);
             Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 2);
             Assert.AreEqual((n3 as IFindCollection).FullItemsCollection.Count(), 2);
-            INode n4 = factory.MakeAssembly("number_1", 1);
+            INode n4 = factory.Make("AssemblyNode", "number_1", 1);
             Assert.AreEqual(n3, n4);
             Assert.AreEqual((n4 as IVersion).Ver, 1);
             Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 2);
             Assert.AreEqual((n4 as IFindCollection).FullItemsCollection.Count(), 2);
-            INode n5 = factory.MakeAssembly("number_1", 2000);
+            INode n5 = factory.Make("AssemblyNode", "number_1", 2000);
             Assert.AreEqual((n5 as IVersion).Ver, 2);
             Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 3);
             Assert.AreEqual((n5 as IFindCollection).FullItemsCollection.Count(), 3);
-            INode n6 = factory.MakeAssembly("number_1", -1);
+            INode n6 = factory.Make("AssemblyNode", "number_1", -1);
             Assert.AreEqual((n6 as IVersion).Ver, 3);
             Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 4);
             Assert.AreEqual((n6 as IFindCollection).FullItemsCollection.Count(), 4);
-            INode n7 = factory.MakeAssembly("number_2", -1);
+            INode n7 = factory.Make("AssemblyNode", "number_2", -1);
             Assert.AreEqual((n7 as IVersion).Ver, 0);
             Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 5);
             Assert.AreEqual((n7 as IFindCollection).FullItemsCollection.Count(), 5);
@@ -739,9 +739,9 @@ namespace MIKUnitTestProject
         [Test(Description = "IDescription test property Description")]
         public void IDescription_AseemblyNode_DescriptionCreate()
         {
-            INode n1 = factory.MakeAssembly("number_1");          
+            INode n1 = factory.Make("AssemblyNode", "number_1");          
             Assert.IsNotNull((n1 as IDescription).Description);
-            INode n2 = factory.MakeAssembly("number_2");
+            INode n2 = factory.Make("AssemblyNode", "number_2");
             Assert.IsNotNull((n2 as IDescription).Description);
             (n1 as IDescription).SetDescription = "test1";
             Assert.AreEqual((n1 as IDescription).Description, "test1");            

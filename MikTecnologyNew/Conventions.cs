@@ -28,7 +28,7 @@ namespace MikTecnologyNew
     }
     public interface ITecnologyNodeFactory
     {
-        INode MakeAssembly(string name,int vers =0);
+        INode Make(string type,string name,int vers =0);
     }
     public interface INumberNomenclature
     {
