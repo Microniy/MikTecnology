@@ -37,9 +37,9 @@ namespace TecnoComponents
 
         public int Ver => _ver;
 
-       
+        public IVersion OldVersion2 => _oldVersion.OrderByDescending(x => x.Ver).Skip(1).Take(1).FirstOrDefault();
 
-      
+        public IVersion OldVersion1 => _oldVersion.Last();
 
         public abstract void Delete();//this method should clear static collections of inherited classes
 
@@ -110,9 +110,10 @@ namespace TecnoComponents
                         version.SetNextVersion(node);                       
                     }
                     //AddNode to first version
-                    _versions.Add(node);
-                    (node as BaseNode).SetBaseVersion(this);
+                    (node as BaseNode)._oldVersion.Add(this);
                     (node as BaseNode).SetOldVersion(this.Versions);
+                    _versions.Add(node);
+                    (node as BaseNode).SetBaseVersion(this);                    
                     this.SetNextVersion(node);//Write Next version for first  node
                     node.SetVersion();//initialization version number
                 }

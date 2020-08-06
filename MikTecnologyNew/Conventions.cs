@@ -21,6 +21,8 @@ namespace MikTecnologyNew
         void AddVersion(IVersion node); 
         void RemoveVersion();
         void RemoveVersion(IVersion node);
+        IVersion OldVersion2 { get; }
+        IVersion OldVersion1 { get; }
         IList<IVersion> OldVersions { get; }
         IList<IVersion> NextVersions { get; }
         int Ver { get; }
