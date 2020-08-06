@@ -39,7 +39,7 @@ namespace TecnoComponents
 
         public IVersion OldVersion2 => _oldVersion.OrderByDescending(x => x.Ver).Skip(1).Take(1).FirstOrDefault();
 
-        public IVersion OldVersion1 => _oldVersion.Last();
+        public IVersion OldVersion1 => _oldVersion.LastOrDefault();
 
         public abstract void Delete();//this method should clear static collections of inherited classes
 
