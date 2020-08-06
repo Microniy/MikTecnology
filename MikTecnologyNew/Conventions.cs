@@ -25,6 +25,8 @@ namespace MikTecnologyNew
         IVersion OldVersion1 { get; }
         IList<IVersion> OldVersions { get; }
         IList<IVersion> NextVersions { get; }
+        IVersion NextVersion2 { get; }
+        IVersion NextVersion1 { get; }
         int Ver { get; }
         void SetVersion();
     }

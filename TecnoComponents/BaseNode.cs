@@ -41,6 +41,10 @@ namespace TecnoComponents
 
         public IVersion OldVersion1 => _oldVersion.LastOrDefault();
 
+        public IVersion NextVersion2 => _nextVersion.Skip(1).Take(1).FirstOrDefault();
+
+        public IVersion NextVersion1 => _nextVersion.FirstOrDefault();
+
         public abstract void Delete();//this method should clear static collections of inherited classes
 
         public void AddNode(INode node)

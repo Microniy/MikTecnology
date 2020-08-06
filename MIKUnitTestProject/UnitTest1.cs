@@ -1037,5 +1037,139 @@ namespace MIKUnitTestProject
             Assert.AreEqual(n7.OldVersion1, n4);
             Assert.AreEqual(n7.OldVersion2, n1);           
         }
+        [Test(Description = "IVersion test methods AddVersion, RemoveVersion correct NextVersion1 and NextVersion2")]
+        public void IVersionNextVersion1_2_Tested()
+        {
+            TestNode n1 = new TestNode();
+            TestNode n2 = new TestNode();
+            TestNode n3 = new TestNode();
+            TestNode n4 = new TestNode();
+            TestNode n5 = new TestNode();
+            TestNode n6 = new TestNode();
+            TestNode n7 = new TestNode();
+            Assert.IsNull(n1.NextVersion1);
+            Assert.IsNull(n1.NextVersion2);
+
+            n1.AddVersion(n2);
+            Assert.AreEqual(n1.NextVersion1,n2);
+            Assert.IsNull(n1.NextVersion2);
+
+            n1.AddVersion(n3);
+            Assert.AreEqual(n1.NextVersion1, n2);
+            Assert.AreEqual(n1.NextVersion2, n3);
+            Assert.AreEqual(n2.NextVersion1, n3);
+            Assert.IsNull(n2.NextVersion2);
+            Assert.IsNull(n3.NextVersion1);
+            Assert.IsNull(n3.NextVersion2);
+
+            n1.AddVersion(n4);
+            Assert.AreEqual(n1.NextVersion1, n2);
+            Assert.AreEqual(n1.NextVersion2, n3);
+            Assert.AreEqual(n2.NextVersion1, n3);
+            Assert.AreEqual(n2.NextVersion2, n4);
+            Assert.AreEqual(n3.NextVersion1, n4);
+            Assert.IsNull(n3.NextVersion2);
+            Assert.IsNull(n4.NextVersion1);
+            Assert.IsNull(n4.NextVersion2);
+
+            n3.AddVersion(n5);
+            Assert.AreEqual(n1.NextVersion1, n2);
+            Assert.AreEqual(n1.NextVersion2, n3);
+            Assert.AreEqual(n2.NextVersion1, n3);
+            Assert.AreEqual(n2.NextVersion2, n4);
+            Assert.AreEqual(n3.NextVersion1, n4);
+            Assert.AreEqual(n3.NextVersion2, n5);
+            Assert.AreEqual(n4.NextVersion1, n5);
+            Assert.IsNull(n4.NextVersion2);
+            Assert.IsNull(n5.NextVersion1);
+            Assert.IsNull(n5.NextVersion2);
+
+            n5.AddVersion(n6);
+            Assert.AreEqual(n1.NextVersion1, n2);
+            Assert.AreEqual(n1.NextVersion2, n3);
+            Assert.AreEqual(n2.NextVersion1, n3);
+            Assert.AreEqual(n2.NextVersion2, n4);
+            Assert.AreEqual(n3.NextVersion1, n4);
+            Assert.AreEqual(n3.NextVersion2, n5);
+            Assert.AreEqual(n4.NextVersion1, n5);
+            Assert.AreEqual(n4.NextVersion2, n6);
+            Assert.AreEqual(n5.NextVersion1, n6);
+            Assert.IsNull(n5.NextVersion2);
+            Assert.IsNull(n6.NextVersion1);
+            Assert.IsNull(n6.NextVersion2);
+
+            n2.AddVersion(n7);
+            Assert.AreEqual(n1.NextVersion1, n2);
+            Assert.AreEqual(n1.NextVersion2, n3);
+            Assert.AreEqual(n2.NextVersion1, n3);
+            Assert.AreEqual(n2.NextVersion2, n4);
+            Assert.AreEqual(n3.NextVersion1, n4);
+            Assert.AreEqual(n3.NextVersion2, n5);
+            Assert.AreEqual(n4.NextVersion1, n5);
+            Assert.AreEqual(n4.NextVersion2, n6);
+            Assert.AreEqual(n5.NextVersion1, n6);
+            Assert.AreEqual(n5.NextVersion2, n7);
+            Assert.AreEqual(n6.NextVersion1, n7);
+            Assert.IsNull(n6.NextVersion2);
+            Assert.IsNull(n7.NextVersion1);
+            Assert.IsNull(n7.NextVersion2);
+
+            n7.RemoveVersion(n6);
+            Assert.AreEqual(n1.NextVersion1, n2);
+            Assert.AreEqual(n1.NextVersion2, n3);
+            Assert.AreEqual(n2.NextVersion1, n3);
+            Assert.AreEqual(n2.NextVersion2, n4);
+            Assert.AreEqual(n3.NextVersion1, n4);
+            Assert.AreEqual(n3.NextVersion2, n5);
+            Assert.AreEqual(n4.NextVersion1, n5);
+            Assert.AreEqual(n4.NextVersion2, n7);
+            Assert.AreEqual(n5.NextVersion1, n7);
+            Assert.IsNull(n5.NextVersion2);
+            Assert.IsNull(n7.NextVersion1);
+            Assert.IsNull(n7.NextVersion2);
+
+            n3.RemoveVersion(n3);
+            Assert.AreEqual(n1.NextVersion1, n2);
+            Assert.AreEqual(n1.NextVersion2, n4);
+            Assert.AreEqual(n2.NextVersion1, n4);
+            Assert.AreEqual(n2.NextVersion2, n5);           
+            Assert.AreEqual(n4.NextVersion1, n5);
+            Assert.AreEqual(n4.NextVersion2, n7);
+            Assert.AreEqual(n5.NextVersion1, n7);
+            Assert.IsNull(n5.NextVersion2);
+            Assert.IsNull(n7.NextVersion1);
+            Assert.IsNull(n7.NextVersion2);
+
+            n6.RemoveVersion(n7);//n7 already deleted n6 not delete           
+            Assert.AreEqual(n1.NextVersion1, n2);
+            Assert.AreEqual(n1.NextVersion2, n4);
+            Assert.AreEqual(n2.NextVersion1, n4);
+            Assert.AreEqual(n2.NextVersion2, n5);
+            Assert.AreEqual(n4.NextVersion1, n5);
+            Assert.AreEqual(n4.NextVersion2, n7);
+            Assert.AreEqual(n5.NextVersion1, n7);
+            Assert.IsNull(n5.NextVersion2);
+            Assert.IsNull(n7.NextVersion1);
+            Assert.IsNull(n7.NextVersion2);
+
+            n5.RemoveVersion();
+            Assert.AreEqual(n1.NextVersion1, n2);
+            Assert.AreEqual(n1.NextVersion2, n4);
+            Assert.AreEqual(n2.NextVersion1, n4);
+            Assert.AreEqual(n2.NextVersion2, n7);
+            Assert.AreEqual(n4.NextVersion1, n7);
+            Assert.IsNull(n4.NextVersion2);
+            Assert.IsNull(n7.NextVersion1);
+            Assert.IsNull(n7.NextVersion2);
+
+            n4.RemoveVersion(n2);
+            Assert.AreEqual(n1.NextVersion1, n4);
+            Assert.AreEqual(n1.NextVersion2, n7);           
+            Assert.AreEqual(n4.NextVersion1, n7);
+            Assert.IsNull(n4.NextVersion2);
+            Assert.IsNull(n7.NextVersion1);
+            Assert.IsNull(n7.NextVersion2);
+
+        }
     }
 }
