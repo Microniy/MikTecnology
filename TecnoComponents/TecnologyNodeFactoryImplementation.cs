@@ -13,6 +13,8 @@ namespace TecnoComponents
             {
                 case "AssemblyNode":
                     return AssemblyNode.CreateNode(name, vers);
+                case "DetailNode":
+                    return DetailNode.CreateNode(name, vers);
                 default:
                     return null;
             }           

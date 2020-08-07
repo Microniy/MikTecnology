@@ -6,9 +6,10 @@ using System.Windows.Data;
 
 namespace MikTecnologyNew
 {
-    enum StringTypeNode
+   public enum StringTypeNode
     {
-        AssemblyNode=1
+        AssemblyNode=1,
+        DetailNode=2
     }
     public class SourceIntTypConvertor : IValueConverter
     {

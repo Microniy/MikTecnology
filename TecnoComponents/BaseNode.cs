@@ -29,11 +29,7 @@ namespace TecnoComponents
         public abstract int TypeNode
         {
             get;
-        }
-        public abstract string Name
-        {
-            get;
-        }
+        }              
 
         public int Ver => _ver;
 

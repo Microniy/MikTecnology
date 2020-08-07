@@ -11,12 +11,12 @@ namespace TecnoComponents
 {
     public class AssemblyNode : BaseNode,INumberNomenclature,ICaption,IDescription, IFindCollection
     {
-        private static int _typeId = 1;
+        private static int _typeId = (int)StringTypeNode.AssemblyNode;
         private static IList<AssemblyNode> _fullItems = new List<AssemblyNode>();
         public override int TypeNode => _typeId;
         private string _name;
         private string _description=string.Empty;
-        public override string Name => _name;
+        
 
         public string Number => _name;
 
@@ -25,6 +25,8 @@ namespace TecnoComponents
         public string Description =>_description;
 
         public string SetDescription { set => _description=value; }
+
+        public string Name => _name;
 
         public static AssemblyNode CreateNode(string name,int vers = 0)
         {

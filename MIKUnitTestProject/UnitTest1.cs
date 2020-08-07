@@ -26,10 +26,7 @@ namespace MIKUnitTestProject
                 _name = string.Empty;
             }
             public override int TypeNode => _idType;
-
-            public override string Name => _name;
-         
-
+            
             public override void Delete()
             {
                 throw new NotImplementedException();
@@ -814,13 +811,7 @@ namespace MIKUnitTestProject
             TestNode n2 = new TestNode();
             Assert.IsNotNull(n1.TypeNode);
             Assert.AreEqual(n1.TypeNode, n2.TypeNode);
-        }
-        [Test(Description = "test property Name ")]
-        public void TestBaseNodeNameRealization()
-        {
-            TestNode n1 = new TestNode();           
-            Assert.IsNotNull(n1.Name);            
-        }
+        }       
         [Test(Description = "Test AssemblyNode int TypeNode not null")]
         public void AseemblyNode_TypeNode_NotNull()
         {
@@ -1206,6 +1197,97 @@ namespace MIKUnitTestProject
             SourceIntTypConvertor intTypConvertor = new SourceIntTypConvertor();
             INode n1 = factory.Make("AssemblyNode", "бЬви.123321.001-001");
             Assert.IsNotNull(intTypConvertor.Convert((n1 as BaseNode).TypeNode, typeof(string), null, null));
+        }
+        [Test(Description = "AssemblyNode test StringTypeNode make node")]
+        public void AssemblyNode_TypeNode_enum_StringTypeNode()
+        {           
+            INode n1 = factory.Make(StringTypeNode.AssemblyNode.ToString(), "бЬви.123321.001-001");
+            Assert.AreEqual((int)StringTypeNode.AssemblyNode, (n1 as BaseNode).TypeNode);
+        }
+        [Test(Description = "Test DetailNode int TypeNode not null")]
+        public void DetailNode_TypeNode_NotNull()
+        {
+            DetailNode n1 = new DetailNode();
+            Assert.IsNotNull(n1.TypeNode);
+        }
+        [Test(Description = "Test ITecnologyNodeFactory create object DetailNode all type realization")]
+        public void ITecnologyNodeFactory_DetailNode_Created()
+        {
+            INode n1 = factory.Make("DetailNode", "test");
+            Assert.IsTrue(n1 is DetailNode);
+            Assert.IsTrue(n1 is BaseNode);
+            Assert.IsTrue(n1 is INode);
+            Assert.IsTrue(n1 is IVersion);
+            Assert.IsTrue(n1 is INumberNomenclature);
+            Assert.IsTrue(n1 is ICaption);
+        }
+        [Test(Description = "Test DetailNode string INumberNomenclature correct")]
+        public void DetailNode_INumberNomenclature_NumberCorrect()
+        {
+            INode n1 = factory.Make("DetailNode", "number_1");
+            Assert.IsNotNull((n1 as INumberNomenclature).Number);
+            Assert.AreEqual((n1 as INumberNomenclature).Number, "number_1");
+        }
+        [Test(Description = "Test DetailNode string ICaption correct")]
+        public void DetailNode_ICaption_NameCorrect()
+        {
+            INode n1 = factory.Make("DetailNode", "number_1");
+            Assert.IsNotNull((n1 as ICaption).Name);
+            Assert.AreEqual((n1 as ICaption).Name, "number_1");
+        }
+        [Test(Description = "Test DetailNode Number equal Name")]
+        public void DetailNode_Number_Name()
+        {
+            INode n1 = factory.Make("DetailNode", "number_1");
+            Assert.AreEqual((n1 as INumberNomenclature).Number, (n1 as ICaption).Name);
+        }
+        [Test(Description = "IVersion test property Ver new versions and test IFindCollection count to DetailNode")]
+        public void DetailNode_MakeAsembly_GenerateNewVersions()
+        {
+            INode n1 = factory.Make("DetailNode", "number_1");
+            INode n2 = factory.Make("DetailNode", "number_1");
+            Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 1);
+            Assert.AreEqual((n2 as IFindCollection).FullItemsCollection.Count(), 1);
+            Assert.AreEqual(n1, n2);
+            INode n3 = factory.Make("DetailNode", "number_1", 1);
+            Assert.AreNotEqual(n1, n3);
+            Assert.AreEqual((n1 as IVersion).Ver, 0);
+            Assert.AreEqual((n2 as IVersion).Ver, 0);
+            Assert.AreEqual((n3 as IVersion).Ver, 1);
+            Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 2);
+            Assert.AreEqual((n3 as IFindCollection).FullItemsCollection.Count(), 2);
+            INode n4 = factory.Make("DetailNode", "number_1", 1);
+            Assert.AreEqual(n3, n4);
+            Assert.AreEqual((n4 as IVersion).Ver, 1);
+            Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 2);
+            Assert.AreEqual((n4 as IFindCollection).FullItemsCollection.Count(), 2);
+            INode n5 = factory.Make("DetailNode", "number_1", 2000);
+            Assert.AreEqual((n5 as IVersion).Ver, 2);
+            Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 3);
+            Assert.AreEqual((n5 as IFindCollection).FullItemsCollection.Count(), 3);
+            INode n6 = factory.Make("DetailNode", "number_1", -1);
+            Assert.AreEqual((n6 as IVersion).Ver, 3);
+            Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 4);
+            Assert.AreEqual((n6 as IFindCollection).FullItemsCollection.Count(), 4);
+            INode n7 = factory.Make("DetailNode", "number_2", -1);
+            Assert.AreEqual((n7 as IVersion).Ver, 0);
+            Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 5);
+            Assert.AreEqual((n7 as IFindCollection).FullItemsCollection.Count(), 5);
+        }
+        [Test(Description = "IDescription test property Description to DetailNode")]
+        public void IDescription_DetailNode_DescriptionCreate()
+        {
+            INode n1 = factory.Make("DetailNode", "number_1");
+            Assert.IsNotNull((n1 as IDescription).Description);
+            INode n2 = factory.Make("DetailNode", "number_2");
+            Assert.IsNotNull((n2 as IDescription).Description);
+            (n1 as IDescription).SetDescription = "test1";
+            Assert.AreEqual((n1 as IDescription).Description, "test1");
+            Assert.AreEqual((n2 as IDescription).Description, "");
+            (n2 as IDescription).SetDescription = "test2";
+            Assert.AreEqual((n2 as IDescription).Description, "test2");
+            (n1 as IDescription).SetDescription = "test3";
+            Assert.AreEqual((n1 as IDescription).Description, "test3");
         }
     }
 }
