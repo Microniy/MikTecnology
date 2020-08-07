@@ -1200,5 +1200,12 @@ namespace MIKUnitTestProject
             Assert.AreEqual(n1.Nodes.Count,1);
             Assert.IsTrue(n1.Nodes.Contains(n4));
         }
+        [Test(Description = "AssemblyNode test SourceIntTypConvertor. Converter create element for TypeNode")]
+        public void AssemblyNode_TypeNode_SourceIntTypConvertor_value()
+        {
+            SourceIntTypConvertor intTypConvertor = new SourceIntTypConvertor();
+            INode n1 = factory.Make("AssemblyNode", "бЬви.123321.001-001");
+            Assert.IsNotNull(intTypConvertor.Convert((n1 as BaseNode).TypeNode, typeof(string), null, null));
+        }
     }
 }

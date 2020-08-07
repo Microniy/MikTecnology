@@ -6,13 +6,17 @@ using System.Windows.Data;
 
 namespace MikTecnologyNew
 {
-    class SourceIntTypConvertor : IValueConverter
+    enum StringTypeNode
+    {
+        AssemblyNode=1
+    }
+    public class SourceIntTypConvertor : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             switch ((int)value)
             {
-                case 1:
+                case (int)StringTypeNode.AssemblyNode:
                     return "pack://application:,,,/Resourses/Сборка.png";
                 default:
                     return null;
