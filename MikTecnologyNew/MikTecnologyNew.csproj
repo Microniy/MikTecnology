@@ -4,8 +4,18 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
-    <AssemblyVersion>1.0.61.61</AssemblyVersion>
-    <FileVersion>1.0.61.61</FileVersion>
+    <AssemblyVersion>1.0.86.86</AssemblyVersion>
+    <FileVersion>1.0.86.86</FileVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resourses\Сборка.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resourses\Сборка.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
 
 </Project>

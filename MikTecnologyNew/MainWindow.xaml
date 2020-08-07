@@ -11,10 +11,10 @@
         <Expander ExpandDirection="Down" HorizontalAlignment="Left" DockPanel.Dock="Left">
             <Expander.Header>fgfg</Expander.Header>
             <StackPanel HorizontalAlignment="Left">
-                <TreeView x:Name="MenuProjects">
+                <TreeView x:Name="MenuProjects" Background="{x:Null}">
                     <TreeView.ItemTemplate>
                         <HierarchicalDataTemplate ItemsSource="{Binding Path=Nodes}">
-                            <TextBlock Text="{Binding Name}"></TextBlock>
+                            <local:TreeNodeView></local:TreeNodeView>
                         </HierarchicalDataTemplate>
                     </TreeView.ItemTemplate>
                 </TreeView>

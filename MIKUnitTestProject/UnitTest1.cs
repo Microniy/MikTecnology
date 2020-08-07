@@ -1171,5 +1171,34 @@ namespace MIKUnitTestProject
             Assert.IsNull(n7.NextVersion2);
 
         }
+        [Test(Description = "IVersion test methods AddVersion, RemoveVersion correct NextVersion1 and NextVersion2")]
+        public void INodes_AddNode_andVersionTest()
+        {
+            INode n1 = factory.Make("AssemblyNode", "бЬви.123321.001-001");
+            Assert.IsTrue(n1 is AssemblyNode);
+            Assert.AreEqual((n1 as IVersion).Ver, 0);
+            Assert.AreEqual((n1 as ICaption).Name, "бЬви.123321.001-001");
+            Assert.IsNull((n1 as IVersion).NextVersion1);
+            INode n2 = factory.Make("AssemblyNode", "бЬви.123321.001-001",-1);
+            Assert.IsTrue(n2 is AssemblyNode);
+            Assert.AreEqual((n2 as IVersion).Ver, 1);
+            Assert.AreEqual((n2 as ICaption).Name, "бЬви.123321.001-001");
+            Assert.AreEqual((n1 as IVersion).NextVersion1,n2);
+            Assert.AreEqual((n2 as IVersion).OldVersion1, n1);
+            INode n3 = factory.Make("AssemblyNode", "бЬви.123321.002");
+            Assert.IsTrue(n3 is AssemblyNode);
+            Assert.AreEqual((n3 as IVersion).Ver, 0);
+            Assert.AreEqual((n3 as ICaption).Name, "бЬви.123321.002");
+            Assert.IsNull((n3 as IVersion).NextVersion1);
+            INode n4 = factory.Make("AssemblyNode", "бЬви.123321.002", -1);
+            Assert.IsTrue(n4 is AssemblyNode);
+            Assert.AreEqual((n4 as IVersion).Ver, 1);
+            Assert.AreEqual((n4 as ICaption).Name, "бЬви.123321.002");
+            Assert.AreEqual((n3 as IVersion).NextVersion1, n4);
+            Assert.AreEqual((n4 as IVersion).OldVersion1, n3);
+            n1.AddNode(n4);
+            Assert.AreEqual(n1.Nodes.Count,1);
+            Assert.IsTrue(n1.Nodes.Contains(n4));
+        }
     }
 }

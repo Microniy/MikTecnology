@@ -20,19 +20,24 @@ namespace TecnoComponents
         }
     }
     public class MoocDB : IRepository
-    {      
-        
+    {
+        TecnologyNodeFactoryImplementation factory = new TecnologyNodeFactoryImplementation();
         public ICollection<INode> GetProects()
         {
             ICollection<INode> nodes = new Collection<INode>();
-            AssemblyNode n1 = new AssemblyNode("СМТШ.123456.001");
-            AssemblyNode n2 = new AssemblyNode("СМТШ.123456.002");
-            AssemblyNode n3 = new AssemblyNode("СМТШ.123456.003");
-            AssemblyNode n4 = new AssemblyNode("СМТШ.123456.004");
-            AssemblyNode n5 = new AssemblyNode("СМТШ.123456.005");
-            n1.AddNode(n2);
+            INode n1 = factory.Make ("AssemblyNode","СМТШ.123456.001");
+            INode n2 = factory.Make("AssemblyNode", "СМТШ.321000.002");
+            INode n3 = factory.Make("AssemblyNode", "СМТШ.123456.003");
+            INode n4 = factory.Make("AssemblyNode", "СМТШ.123456.004");
+            INode n5 = factory.Make("AssemblyNode", "СМТШ.123456.005");
+            INode n6 = factory.Make("AssemblyNode", "СМТШ.321000.002", -1);
+            INode n7 = factory.Make("AssemblyNode", "СМТШ.321000.002", 2);
+            INode n8 = factory.Make("AssemblyNode", "СМТШ.321000.002", -1);
+            INode n9 = factory.Make("AssemblyNode", "СМТШ.321000.002", -1);
+            INode n10 = factory.Make("AssemblyNode", "СМТШ.321000.002", -1);
+            n1.AddNode(n7);
             n1.AddNode(n3);
-            n2.AddNode(n4);
+            n7.AddNode(n4);
             n4.AddNode(n5);
             nodes.Add(n1);
             return nodes;
