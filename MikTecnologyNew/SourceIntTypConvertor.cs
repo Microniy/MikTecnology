@@ -19,6 +19,8 @@ namespace MikTecnologyNew
             {
                 case (int)StringTypeNode.AssemblyNode:
                     return "pack://application:,,,/Resourses/Сборка.png";
+                case (int)StringTypeNode.DetailNode:
+                    return "pack://application:,,,/Resourses/Деталь.png";
                 default:
                     return null;
             }

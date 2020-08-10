@@ -65,5 +65,10 @@ namespace TecnoComponents
         {
 
         }
+        public override void AddNode(INode node)
+        {
+            if(!(node is AssemblyNode))
+            base.AddNode(node);
+        }
     }
 }

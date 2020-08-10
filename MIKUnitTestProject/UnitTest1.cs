@@ -1244,35 +1244,37 @@ namespace MIKUnitTestProject
         [Test(Description = "IVersion test property Ver new versions and test IFindCollection count to DetailNode")]
         public void DetailNode_MakeAsembly_GenerateNewVersions()
         {
+           
             INode n1 = factory.Make("DetailNode", "number_1");
+            int countPerTest = (n1 as IFindCollection).FullItemsCollection.Count();
             INode n2 = factory.Make("DetailNode", "number_1");
-            Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 1);
-            Assert.AreEqual((n2 as IFindCollection).FullItemsCollection.Count(), 1);
+            Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), countPerTest);
+            Assert.AreEqual((n2 as IFindCollection).FullItemsCollection.Count(), countPerTest);
             Assert.AreEqual(n1, n2);
             INode n3 = factory.Make("DetailNode", "number_1", 1);
             Assert.AreNotEqual(n1, n3);
             Assert.AreEqual((n1 as IVersion).Ver, 0);
             Assert.AreEqual((n2 as IVersion).Ver, 0);
             Assert.AreEqual((n3 as IVersion).Ver, 1);
-            Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 2);
-            Assert.AreEqual((n3 as IFindCollection).FullItemsCollection.Count(), 2);
+            Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), countPerTest+1);
+            Assert.AreEqual((n3 as IFindCollection).FullItemsCollection.Count(), countPerTest+1);
             INode n4 = factory.Make("DetailNode", "number_1", 1);
             Assert.AreEqual(n3, n4);
             Assert.AreEqual((n4 as IVersion).Ver, 1);
-            Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 2);
-            Assert.AreEqual((n4 as IFindCollection).FullItemsCollection.Count(), 2);
+            Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), countPerTest + 1);
+            Assert.AreEqual((n4 as IFindCollection).FullItemsCollection.Count(), countPerTest + 1);
             INode n5 = factory.Make("DetailNode", "number_1", 2000);
             Assert.AreEqual((n5 as IVersion).Ver, 2);
-            Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 3);
-            Assert.AreEqual((n5 as IFindCollection).FullItemsCollection.Count(), 3);
+            Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), countPerTest + 2);
+            Assert.AreEqual((n5 as IFindCollection).FullItemsCollection.Count(), countPerTest + 2);
             INode n6 = factory.Make("DetailNode", "number_1", -1);
             Assert.AreEqual((n6 as IVersion).Ver, 3);
-            Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 4);
-            Assert.AreEqual((n6 as IFindCollection).FullItemsCollection.Count(), 4);
+            Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), countPerTest + 3);
+            Assert.AreEqual((n6 as IFindCollection).FullItemsCollection.Count(), countPerTest + 3);
             INode n7 = factory.Make("DetailNode", "number_2", -1);
             Assert.AreEqual((n7 as IVersion).Ver, 0);
-            Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 5);
-            Assert.AreEqual((n7 as IFindCollection).FullItemsCollection.Count(), 5);
+            Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), countPerTest + 4);
+            Assert.AreEqual((n7 as IFindCollection).FullItemsCollection.Count(), countPerTest + 4);
         }
         [Test(Description = "IDescription test property Description to DetailNode")]
         public void IDescription_DetailNode_DescriptionCreate()
@@ -1288,6 +1290,31 @@ namespace MIKUnitTestProject
             Assert.AreEqual((n2 as IDescription).Description, "test2");
             (n1 as IDescription).SetDescription = "test3";
             Assert.AreEqual((n1 as IDescription).Description, "test3");
+        }
+        [Test(Description = "DetailNode test SourceIntTypConvertor. Converter create element for TypeNode")]
+        public void DetailNode_TypeNode_SourceIntTypConvertor_value()
+        {
+            SourceIntTypConvertor intTypConvertor = new SourceIntTypConvertor();
+            INode n1 = factory.Make("DetailNode", "бЬви.123321.001-001");
+            Assert.IsNotNull(intTypConvertor.Convert((n1 as BaseNode).TypeNode, typeof(string), null, null));
+        }
+        [Test(Description = "DetailNode test StringTypeNode make node")]
+        public void DetailNode_TypeNode_enum_StringTypeNode()
+        {
+            INode n1 = factory.Make(StringTypeNode.DetailNode.ToString(), "бЬви.123321.001-001");
+            Assert.AreEqual((int)StringTypeNode.DetailNode, (n1 as BaseNode).TypeNode);
+        }
+        [Test(Description = "DetailNode test method AddNode link detail-assembly wrong")]
+        public void DetailNode_AddNode_NotAdded_Assembly()
+        {
+            INode n1 = factory.Make(StringTypeNode.DetailNode.ToString(), "бЬви.123321.100");
+            INode n2 = factory.Make(StringTypeNode.AssemblyNode.ToString(), "бЬви.123321.101");
+            n1.AddNode(n2);
+            Assert.AreEqual(n1.Nodes.Count, 0);
+            Assert.IsFalse(n1.Nodes.Contains(n2));            
+            n2.AddNode(n1);
+            Assert.AreEqual(n2.Nodes.Count, 1);
+            Assert.IsTrue(n2.Nodes.Contains(n1));
         }
     }
 }

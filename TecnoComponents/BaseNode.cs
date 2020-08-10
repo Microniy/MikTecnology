@@ -43,7 +43,7 @@ namespace TecnoComponents
 
         public abstract void Delete();//this method should clear static collections of inherited classes
 
-        public void AddNode(INode node)
+        public virtual void AddNode(INode node)
         {
             bool findCyclicLink = false;
             foreach (INode node2 in this.GrandParents) // Find cyclic links parents and children

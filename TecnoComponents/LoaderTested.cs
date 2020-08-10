@@ -35,9 +35,11 @@ namespace TecnoComponents
             INode n8 = factory.Make("AssemblyNode", "СМТШ.321000.002", -1);
             INode n9 = factory.Make("AssemblyNode", "СМТШ.321000.002", -1);
             INode n10 = factory.Make("AssemblyNode", "СМТШ.321000.002", -1);
+            INode n11 = factory.Make("DetailNode", "СМТШ.123456.001");
             n1.AddNode(n7);
             n1.AddNode(n3);
             n7.AddNode(n4);
+            n7.AddNode(n11);
             n4.AddNode(n5);
             nodes.Add(n1);
             return nodes;
