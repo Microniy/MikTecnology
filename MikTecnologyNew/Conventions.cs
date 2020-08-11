@@ -47,6 +47,16 @@ namespace MikTecnologyNew
         string Description { get; }
         string SetDescription { set; }
     }
+    public interface IMaterial
+    {
+        string Assortment { get; }
+        string Size { get; }
+        string Standard { get; }
+        public void SetAssortment(string value);
+        public void SetSize(string value);
+        public void SetStandard(string value);
+       
+    }
     public interface IFindCollection
     {
         IEnumerable<INode> FullItemsCollection { get; }       

@@ -15,6 +15,8 @@ namespace TecnoComponents
                     return AssemblyNode.CreateNode(name, vers);
                 case "DetailNode":
                     return DetailNode.CreateNode(name, vers);
+                case "MaterialNode":
+                    return MaterialNode.CreateNode(name, vers);
                 default:
                     return null;
             }           
