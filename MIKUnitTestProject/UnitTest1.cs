@@ -1316,5 +1316,11 @@ namespace MIKUnitTestProject
             Assert.AreEqual(n2.Nodes.Count, 1);
             Assert.IsTrue(n2.Nodes.Contains(n1));
         }
+        [Test(Description = "Test MaterialNode int TypeNode not null")]
+        public void MaterialNode_TypeNode_NotNull()
+        {
+            MaterialNode n1 = new MaterialNode();
+            Assert.IsNotNull(n1.TypeNode);
+        }
     }
 }

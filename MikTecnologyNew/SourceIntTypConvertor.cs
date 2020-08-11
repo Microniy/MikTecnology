@@ -9,7 +9,8 @@ namespace MikTecnologyNew
    public enum StringTypeNode
     {
         AssemblyNode=1,
-        DetailNode=2
+        DetailNode=2,
+        MaterialNode=3
     }
     public class SourceIntTypConvertor : IValueConverter
     {
