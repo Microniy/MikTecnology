@@ -1423,7 +1423,29 @@ namespace MIKUnitTestProject
             Assert.IsNull((n1 as IMaterial).Assortment);
             Assert.IsNull((n1 as IMaterial).Size);
             Assert.IsNull((n1 as IMaterial).Standard);
-
+            INode n2 = factory.Make(StringTypeNode.MaterialNode.ToString(), "123");
+            n1.AddNode(n2);
+            Assert.IsNull((n1 as IMaterial).Assortment);
+            Assert.IsNull((n1 as IMaterial).Size);
+            Assert.IsNull((n1 as IMaterial).Standard);
+            (n2 as IMaterial).SetAssortment("Круг");
+            Assert.AreEqual((n2 as IMaterial).Assortment, "Круг");
+            Assert.AreEqual((n1 as IMaterial).Assortment, "Круг");
+            (n2 as IMaterial).SetSize("100");
+            Assert.AreEqual((n2 as IMaterial).Size, "100");
+            Assert.AreEqual((n1 as IMaterial).Size, "100");
+            (n2 as IMaterial).SetStandard("ГОСТ");
+            Assert.AreEqual((n2 as IMaterial).Standard, "ГОСТ");
+            Assert.AreEqual((n1 as IMaterial).Standard, "ГОСТ");
+            (n1 as IMaterial).SetAssortment("Труба");
+            Assert.AreEqual((n2 as IMaterial).Assortment, "Труба");
+            Assert.AreEqual((n1 as IMaterial).Assortment, "Труба");
+            (n1 as IMaterial).SetSize("60");
+            Assert.AreEqual((n2 as IMaterial).Size, "60");
+            Assert.AreEqual((n1 as IMaterial).Size, "60");
+            (n1 as IMaterial).SetStandard("DIN");
+            Assert.AreEqual((n2 as IMaterial).Standard, "DIN");
+            Assert.AreEqual((n1 as IMaterial).Standard, "DIN");
         }
     }
 }
