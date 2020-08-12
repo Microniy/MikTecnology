@@ -6,12 +6,13 @@ using MikTecnologyNew;
 
 namespace TecnoComponents
 {
-    public class DetailNode : BaseNode,ICaption,INumberNomenclature, IFindCollection,IDescription
+    public class DetailNode : BaseNode,ICaption,INumberNomenclature, IFindCollection,IDescription,IMaterial
     {
         private static int _typeId = (int)StringTypeNode.DetailNode;
         private static IList<DetailNode> _fullItems = new List<DetailNode>();
         private string _name;
         private string _description = string.Empty;
+        private IMaterial _material;
         public override int TypeNode => _typeId;
 
         public IEnumerable<INode> FullItemsCollection => _fullItems.Cast<INode>();
@@ -23,6 +24,12 @@ namespace TecnoComponents
         public string Description => _description;
 
         public string SetDescription { set => _description = value; }
+
+        public string Assortment => _material?.Assortment;
+
+        public string Size => _material?.Size;
+
+        public string Standard => _material?.Standard;
 
         public static DetailNode CreateNode(string name, int vers = 0)
         {
@@ -67,8 +74,29 @@ namespace TecnoComponents
         }
         public override void AddNode(INode node)
         {
-            if(!(node is AssemblyNode)&& !(node is MaterialNode))
-            base.AddNode(node);
+            if (!(node is AssemblyNode) && !(node is MaterialNode))
+            {
+                base.AddNode(node);
+            }
+            else
+            {
+                if (node is MaterialNode) { _material = (IMaterial)node; }
+            }
+        }
+
+        public void SetAssortment(string value)
+        {
+            _material?.SetAssortment(value);
+        }
+
+        public void SetSize(string value)
+        {
+            _material?.SetSize(value);
+        }
+
+        public void SetStandard(string value)
+        {
+            _material?.SetStandard(value);
         }
     }
 }

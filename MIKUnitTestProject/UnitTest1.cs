@@ -1416,5 +1416,14 @@ namespace MIKUnitTestProject
             Assert.AreEqual(n2.Nodes.Count, 0);
             Assert.IsFalse(n2.Nodes.Contains(n1));
         }
+        [Test(Description = "DatailNode test IMaterial property")]
+        public void DatailNode_AddNode_Material()
+        {
+            INode n1 = factory.Make(StringTypeNode.DetailNode.ToString(), "бЬви.123321.100");
+            Assert.IsNull((n1 as IMaterial).Assortment);
+            Assert.IsNull((n1 as IMaterial).Size);
+            Assert.IsNull((n1 as IMaterial).Standard);
+
+        }
     }
 }
