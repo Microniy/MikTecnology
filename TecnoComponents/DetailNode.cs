@@ -98,5 +98,10 @@ namespace TecnoComponents
         {
             _material?.SetStandard(value);
         }
+
+        public void RemoveMaterial()
+        {
+            _material = null;
+        }
     }
 }

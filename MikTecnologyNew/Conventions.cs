@@ -10,11 +10,18 @@ namespace MikTecnologyNew
     //Convention for treeview style
     public interface INode
     {      
-        void AddNode(INode node);
-        void RemoveNode(INode node);
-        IList<INode> GrandParents { get; }
+        void AddNode(IInformation node);
+        void RemoveNode(IInformation node);  
+        IList<INode> AllParents { get; }
         INode Parent { get; }
+        IInformation Info { get; }
         IList<INode> Nodes { get; }
+
+    }
+    public interface IInformation
+    {
+        IList<IInformation> GrandParents { get; }
+       
     }
     public interface IVersion
     {
@@ -55,6 +62,7 @@ namespace MikTecnologyNew
         public void SetAssortment(string value);
         public void SetSize(string value);
         public void SetStandard(string value);
+        public void RemoveMaterial();
        
     }
     public interface IFindCollection

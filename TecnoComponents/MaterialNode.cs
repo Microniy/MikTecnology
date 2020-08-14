@@ -82,5 +82,10 @@ namespace TecnoComponents
         {
             // Block added all nodes
         }
+
+        public void RemoveMaterial()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
