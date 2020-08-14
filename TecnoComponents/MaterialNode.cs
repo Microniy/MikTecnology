@@ -6,10 +6,10 @@ using MikTecnologyNew;
 
 namespace TecnoComponents
 {
-    public class MaterialNode : BaseNode, IFindCollection, ICaption, INumberNomenclature,IMaterial
+    public class MaterialNode //: BaseInfoObject, IFindCollection, ICaption, INumberNomenclature,IMaterial
     {
         private static int _typeId = (int)StringTypeNode.MaterialNode;
-        public override int TypeNode => _typeId;
+       
         private static IList<MaterialNode> _fullItems = new List<MaterialNode>();        
         private string _number;
         private string _assortment;
@@ -25,10 +25,7 @@ namespace TecnoComponents
 
         public string Number => _number;
 
-        public override void Delete()
-        {
-            throw new NotImplementedException();
-        }
+       
         public static MaterialNode CreateNode(string number, int vers = 0)
         {
             MaterialNode node0 = FindNode(number, 0);
@@ -36,7 +33,7 @@ namespace TecnoComponents
             if (node is null)
             {
                 node = new MaterialNode(number);
-                node0?.AddVersion(node);
+               // node0?.AddVersion(node);
                 _fullItems.Add(node);
             }
             return node as MaterialNode;
@@ -45,7 +42,7 @@ namespace TecnoComponents
         {
 
             var listNode = (from nod in _fullItems
-                            where (nod.Number == number) && (nod.Ver == vers)
+                            where (nod.Number == number) //&& (nod.Ver == vers)
                             select nod);
 
             if (listNode.Count() == 0)
@@ -78,10 +75,7 @@ namespace TecnoComponents
         {
             this._standard = value;
         }
-        public override void AddNode(INode node)
-        {
-            // Block added all nodes
-        }
+     
 
         public void RemoveMaterial()
         {

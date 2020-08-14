@@ -16,11 +16,16 @@ namespace MikTecnologyNew
         INode Parent { get; }
         IInformation Info { get; }
         IList<INode> Nodes { get; }
-
+        IQuantity Count { get; }
+    }
+    public interface IQuantity
+    {
+        double Quantity { get; }
+        string UnitQuantity { get; }
     }
     public interface IInformation
     {
-        IList<IInformation> GrandParents { get; }
+        IList<IInformation> DirectParents { get; }
        
     }
     public interface IVersion

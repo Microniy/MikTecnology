@@ -9,11 +9,11 @@ using MikTecnologyNew;
 
 namespace TecnoComponents
 {
-    public class AssemblyNode : BaseNode,INumberNomenclature,ICaption,IDescription, IFindCollection
+    public class AssemblyNode //: BaseInfoObject,INumberNomenclature,ICaption,IDescription, IFindCollection
     {
         private static int _typeId = (int)StringTypeNode.AssemblyNode;
         private static IList<AssemblyNode> _fullItems = new List<AssemblyNode>();
-        public override int TypeNode => _typeId;
+        
         private string _name;
         private string _description=string.Empty;
         
@@ -35,22 +35,19 @@ namespace TecnoComponents
             if (node is null)
             {
                 node = new AssemblyNode(name);
-                node0?.AddVersion(node);
+                //node0?.AddVersion(node);
                 _fullItems.Add(node);
             }
             return node as AssemblyNode;
         }
 
-        public override void Delete()
-        {
-            throw new NotImplementedException();
-        }
+       
 
         private static AssemblyNode FindNode(string number, int vers = 0)
         {
             
             var listNode = (from nod in _fullItems
-                            where (nod .Number == number) && (nod.Ver == vers)
+                            where (nod .Number == number)// && (nod.Ver == vers)
                             select nod);
           
             if (listNode.Count() == 0)
