@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 using MikTecnologyNew;
 
 namespace TecnoComponents
@@ -23,7 +24,13 @@ namespace TecnoComponents
 
         public void AddNode(IInformation node)
         {
-            _children.Add(new Link(node));
+            ILink link = (from info in this._children
+                            where info.Info == node
+                            select info).FirstOrDefault();
+            if ((_info != node) && (link == null))
+            {
+                _children.Add(new Link(node));
+            }
         }
 
         public void RemoveNode(IInformation node)
