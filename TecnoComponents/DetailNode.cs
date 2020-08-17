@@ -15,7 +15,7 @@ namespace TecnoComponents
         private IMaterial _material;
         
 
-        public IEnumerable<INode> FullItemsCollection => _fullItems.Cast<INode>();
+        public IEnumerable<ILink> FullItemsCollection => _fullItems.Cast<ILink>();
 
         public string Name => _name;
 

@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 namespace MikTecnologyNew
 {
     //Convention for treeview style
-    public interface INode
+    public interface ILink
     {      
         void AddNode(IInformation node);
         void RemoveNode(IInformation node);  
-        IList<INode> AllParents { get; }
-        INode Parent { get; }
+        IList<ILink> AllParents { get; }
+        ILink Parent { get; }
         IInformation Info { get; }
-        IList<INode> Nodes { get; }
+        IList<ILink> Children { get; }
         IQuantity Count { get; }
     }
     public interface IQuantity
@@ -42,9 +42,13 @@ namespace MikTecnologyNew
         int Ver { get; }
         void SetVersion();
     }
-    public interface ITecnologyNodeFactory
+    public interface ITechnologyLinkFactory
     {
-        INode Make(string type,string name,int vers =0);
+        ILink Make(string link, string info, string name,int vers =0);
+    }
+    public interface ITechnologyInfoFactory
+    {
+        IInformation Make(string info, string name, int vers = 0);
     }
     public interface INumberNomenclature
     {
@@ -72,11 +76,11 @@ namespace MikTecnologyNew
     }
     public interface IFindCollection
     {
-        IEnumerable<INode> FullItemsCollection { get; }       
+        IEnumerable<ILink> FullItemsCollection { get; }       
     }
     public interface IRepository
     {      
-       ICollection<INode> GetProects();
+       ICollection<ILink> GetProects();
     }
    
 }

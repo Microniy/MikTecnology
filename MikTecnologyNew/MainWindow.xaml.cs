@@ -24,7 +24,7 @@ namespace MikTecnologyNew
     public partial class MainWindow : Window
     {
        
-        private ICollection<INode> _projects;        
+        private ICollection<ILink> _projects;        
         public MainWindow()
         {
             InitializeComponent();

@@ -19,7 +19,7 @@ namespace TecnoComponents
         private string _standard;
         public string Standard => _standard;
 
-        public IEnumerable<INode> FullItemsCollection => _fullItems.Cast<INode>();
+        public IEnumerable<ILink> FullItemsCollection => _fullItems.Cast<ILink>();
 
         public string Name => _assortment+" "+_size+" "+_standard;
 

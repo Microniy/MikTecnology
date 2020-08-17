@@ -20,7 +20,7 @@ namespace TecnoComponents
 
         public string Number => _name;
 
-        public IEnumerable<INode> FullItemsCollection => _fullItems.Cast<INode>();
+        public IEnumerable<ILink> FullItemsCollection => _fullItems.Cast<ILink>();
 
         public string Description =>_description;
 
