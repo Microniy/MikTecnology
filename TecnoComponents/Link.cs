@@ -35,7 +35,13 @@ namespace TecnoComponents
 
         public void RemoveNode(IInformation node)
         {
-            throw new NotImplementedException();
+            ILink link = (from info in this._children
+                          where info.Info == node
+                          select info).FirstOrDefault();
+            if (link != null)
+            {
+                this._children.Remove(link);
+            }
         }
         public Link(IInformation information)
         {
