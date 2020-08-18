@@ -22,15 +22,19 @@ namespace TecnoComponents
 
         public IQuantity Count => throw new NotImplementedException();
 
-        public void AddNode(IInformation node)
+        public ILink AddNode(IInformation node)
         {
             ILink link = (from info in this._children
                             where info.Info == node
                             select info).FirstOrDefault();
             if ((_info != node) && (link == null))
             {
-                _children.Add(new Link(node));
+                ILink link1 = new Link(node);
+                (link1 as Link).SetParent(this);
+                _children.Add(link1);
+                return link1;
             }
+            return null;
         }
 
         public void RemoveNode(IInformation node)
@@ -40,8 +44,13 @@ namespace TecnoComponents
                           select info).FirstOrDefault();
             if (link != null)
             {
+                (link as Link).SetParent(null);
                 this._children.Remove(link);
             }
+        }
+        protected void SetParent(ILink link)
+        {
+            this._parent = link;
         }
         public Link(IInformation information)
         {

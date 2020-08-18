@@ -910,19 +910,20 @@ namespace MIKUnitTestProject
             Assert.AreEqual(n1.NextVersions.Count, 0);
             Assert.AreEqual(n1.OldVersions.Count, 0);
         }
+
+        [Test(Description = "ILink test property Parent")]
+        public void ILink_Parent_AddRemove()
+        {
+            ILink n1 = new Link();
+            TestNode nod2 = new TestNode();
+            
+            ILink n2=n1.AddNode(nod2);
+            Assert.AreEqual(n2.Parent, n1);
+            Assert.AreEqual(n1.Parent, null);
+            n1.RemoveNode(nod2);
+            Assert.AreEqual(n2.Parent, null);
+        }
         /*
-[Test(Description = "ILink test property Parent")]
-public void TestINodeParentAddRemove()
-{
-TestNode n1 = new TestNode();
-TestNode n2 = new TestNode();
-Assert.AreEqual(n2.Parent, null);
-n1.AddNode(n2);
-Assert.AreEqual(n2.Parent, n1);
-Assert.AreEqual(n1.Parent, null);
-n1.RemoveNode(n2);
-Assert.AreEqual(n2.Parent, null);
-}
 [Test(Description = "ILink test property DirectParents")]
 public void TestINodeGrandParentsAddRemove()
 {

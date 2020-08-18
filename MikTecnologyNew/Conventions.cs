@@ -10,7 +10,7 @@ namespace MikTecnologyNew
     //Convention for treeview style
     public interface ILink
     {      
-        void AddNode(IInformation node);
+        ILink AddNode(IInformation node);
         void RemoveNode(IInformation node);  
         IList<ILink> AllParents { get; }
         ILink Parent { get; }
