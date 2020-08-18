@@ -1015,17 +1015,17 @@ namespace MIKUnitTestProject
             ILink n1 = new Link();
             TestNode nod2 = new TestNode();
             Assert.AreEqual(n1.Children.Count, 0);
-            ILink n2= n1.AddNode(nod2);
+            ILink n2 = n1.AddNode(nod2);
             Assert.AreEqual(n1.Children.Count, 1);
             n2.AddNode(n1);
             Assert.AreEqual(n2.Children.Count, 0);
-           
+
             TestNode nod3 = new TestNode();
             ILink n3 = new Link(nod3);
             TestNode nod4 = new TestNode();
             TestNode nod5 = new TestNode();
             TestNode nod6 = new TestNode();
-            ILink n4=n3.AddNode(nod4);
+            ILink n4 = n3.AddNode(nod4);
             Assert.AreEqual(n3.Children.Count, 1);
             ILink n5 = n4.AddNode(nod5);
             Assert.AreEqual(n4.Children.Count, 1);
@@ -1044,14 +1044,60 @@ namespace MIKUnitTestProject
             n2.AddNode(n4);
             Assert.AreEqual(n2.Children.Count, 0);
         }
-        [Test(Description = "ILink test cyclic links")]
+        [Test(Description = "ILink test cloned links")]
         public void ILink_Clone_One()
         {
             TestNode nod1 = new TestNode();
             ILink n1 = new Link(nod1);
             ILink n2 = n1.Clone();
             Assert.AreEqual(n2.Info, nod1);
-           
+
+        }
+        [Test(Description = "ILink test cloned all children links")]
+        public void ILink_Clone_Children()
+        {
+            TestNode nod1 = new TestNode();
+            ILink n1 = new Link(nod1);
+            TestNode nod2 = new TestNode();
+            TestNode nod3 = new TestNode();
+            TestNode nod4 = new TestNode();
+            TestNode nod5 = new TestNode();
+            TestNode nod6 = new TestNode();
+            ILink n2 = n1.AddNode(nod2);
+            ILink n3 = n1.AddNode(nod3);
+            n2.AddNode(nod4);
+            n2.AddNode(nod5);
+            n3.AddNode(nod6);
+            Assert.AreEqual(n1.Info, nod1);
+            Assert.AreEqual(n1.Children.Count, 2);
+            Assert.AreEqual(n1.Children[0]?.Info, nod2);
+            Assert.AreEqual(n1.Children[0]?.AllParents.Count, 1);
+            Assert.AreEqual(n1.Children[1]?.Info, nod3);
+            Assert.AreEqual(n1.Children[1]?.AllParents.Count, 1);
+            Assert.AreEqual(n1.Children[0]?.Children.Count, 2);
+            Assert.AreEqual(n1.Children[0]?.Children[0]?.Info, nod4);
+            Assert.AreEqual(n1.Children[0]?.Children[0]?.AllParents.Count, 2);
+            Assert.AreEqual(n1.Children[0]?.Children[1]?.Info, nod5);
+            Assert.AreEqual(n1.Children[0]?.Children[1]?.AllParents.Count, 2);
+            Assert.AreEqual(n1.Children[1]?.Children.Count, 1);
+            Assert.AreEqual(n1.Children[1]?.Children[0]?.Info, nod6);
+            Assert.AreEqual(n1.Children[1]?.Children[0]?.AllParents.Count, 2);
+            ILink n4 = n1.Clone();
+            Assert.AreEqual(n4.Info, nod1);
+            Assert.AreEqual(n4.Children.Count, 2);
+            Assert.AreEqual(n4.Children[0]?.Info, nod2);
+            Assert.AreEqual(n4.Children[0]?.AllParents.Count, 1);
+            Assert.AreEqual(n4.Children[1]?.Info, nod3);
+            Assert.AreEqual(n4.Children[1]?.AllParents.Count, 1);
+            Assert.AreEqual(n4.Children[0]?.Children.Count, 2);
+            Assert.AreEqual(n4.Children[0]?.Children[0]?.Info, nod4);
+            Assert.AreEqual(n4.Children[0]?.Children[0]?.AllParents.Count, 2);
+            Assert.AreEqual(n4.Children[0]?.Children[1]?.Info, nod5);
+            Assert.AreEqual(n4.Children[0]?.Children[1]?.AllParents.Count, 2);
+            Assert.AreEqual(n4.Children[1]?.Children.Count, 1);
+            Assert.AreEqual(n4.Children[1]?.Children[0]?.Info, nod6);
+            Assert.AreEqual(n4.Children[1]?.Children[0]?.AllParents.Count, 2);
+
         }
         /*
 [Test(Description = "test property TypeID ")]

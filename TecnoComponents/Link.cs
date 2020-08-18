@@ -115,6 +115,10 @@ namespace TecnoComponents
         public ILink Clone()
         {
             ILink link = new Link(this.Info);
+            foreach(ILink tmLink in this.Children)
+            {
+                link.AddNode(tmLink.Clone());
+            }
             return link;
         }
     }
