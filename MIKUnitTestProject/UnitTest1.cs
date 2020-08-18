@@ -916,108 +916,144 @@ namespace MIKUnitTestProject
         {
             ILink n1 = new Link();
             TestNode nod2 = new TestNode();
-            
-            ILink n2=n1.AddNode(nod2);
+
+            ILink n2 = n1.AddNode(nod2);
             Assert.AreEqual(n2.Parent, n1);
             Assert.AreEqual(n1.Parent, null);
             n1.RemoveNode(nod2);
             Assert.AreEqual(n2.Parent, null);
         }
+
+        [Test(Description = "ILink test property DirectParents")]
+        public void ILink_GrandParents_AddRemove()
+        {
+            ILink n1 = new Link();
+            TestNode nod2 = new TestNode();
+            TestNode nod3 = new TestNode();
+            TestNode nod4 = new TestNode();
+            ILink n2 = n1.AddNode(nod2);
+            Assert.AreEqual(n2.AllParents.Count, 1);
+            Assert.IsTrue(n2.AllParents.Contains(n1));
+            ILink n3 = n2.AddNode(nod3);
+            Assert.AreEqual(n3.AllParents.Count, 2);
+            Assert.IsTrue(n3.AllParents.Contains(n1));
+            Assert.IsTrue(n3.AllParents.Contains(n2));
+            ILink n4 = n3.AddNode(nod4);
+            Assert.AreEqual(n4.AllParents.Count, 3);
+            Assert.IsTrue(n4.AllParents.Contains(n1));
+            Assert.IsTrue(n4.AllParents.Contains(n2));
+            Assert.IsTrue(n4.AllParents.Contains(n3));
+            n1.RemoveNode(nod2);
+            Assert.AreEqual(n2.AllParents.Count, 0);
+            Assert.IsFalse(n2.AllParents.Contains(n1));
+            Assert.AreEqual(n3.AllParents.Count, 1);
+            Assert.IsFalse(n3.AllParents.Contains(n1));
+            Assert.IsTrue(n3.AllParents.Contains(n2));
+            Assert.AreEqual(n4.AllParents.Count, 2);
+            Assert.IsFalse(n4.AllParents.Contains(n1));
+            Assert.IsTrue(n4.AllParents.Contains(n2));
+            Assert.IsTrue(n4.AllParents.Contains(n3));
+            n2.RemoveNode(nod3);
+            Assert.AreEqual(n3.AllParents.Count, 0);
+            Assert.IsFalse(n3.AllParents.Contains(n1));
+            Assert.IsFalse(n3.AllParents.Contains(n2));
+            Assert.AreEqual(n4.AllParents.Count, 1);
+            Assert.IsFalse(n4.AllParents.Contains(n1));
+            Assert.IsFalse(n4.AllParents.Contains(n2));
+            Assert.IsTrue(n4.AllParents.Contains(n3));
+            n1.AddNode(n2);
+            n2.AddNode(n3);
+            Assert.AreEqual(n2.AllParents.Count, 1);
+            Assert.IsTrue(n2.AllParents.Contains(n1));
+            Assert.AreEqual(n3.AllParents.Count, 2);
+            Assert.IsTrue(n3.AllParents.Contains(n1));
+            Assert.IsTrue(n3.AllParents.Contains(n2));
+            Assert.AreEqual(n4.AllParents.Count, 3);
+            Assert.IsTrue(n4.AllParents.Contains(n1));
+            Assert.IsTrue(n4.AllParents.Contains(n2));
+            Assert.IsTrue(n4.AllParents.Contains(n3));
+            n2.RemoveNode(nod3);
+            Assert.AreEqual(n2.AllParents.Count, 1);
+            Assert.IsTrue(n2.AllParents.Contains(n1));
+            Assert.AreEqual(n3.AllParents.Count, 0);
+            Assert.IsFalse(n3.AllParents.Contains(n1));
+            Assert.IsFalse(n3.AllParents.Contains(n2));
+            Assert.AreEqual(n4.AllParents.Count, 1);
+            Assert.IsFalse(n4.AllParents.Contains(n1));
+            Assert.IsFalse(n4.AllParents.Contains(n2));
+            Assert.IsTrue(n4.AllParents.Contains(n3));
+            n2.AddNode(n3);
+            Assert.AreEqual(n2.AllParents.Count, 1);
+            Assert.IsTrue(n2.AllParents.Contains(n1));
+            Assert.AreEqual(n3.AllParents.Count, 2);
+            Assert.IsTrue(n3.AllParents.Contains(n1));
+            Assert.IsTrue(n3.AllParents.Contains(n2));
+            Assert.AreEqual(n4.AllParents.Count, 3);
+            Assert.IsTrue(n4.AllParents.Contains(n1));
+            Assert.IsTrue(n4.AllParents.Contains(n2));
+            Assert.IsTrue(n4.AllParents.Contains(n3));
+        }
+        [Test(Description = "ILink test method Add")]
+        public void ILink_TwoAddedNode_One()
+        {
+            ILink n1 = new Link();
+            IInformation nod2 = new TestNode();
+            Assert.AreEqual(n1.Children.Count, 0);
+            ILink n2 = n1.AddNode(nod2);
+            Assert.AreEqual(n1.Children.Count, 1);
+            Assert.AreEqual(n1.Children[0]?.Info, nod2);
+            Assert.IsTrue(n1.Children.Contains(n2));
+            n1.AddNode(n2);
+            Assert.AreEqual(n1.Children.Count, 1);
+            Assert.AreEqual(n1.Children[0]?.Info, nod2);
+            Assert.IsTrue(n1.Children.Contains(n2));
+        }
+
+        [Test(Description = "ILink test cyclic links")]
+        public void ILink_Added_CyclicLinks()
+        {
+            ILink n1 = new Link();
+            TestNode nod2 = new TestNode();
+            Assert.AreEqual(n1.Children.Count, 0);
+            ILink n2= n1.AddNode(nod2);
+            Assert.AreEqual(n1.Children.Count, 1);
+            n2.AddNode(n1);
+            Assert.AreEqual(n2.Children.Count, 0);
+           
+            TestNode nod3 = new TestNode();
+            ILink n3 = new Link(nod3);
+            TestNode nod4 = new TestNode();
+            TestNode nod5 = new TestNode();
+            TestNode nod6 = new TestNode();
+            ILink n4=n3.AddNode(nod4);
+            Assert.AreEqual(n3.Children.Count, 1);
+            ILink n5 = n4.AddNode(nod5);
+            Assert.AreEqual(n4.Children.Count, 1);
+            ILink n6 = n4.AddNode(nod6);
+            Assert.AreEqual(n4.Children.Count, 2);
+            n4.AddNode(n1);
+            Assert.AreEqual(n4.Children.Count, 3);
+            n2.AddNode(n3);
+            Assert.AreEqual(n2.Children.Count, 0);
+            n5.AddNode(n3);
+            Assert.AreEqual(n5.Children.Count, 0);
+            n6.AddNode(n3);
+            Assert.AreEqual(n6.Children.Count, 0);
+            n5.AddNode(n1);
+            Assert.AreEqual(n5.Children.Count, 1);
+            n2.AddNode(n4);
+            Assert.AreEqual(n2.Children.Count, 0);
+        }
+        [Test(Description = "ILink test cyclic links")]
+        public void ILink_Clone_One()
+        {
+            TestNode nod1 = new TestNode();
+            ILink n1 = new Link(nod1);
+            ILink n2 = n1.Clone();
+            Assert.AreEqual(n2.Info, nod1);
+           
+        }
         /*
-[Test(Description = "ILink test property DirectParents")]
-public void TestINodeGrandParentsAddRemove()
-{
-TestNode n1 = new TestNode();
-TestNode n2 = new TestNode();
-TestNode n3 = new TestNode();
-TestNode n4 = new TestNode();
-n1.AddNode(n2);
-Assert.AreEqual(n2.DirectParents.Count, 1);
-Assert.IsTrue(n2.DirectParents.Contains(n1));
-n2.AddNode(n3);
-Assert.AreEqual(n3.DirectParents.Count, 2);
-Assert.IsTrue(n3.DirectParents.Contains(n1));
-Assert.IsTrue(n3.DirectParents.Contains(n2));
-n3.AddNode(n4);
-Assert.AreEqual(n4.DirectParents.Count, 3);
-Assert.IsTrue(n4.DirectParents.Contains(n1));
-Assert.IsTrue(n4.DirectParents.Contains(n2));
-Assert.IsTrue(n4.DirectParents.Contains(n3));
-n1.RemoveNode(n2);
-Assert.AreEqual(n2.DirectParents.Count, 0);
-Assert.IsFalse(n2.DirectParents.Contains(n1));
-Assert.AreEqual(n3.DirectParents.Count, 1);
-Assert.IsFalse(n3.DirectParents.Contains(n1));
-Assert.IsTrue(n3.DirectParents.Contains(n2));
-Assert.AreEqual(n4.DirectParents.Count, 2);
-Assert.IsFalse(n4.DirectParents.Contains(n1));
-Assert.IsTrue(n4.DirectParents.Contains(n2));
-Assert.IsTrue(n4.DirectParents.Contains(n3));
-n2.RemoveNode(n3);
-Assert.AreEqual(n3.DirectParents.Count, 0);
-Assert.IsFalse(n3.DirectParents.Contains(n1));
-Assert.IsFalse(n3.DirectParents.Contains(n2));
-Assert.AreEqual(n4.DirectParents.Count, 1);
-Assert.IsFalse(n4.DirectParents.Contains(n1));
-Assert.IsFalse(n4.DirectParents.Contains(n2));
-Assert.IsTrue(n4.DirectParents.Contains(n3));
-n1.AddNode(n2);
-n2.AddNode(n3);
-Assert.AreEqual(n2.DirectParents.Count, 1);
-Assert.IsTrue(n2.DirectParents.Contains(n1));
-Assert.AreEqual(n3.DirectParents.Count, 2);
-Assert.IsTrue(n3.DirectParents.Contains(n1));
-Assert.IsTrue(n3.DirectParents.Contains(n2));
-Assert.AreEqual(n4.DirectParents.Count, 3);
-Assert.IsTrue(n4.DirectParents.Contains(n1));
-Assert.IsTrue(n4.DirectParents.Contains(n2));
-Assert.IsTrue(n4.DirectParents.Contains(n3));
-n2.RemoveNode(n3);
-Assert.AreEqual(n2.DirectParents.Count, 1);
-Assert.IsTrue(n2.DirectParents.Contains(n1));
-Assert.AreEqual(n3.DirectParents.Count, 0);
-Assert.IsFalse(n3.DirectParents.Contains(n1));
-Assert.IsFalse(n3.DirectParents.Contains(n2));
-Assert.AreEqual(n4.DirectParents.Count, 1);
-Assert.IsFalse(n4.DirectParents.Contains(n1));
-Assert.IsFalse(n4.DirectParents.Contains(n2));
-Assert.IsTrue(n4.DirectParents.Contains(n3));
-n2.AddNode(n3);
-Assert.AreEqual(n2.DirectParents.Count, 1);
-Assert.IsTrue(n2.DirectParents.Contains(n1));
-Assert.AreEqual(n3.DirectParents.Count, 2);
-Assert.IsTrue(n3.DirectParents.Contains(n1));
-Assert.IsTrue(n3.DirectParents.Contains(n2));
-Assert.AreEqual(n4.DirectParents.Count, 3);
-Assert.IsTrue(n4.DirectParents.Contains(n1));
-Assert.IsTrue(n4.DirectParents.Contains(n2));
-Assert.IsTrue(n4.DirectParents.Contains(n3));
-}
-[Test(Description = "ILink test cyclic links")]
-public void TestINodeCyclicLinks()
-{
-TestNode n1 = new TestNode();
-TestNode n2 = new TestNode();
-Assert.AreEqual(n1.Children.Count, 0);
-n1.AddNode(n2);
-Assert.AreEqual(n1.Children.Count, 1);
-n2.AddNode(n1);
-Assert.AreEqual(n2.Children.Count, 0);
-TestNode n3 = new TestNode();
-TestNode n4 = new TestNode();
-TestNode n5 = new TestNode();
-TestNode n6 = new TestNode();
-n3.AddNode(n4);
-Assert.AreEqual(n3.Children.Count, 1);
-n4.AddNode(n5);
-Assert.AreEqual(n4.Children.Count, 1);
-n4.AddNode(n6);
-Assert.AreEqual(n4.Children.Count, 2);
-n4.AddNode(n1);
-Assert.AreEqual(n4.Children.Count, 3);
-n2.AddNode(n3);
-Assert.AreEqual(n2.Children.Count, 0);
-}
 [Test(Description = "test property TypeID ")]
 public void TestBaseNodeTypeIdRealization()
 {

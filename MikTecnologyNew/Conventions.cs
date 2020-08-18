@@ -11,12 +11,14 @@ namespace MikTecnologyNew
     public interface ILink
     {      
         ILink AddNode(IInformation node);
+        void AddNode(ILink link);
         void RemoveNode(IInformation node);  
         IList<ILink> AllParents { get; }
         ILink Parent { get; }
         IInformation Info { get; }
         IList<ILink> Children { get; }
         IQuantity Count { get; }
+        ILink Clone();
     }
     public interface IQuantity
     {
