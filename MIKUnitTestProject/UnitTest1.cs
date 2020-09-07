@@ -14,7 +14,8 @@ namespace MIKUnitTestProject
         [SetUp]
         public void Setup()
         {
-
+            factoryInfo = new TechnologyInfoFactoryImplementation();
+            factoryLink = new TechnologyLinkFactoryImplementation();
         }
         public class TestNode : BaseInfoObject
         {
@@ -1099,52 +1100,65 @@ namespace MIKUnitTestProject
             Assert.AreEqual(n4.Children[1]?.Children[0]?.AllParents.Count, 2);
 
         }
+
+        [Test(Description = "Test AssemblyNode int TypeNode not null")]
+        public void AseemblyNode_TypeNode_NotNull()
+        {
+            AssemblyNode n1 = new AssemblyNode();
+            Assert.IsNotNull(n1.TypeNode);
+        }
+
+        [Test(Description = "Test ITechnologyLinkFactory create object AssemblyNode all type realization")]
+        public void ITecnologyNodeFactory_AseemblyNode_Created()
+        {
+            IInformation as1 = AssemblyNode.CreateNode("test");
+            Assert.IsTrue(as1 is IVersion);
+            Assert.IsTrue(as1 is INumberNomenclature);
+            Assert.IsTrue(as1 is ICaption);
+            Assert.IsTrue(as1 is AssemblyNode);
+            Assert.IsTrue(as1 is BaseInfoObject);
+
+            IInformation Inf1 = factoryInfo.Make("AssemblyNode", "test");
+            Assert.IsTrue(Inf1 is IVersion);
+            Assert.IsTrue(Inf1 is INumberNomenclature);
+            Assert.IsTrue(Inf1 is ICaption);
+            Assert.IsTrue(Inf1 is AssemblyNode);
+            Assert.IsTrue(Inf1 is BaseInfoObject);
+
+            ILink n1 = factoryLink.Make("Link", "AssemblyNode", "test");
+
+            Assert.IsTrue(n1 is ILink);
+            Assert.IsTrue(n1.Info is IVersion);
+            Assert.IsTrue(n1.Info is INumberNomenclature);
+            Assert.IsTrue(n1.Info is ICaption);
+            Assert.IsTrue(n1.Info is IInformation);
+            Assert.IsTrue(n1.Info is AssemblyNode);
+            Assert.IsTrue(n1.Info is BaseInfoObject);
+        }
+
+        [Test(Description = "Test AssemblyNode string INumberNomenclature correct")]
+        public void AseemblyNode_INumberNomenclature_NumberCorrect()
+        {
+            ILink n1 = factoryLink.Make("Link", "AssemblyNode", "number_1");
+            Assert.IsNotNull((n1.Info as INumberNomenclature).Number);
+            Assert.AreEqual((n1.Info as INumberNomenclature).Number, "number_1");
+        }
+
+        [Test(Description = "Test AssemblyNode string ICaption correct")]
+        public void AseemblyNode_ICaption_NameCorrect()
+        {
+            ILink n1 = factoryLink.Make("Link", "AssemblyNode", "number_1");
+            Assert.IsNotNull((n1.Info as ICaption).Name);
+            Assert.AreEqual((n1.Info as ICaption).Name, "number_1");
+        }
+
+        [Test(Description = "Test AssemblyNode Number equal Name")]
+        public void AseemblyNode_Number_Name()
+        {
+            ILink n1 = factoryLink.Make("Link", "AssemblyNode", "number_1");
+            Assert.AreEqual((n1.Info as INumberNomenclature).Number, (n1.Info as ICaption).Name);
+        }
         /*
-[Test(Description = "test property TypeID ")]
-public void TestBaseNodeTypeIdRealization()
-{
-TestNode n1 = new TestNode();
-TestNode n2 = new TestNode();
-Assert.IsNotNull(n1.TypeNode);
-Assert.AreEqual(n1.TypeNode, n2.TypeNode);
-}       
-[Test(Description = "Test AssemblyNode int TypeNode not null")]
-public void AseemblyNode_TypeNode_NotNull()
-{
-AssemblyNode n1 = new AssemblyNode();
-Assert.IsNotNull(n1.TypeNode);
-}
-[Test(Description = "Test ITecnologyNodeFactory create object AssemblyNode all type realization")]
-public void ITecnologyNodeFactory_AseemblyNode_Created()
-{
-ILink n1 = factory.Make("AssemblyNode", "test");
-Assert.IsTrue(n1 is AssemblyNode);
-Assert.IsTrue(n1 is BaseInfoObject);
-Assert.IsTrue(n1 is ILink);
-Assert.IsTrue(n1 is IVersion);
-Assert.IsTrue(n1 is INumberNomenclature);
-Assert.IsTrue(n1 is ICaption);
-}
-[Test(Description = "Test AssemblyNode string INumberNomenclature correct")]
-public void AseemblyNode_INumberNomenclature_NumberCorrect()
-{
-ILink n1 = factory.Make("AssemblyNode", "number_1");
-Assert.IsNotNull((n1 as INumberNomenclature).Number);
-Assert.AreEqual((n1 as INumberNomenclature).Number, "number_1");
-}
-[Test(Description = "Test AssemblyNode string ICaption correct")]
-public void AseemblyNode_ICaption_NameCorrect()
-{
-ILink n1 = factory.Make("AssemblyNode", "number_1");
-Assert.IsNotNull((n1 as ICaption).Name);
-Assert.AreEqual((n1 as ICaption).Name, "number_1");
-}
-[Test(Description = "Test AssemblyNode Number equal Name")]
-public void AseemblyNode_Number_Name()
-{
-ILink n1 = factory.Make("AssemblyNode", "number_1");           
-Assert.AreEqual((n1 as INumberNomenclature).Number, (n1 as ICaption).Name);
-}
 [Test(Description = "IVersion test property Ver")]
 public void IVersion_Ver_New()
 {

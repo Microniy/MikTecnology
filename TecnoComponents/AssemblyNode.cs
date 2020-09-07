@@ -9,7 +9,7 @@ using MikTecnologyNew;
 
 namespace TecnoComponents
 {
-    public class AssemblyNode //: BaseInfoObject,INumberNomenclature,ICaption,IDescription, IFindCollection
+    public class AssemblyNode : BaseInfoObject,INumberNomenclature,ICaption,IDescription, IFindCollection
     {
         private static int _typeId = (int)StringTypeNode.AssemblyNode;
         private static IList<AssemblyNode> _fullItems = new List<AssemblyNode>();
@@ -20,13 +20,15 @@ namespace TecnoComponents
 
         public string Number => _name;
 
-        public IEnumerable<ILink> FullItemsCollection => _fullItems.Cast<ILink>();
+        public IEnumerable<IInformation> FullItemsCollection => _fullItems.Cast<IInformation>();
 
         public string Description =>_description;
 
         public string SetDescription { set => _description=value; }
 
         public string Name => _name;
+
+        public override int TypeNode => _typeId;
 
         public static AssemblyNode CreateNode(string name,int vers = 0)
         {
@@ -35,7 +37,7 @@ namespace TecnoComponents
             if (node is null)
             {
                 node = new AssemblyNode(name);
-                //node0?.AddVersion(node);
+                node0?.AddVersion(node);
                 _fullItems.Add(node);
             }
             return node as AssemblyNode;

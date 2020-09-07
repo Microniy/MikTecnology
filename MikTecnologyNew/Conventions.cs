@@ -78,11 +78,10 @@ namespace MikTecnologyNew
     }
     public interface IFindCollection
     {
-        IEnumerable<ILink> FullItemsCollection { get; }       
+        IEnumerable<IInformation> FullItemsCollection { get; }       
+    }   
+   public interface IRepository
+    {
+        public ICollection<ILink> GetProects();
     }
-    public interface IRepository
-    {      
-       ICollection<ILink> GetProects();
-    }
-   
 }
