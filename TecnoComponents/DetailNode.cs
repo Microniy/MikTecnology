@@ -6,7 +6,7 @@ using MikTecnologyNew;
 
 namespace TecnoComponents
 {
-    public class DetailNode //: BaseInfoObject,ICaption,INumberNomenclature, IFindCollection,IDescription,IMaterial
+    public class DetailNode : BaseInfoObject,ICaption,INumberNomenclature, IFindCollection,IDescription,IMaterial
     {
         private static int _typeId = (int)StringTypeNode.DetailNode;
         private static IList<DetailNode> _fullItems = new List<DetailNode>();
@@ -15,7 +15,7 @@ namespace TecnoComponents
         private IMaterial _material;
         
 
-        public IEnumerable<ILink> FullItemsCollection => _fullItems.Cast<ILink>();
+        public IEnumerable<IInformation> FullItemsCollection => _fullItems.Cast<IInformation>();
 
         public string Name => _name;
 
@@ -31,6 +31,8 @@ namespace TecnoComponents
 
         public string Standard => _material?.Standard;
 
+        public override int TypeNode => _typeId;
+
         public static DetailNode CreateNode(string name, int vers = 0)
         {
             DetailNode node0 = FindNode(name, 0);
@@ -38,7 +40,7 @@ namespace TecnoComponents
             if (node is null)
             {
                 node = new DetailNode(name);
-               // node0?.AddVersion(node);
+                node0?.AddVersion(node);
                 _fullItems.Add(node);
             }
             return node as DetailNode;
@@ -47,7 +49,7 @@ namespace TecnoComponents
         {
 
             var listNode = (from nod in _fullItems
-                            where (nod.Number == number) //&& (nod.Ver == vers)
+                            where (nod.Number == number) && (nod.Ver == vers)
                             select nod);
 
             if (listNode.Count() == 0)
@@ -89,6 +91,11 @@ namespace TecnoComponents
         public void RemoveMaterial()
         {
             _material = null;
+        }
+
+        public static void ClearItemsCollections()
+        {
+            _fullItems.Clear();
         }
     }
 }

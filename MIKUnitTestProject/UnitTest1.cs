@@ -928,7 +928,7 @@ namespace MIKUnitTestProject
         [Test(Description = "ILink test property DirectParents")]
         public void ILink_GrandParents_AddRemove()
         {
-            ILink n1 = new Link();
+            ILink n1 = new Link(new TestNode());
             TestNode nod2 = new TestNode();
             TestNode nod3 = new TestNode();
             TestNode nod4 = new TestNode();
@@ -997,7 +997,7 @@ namespace MIKUnitTestProject
         [Test(Description = "ILink test method Add")]
         public void ILink_TwoAddedNode_One()
         {
-            ILink n1 = new Link();
+            ILink n1 = new Link(new TestNode());
             IInformation nod2 = new TestNode();
             Assert.AreEqual(n1.Children.Count, 0);
             ILink n2 = n1.AddNode(nod2);
@@ -1158,474 +1158,509 @@ namespace MIKUnitTestProject
             ILink n1 = factoryLink.Make("Link", "AssemblyNode", "number_1");
             Assert.AreEqual((n1.Info as INumberNomenclature).Number, (n1.Info as ICaption).Name);
         }
+
+        [Test(Description = "IVersion test property Ver")]
+        public void IVersion_Ver_New()
+        {
+            ILink n1 = factoryLink.Make("Link", "AssemblyNode", "number_0");
+            Assert.IsNotNull((n1.Info as IVersion).Ver);
+            Assert.AreEqual((n1.Info as IVersion).Ver, 0);
+        }
+
+        [Test(Description = "IVersion test property Ver new versions and test IFindCollection count")]
+        public void AseemblyNode_MakeAsembly_GenerateNewVersions()
+        {
+            AssemblyNode.ClearItemsCollections();
+            ILink n1 = factoryLink.Make("Link", "AssemblyNode", "number_0");
+            ILink n2 = factoryLink.Make("Link", "AssemblyNode", "number_0");
+            Assert.AreEqual((n1.Info as IFindCollection).FullItemsCollection.Count(), 1);
+            Assert.AreEqual((n2.Info as IFindCollection).FullItemsCollection.Count(), 1);
+            Assert.AreEqual(n1.Info, n2.Info);
+            ILink n3 = factoryLink.Make("Link", "AssemblyNode", "number_0", 1);
+            Assert.AreNotEqual(n1.Info, n3.Info);
+            Assert.AreEqual((n1.Info as IVersion).Ver, 0);
+            Assert.AreEqual((n2.Info as IVersion).Ver, 0);
+            Assert.AreEqual((n3.Info as IVersion).Ver, 1);
+            Assert.AreEqual((n1.Info as IFindCollection).FullItemsCollection.Count(), 2);
+            Assert.AreEqual((n3.Info as IFindCollection).FullItemsCollection.Count(), 2);
+            ILink n4 = factoryLink.Make("Link", "AssemblyNode", "number_0", 1);
+            Assert.AreEqual(n3.Info, n4.Info);
+            Assert.AreEqual((n4.Info as IVersion).Ver, 1);
+            Assert.AreEqual((n1.Info as IFindCollection).FullItemsCollection.Count(), 2);
+            Assert.AreEqual((n4.Info as IFindCollection).FullItemsCollection.Count(), 2);
+            ILink n5 = factoryLink.Make("Link", "AssemblyNode", "number_0", 2000);
+            Assert.AreEqual((n5.Info as IVersion).Ver, 2);
+            Assert.AreEqual((n1.Info as IFindCollection).FullItemsCollection.Count(), 3);
+            Assert.AreEqual((n5.Info as IFindCollection).FullItemsCollection.Count(), 3);
+            ILink n6 = factoryLink.Make("Link", "AssemblyNode", "number_0", -1);
+            Assert.AreEqual((n6.Info as IVersion).Ver, 3);
+            Assert.AreEqual((n1.Info as IFindCollection).FullItemsCollection.Count(), 4);
+            Assert.AreEqual((n6.Info as IFindCollection).FullItemsCollection.Count(), 4);
+            ILink n7 = factoryLink.Make("Link", "AssemblyNode", "number_2", -1);
+            Assert.AreEqual((n7.Info as IVersion).Ver, 0);
+            Assert.AreEqual((n1.Info as IFindCollection).FullItemsCollection.Count(), 5);
+            Assert.AreEqual((n7.Info as IFindCollection).FullItemsCollection.Count(), 5);
+        }
+
+        [Test(Description = "IDescription test property Description")]
+        public void IDescription_AseemblyNode_DescriptionCreate()
+        {
+            ILink n1 = factoryLink.Make("Link", "AssemblyNode", "number_1");
+            Assert.IsNotNull((n1.Info as IDescription).Description);
+            ILink n2 = factoryLink.Make("Link", "AssemblyNode", "number_2");
+            Assert.IsNotNull((n2.Info as IDescription).Description);
+            (n1.Info as IDescription).SetDescription = "test1";
+            Assert.AreEqual((n1.Info as IDescription).Description, "test1");
+            Assert.AreEqual((n2.Info as IDescription).Description, "");
+            (n2.Info as IDescription).SetDescription = "test2";
+            Assert.AreEqual((n2.Info as IDescription).Description, "test2");
+            (n1.Info as IDescription).SetDescription = "test3";
+            Assert.AreEqual((n1.Info as IDescription).Description, "test3");
+        }
+
+        [Test(Description = "IVersion test methods AddVersion, RemoveVersion correct OldVersion1 and OldVersion2")]
+        public void IVersionOldVersion1_2_Tested()
+        {
+            TestNode n1 = new TestNode();
+            TestNode n2 = new TestNode();
+            TestNode n3 = new TestNode();
+            TestNode n4 = new TestNode();
+            TestNode n5 = new TestNode();
+            TestNode n6 = new TestNode();
+            TestNode n7 = new TestNode();
+            Assert.IsNull(n2.OldVersion1);
+            Assert.IsNull(n2.OldVersion2);
+            n1.AddVersion(n2);
+            n1.AddVersion(n3);
+            n1.AddVersion(n4);
+            n3.AddVersion(n5);
+            n5.AddVersion(n6);
+            n2.AddVersion(n7);
+            Assert.AreEqual(n2.OldVersions.Count, 1);
+            Assert.IsTrue(n2.OldVersions.Contains(n1));
+            Assert.AreEqual(n2.OldVersion1, n1);
+            Assert.IsNull(n2.OldVersion2);
+
+            Assert.AreEqual(n4.OldVersions.Count, 3);
+            Assert.IsTrue(n4.OldVersions.Contains(n1));
+            Assert.IsTrue(n4.OldVersions.Contains(n2));
+            Assert.IsTrue(n4.OldVersions.Contains(n3));
+            Assert.AreEqual(n4.OldVersion1, n3);
+            Assert.AreEqual(n4.OldVersion2, n2);
+
+            Assert.AreEqual(n7.OldVersions.Count, 6);
+            Assert.IsTrue(n7.OldVersions.Contains(n1));
+            Assert.IsTrue(n7.OldVersions.Contains(n2));
+            Assert.IsTrue(n7.OldVersions.Contains(n3));
+            Assert.IsTrue(n7.OldVersions.Contains(n4));
+            Assert.IsTrue(n7.OldVersions.Contains(n5));
+            Assert.IsTrue(n7.OldVersions.Contains(n6));
+            Assert.AreEqual(n7.OldVersion1, n6);
+            Assert.AreEqual(n7.OldVersion2, n5);
+            n7.RemoveVersion(n6);
+
+            Assert.AreEqual(n2.OldVersions.Count, 1);
+            Assert.IsTrue(n2.OldVersions.Contains(n1));
+            Assert.AreEqual(n2.OldVersion1, n1);
+            Assert.IsNull(n2.OldVersion2);
+            Assert.AreEqual(n4.OldVersions.Count, 3);
+            Assert.IsTrue(n4.OldVersions.Contains(n1));
+            Assert.IsTrue(n4.OldVersions.Contains(n2));
+            Assert.IsTrue(n4.OldVersions.Contains(n3));
+            Assert.AreEqual(n4.OldVersion1, n3);
+            Assert.AreEqual(n4.OldVersion2, n2);
+            Assert.AreEqual(n7.OldVersions.Count, 5);
+            Assert.IsTrue(n7.OldVersions.Contains(n1));
+            Assert.IsTrue(n7.OldVersions.Contains(n2));
+            Assert.IsTrue(n7.OldVersions.Contains(n3));
+            Assert.IsTrue(n7.OldVersions.Contains(n4));
+            Assert.IsTrue(n7.OldVersions.Contains(n5));
+            Assert.IsFalse(n7.OldVersions.Contains(n6));
+            Assert.AreEqual(n7.OldVersion1, n5);
+            Assert.AreEqual(n7.OldVersion2, n4);
+            n3.RemoveVersion(n3);
+
+            Assert.AreEqual(n2.OldVersions.Count, 1);
+            Assert.IsTrue(n2.OldVersions.Contains(n1));
+            Assert.AreEqual(n2.OldVersion1, n1);
+            Assert.IsNull(n2.OldVersion2);
+            Assert.AreEqual(n4.OldVersions.Count, 2);
+            Assert.IsTrue(n4.OldVersions.Contains(n1));
+            Assert.IsTrue(n4.OldVersions.Contains(n2));
+            Assert.IsFalse(n4.OldVersions.Contains(n3));
+            Assert.AreEqual(n4.OldVersion1, n2);
+            Assert.AreEqual(n4.OldVersion2, n1);
+            Assert.AreEqual(n7.OldVersions.Count, 4);
+            Assert.IsTrue(n7.OldVersions.Contains(n1));
+            Assert.IsTrue(n7.OldVersions.Contains(n2));
+            Assert.IsFalse(n7.OldVersions.Contains(n3));
+            Assert.IsTrue(n7.OldVersions.Contains(n4));
+            Assert.IsTrue(n7.OldVersions.Contains(n5));
+            Assert.IsFalse(n7.OldVersions.Contains(n6));
+            Assert.AreEqual(n7.OldVersion1, n5);
+            Assert.AreEqual(n7.OldVersion2, n4);
+            n6.RemoveVersion(n7);//n7 already deleted n6 not delete           
+            Assert.AreEqual(n2.OldVersions.Count, 1);
+            Assert.AreEqual(n4.OldVersions.Count, 2);
+            Assert.AreEqual(n7.OldVersions.Count, 4);
+            n5.RemoveVersion();
+
+            Assert.AreEqual(n2.OldVersions.Count, 1);
+            Assert.IsTrue(n2.OldVersions.Contains(n1));
+            Assert.AreEqual(n2.OldVersion1, n1);
+            Assert.IsNull(n2.OldVersion2);
+            Assert.AreEqual(n4.OldVersions.Count, 2);
+            Assert.IsTrue(n4.OldVersions.Contains(n1));
+            Assert.IsTrue(n4.OldVersions.Contains(n2));
+            Assert.IsFalse(n4.OldVersions.Contains(n3));
+            Assert.AreEqual(n4.OldVersion1, n2);
+            Assert.AreEqual(n4.OldVersion2, n1);
+            Assert.AreEqual(n7.OldVersions.Count, 3);
+            Assert.IsTrue(n7.OldVersions.Contains(n1));
+            Assert.IsTrue(n7.OldVersions.Contains(n2));
+            Assert.IsFalse(n7.OldVersions.Contains(n3));
+            Assert.IsTrue(n7.OldVersions.Contains(n4));
+            Assert.IsFalse(n7.OldVersions.Contains(n5));
+            Assert.IsFalse(n7.OldVersions.Contains(n6));
+            Assert.AreEqual(n7.OldVersion1, n4);
+            Assert.AreEqual(n7.OldVersion2, n2);
+            n4.RemoveVersion(n2);
+
+            Assert.AreEqual(n4.OldVersions.Count, 1);
+            Assert.IsTrue(n4.OldVersions.Contains(n1));
+            Assert.IsFalse(n4.OldVersions.Contains(n2));
+            Assert.IsFalse(n4.OldVersions.Contains(n3));
+            Assert.AreEqual(n4.OldVersion1, n1);
+            Assert.IsNull(n4.OldVersion2);
+            Assert.AreEqual(n7.OldVersions.Count, 2);
+            Assert.IsTrue(n7.OldVersions.Contains(n1));
+            Assert.IsFalse(n7.OldVersions.Contains(n2));
+            Assert.IsFalse(n7.OldVersions.Contains(n3));
+            Assert.IsTrue(n7.OldVersions.Contains(n4));
+            Assert.IsFalse(n7.OldVersions.Contains(n5));
+            Assert.IsFalse(n7.OldVersions.Contains(n6));
+            Assert.AreEqual(n7.OldVersion1, n4);
+            Assert.AreEqual(n7.OldVersion2, n1);
+        }
+
+        [Test(Description = "IVersion test methods AddVersion, RemoveVersion correct NextVersion1 and NextVersion2")]
+        public void IVersionNextVersion1_2_Tested()
+        {
+            TestNode n1 = new TestNode();
+            TestNode n2 = new TestNode();
+            TestNode n3 = new TestNode();
+            TestNode n4 = new TestNode();
+            TestNode n5 = new TestNode();
+            TestNode n6 = new TestNode();
+            TestNode n7 = new TestNode();
+            Assert.IsNull(n1.NextVersion1);
+            Assert.IsNull(n1.NextVersion2);
+
+            n1.AddVersion(n2);
+            Assert.AreEqual(n1.NextVersion1, n2);
+            Assert.IsNull(n1.NextVersion2);
+
+            n1.AddVersion(n3);
+            Assert.AreEqual(n1.NextVersion1, n2);
+            Assert.AreEqual(n1.NextVersion2, n3);
+            Assert.AreEqual(n2.NextVersion1, n3);
+            Assert.IsNull(n2.NextVersion2);
+            Assert.IsNull(n3.NextVersion1);
+            Assert.IsNull(n3.NextVersion2);
+
+            n1.AddVersion(n4);
+            Assert.AreEqual(n1.NextVersion1, n2);
+            Assert.AreEqual(n1.NextVersion2, n3);
+            Assert.AreEqual(n2.NextVersion1, n3);
+            Assert.AreEqual(n2.NextVersion2, n4);
+            Assert.AreEqual(n3.NextVersion1, n4);
+            Assert.IsNull(n3.NextVersion2);
+            Assert.IsNull(n4.NextVersion1);
+            Assert.IsNull(n4.NextVersion2);
+
+            n3.AddVersion(n5);
+            Assert.AreEqual(n1.NextVersion1, n2);
+            Assert.AreEqual(n1.NextVersion2, n3);
+            Assert.AreEqual(n2.NextVersion1, n3);
+            Assert.AreEqual(n2.NextVersion2, n4);
+            Assert.AreEqual(n3.NextVersion1, n4);
+            Assert.AreEqual(n3.NextVersion2, n5);
+            Assert.AreEqual(n4.NextVersion1, n5);
+            Assert.IsNull(n4.NextVersion2);
+            Assert.IsNull(n5.NextVersion1);
+            Assert.IsNull(n5.NextVersion2);
+
+            n5.AddVersion(n6);
+            Assert.AreEqual(n1.NextVersion1, n2);
+            Assert.AreEqual(n1.NextVersion2, n3);
+            Assert.AreEqual(n2.NextVersion1, n3);
+            Assert.AreEqual(n2.NextVersion2, n4);
+            Assert.AreEqual(n3.NextVersion1, n4);
+            Assert.AreEqual(n3.NextVersion2, n5);
+            Assert.AreEqual(n4.NextVersion1, n5);
+            Assert.AreEqual(n4.NextVersion2, n6);
+            Assert.AreEqual(n5.NextVersion1, n6);
+            Assert.IsNull(n5.NextVersion2);
+            Assert.IsNull(n6.NextVersion1);
+            Assert.IsNull(n6.NextVersion2);
+
+            n2.AddVersion(n7);
+            Assert.AreEqual(n1.NextVersion1, n2);
+            Assert.AreEqual(n1.NextVersion2, n3);
+            Assert.AreEqual(n2.NextVersion1, n3);
+            Assert.AreEqual(n2.NextVersion2, n4);
+            Assert.AreEqual(n3.NextVersion1, n4);
+            Assert.AreEqual(n3.NextVersion2, n5);
+            Assert.AreEqual(n4.NextVersion1, n5);
+            Assert.AreEqual(n4.NextVersion2, n6);
+            Assert.AreEqual(n5.NextVersion1, n6);
+            Assert.AreEqual(n5.NextVersion2, n7);
+            Assert.AreEqual(n6.NextVersion1, n7);
+            Assert.IsNull(n6.NextVersion2);
+            Assert.IsNull(n7.NextVersion1);
+            Assert.IsNull(n7.NextVersion2);
+
+            n7.RemoveVersion(n6);
+            Assert.AreEqual(n1.NextVersion1, n2);
+            Assert.AreEqual(n1.NextVersion2, n3);
+            Assert.AreEqual(n2.NextVersion1, n3);
+            Assert.AreEqual(n2.NextVersion2, n4);
+            Assert.AreEqual(n3.NextVersion1, n4);
+            Assert.AreEqual(n3.NextVersion2, n5);
+            Assert.AreEqual(n4.NextVersion1, n5);
+            Assert.AreEqual(n4.NextVersion2, n7);
+            Assert.AreEqual(n5.NextVersion1, n7);
+            Assert.IsNull(n5.NextVersion2);
+            Assert.IsNull(n7.NextVersion1);
+            Assert.IsNull(n7.NextVersion2);
+
+            n3.RemoveVersion(n3);
+            Assert.AreEqual(n1.NextVersion1, n2);
+            Assert.AreEqual(n1.NextVersion2, n4);
+            Assert.AreEqual(n2.NextVersion1, n4);
+            Assert.AreEqual(n2.NextVersion2, n5);
+            Assert.AreEqual(n4.NextVersion1, n5);
+            Assert.AreEqual(n4.NextVersion2, n7);
+            Assert.AreEqual(n5.NextVersion1, n7);
+            Assert.IsNull(n5.NextVersion2);
+            Assert.IsNull(n7.NextVersion1);
+            Assert.IsNull(n7.NextVersion2);
+
+            n6.RemoveVersion(n7);//n7 already deleted n6 not delete           
+            Assert.AreEqual(n1.NextVersion1, n2);
+            Assert.AreEqual(n1.NextVersion2, n4);
+            Assert.AreEqual(n2.NextVersion1, n4);
+            Assert.AreEqual(n2.NextVersion2, n5);
+            Assert.AreEqual(n4.NextVersion1, n5);
+            Assert.AreEqual(n4.NextVersion2, n7);
+            Assert.AreEqual(n5.NextVersion1, n7);
+            Assert.IsNull(n5.NextVersion2);
+            Assert.IsNull(n7.NextVersion1);
+            Assert.IsNull(n7.NextVersion2);
+
+            n5.RemoveVersion();
+            Assert.AreEqual(n1.NextVersion1, n2);
+            Assert.AreEqual(n1.NextVersion2, n4);
+            Assert.AreEqual(n2.NextVersion1, n4);
+            Assert.AreEqual(n2.NextVersion2, n7);
+            Assert.AreEqual(n4.NextVersion1, n7);
+            Assert.IsNull(n4.NextVersion2);
+            Assert.IsNull(n7.NextVersion1);
+            Assert.IsNull(n7.NextVersion2);
+
+            n4.RemoveVersion(n2);
+            Assert.AreEqual(n1.NextVersion1, n4);
+            Assert.AreEqual(n1.NextVersion2, n7);
+            Assert.AreEqual(n4.NextVersion1, n7);
+            Assert.IsNull(n4.NextVersion2);
+            Assert.IsNull(n7.NextVersion1);
+            Assert.IsNull(n7.NextVersion2);
+
+        }
+
+        [Test(Description = "IVersion test methods AddVersion, RemoveVersion correct NextVersion1 and NextVersion2")]
+        public void INodes_AddNode_andVersionTest()
+        {
+            ILink n1 = factoryLink.Make("Link", "AssemblyNode", "бЬви.123321.001-001");
+            Assert.IsTrue(n1.Info is AssemblyNode);
+            Assert.AreEqual((n1.Info as IVersion).Ver, 0);
+            Assert.AreEqual((n1.Info as ICaption).Name, "бЬви.123321.001-001");
+            Assert.IsNull((n1.Info as IVersion).NextVersion1);
+            ILink n2 = factoryLink.Make("Link", "AssemblyNode", "бЬви.123321.001-001", -1);
+            Assert.IsTrue(n2.Info is AssemblyNode);
+            Assert.AreEqual((n2.Info as IVersion).Ver, 1);
+            Assert.AreEqual((n2.Info as ICaption).Name, "бЬви.123321.001-001");
+            Assert.AreEqual((n1.Info as IVersion).NextVersion1, n2.Info);
+            Assert.AreEqual((n2.Info as IVersion).OldVersion1, n1.Info);
+            ILink n3 = factoryLink.Make("Link", "AssemblyNode", "бЬви.123321.002");
+            Assert.IsTrue(n3.Info is AssemblyNode);
+            Assert.AreEqual((n3.Info as IVersion).Ver, 0);
+            Assert.AreEqual((n3.Info as ICaption).Name, "бЬви.123321.002");
+            Assert.IsNull((n3.Info as IVersion).NextVersion1);
+            ILink n4 = factoryLink.Make("Link", "AssemblyNode", "бЬви.123321.002", -1);
+            Assert.IsTrue(n4.Info is AssemblyNode);
+            Assert.AreEqual((n4.Info as IVersion).Ver, 1);
+            Assert.AreEqual((n4.Info as ICaption).Name, "бЬви.123321.002");
+            Assert.AreEqual((n3.Info as IVersion).NextVersion1, n4.Info);
+            Assert.AreEqual((n4.Info as IVersion).OldVersion1, n3.Info);
+            n1.AddNode(n4);
+            Assert.AreEqual(n1.Children.Count, 1);
+            Assert.IsTrue(n1.Children.Contains(n4));
+        }
+
+        [Test(Description = "AssemblyNode test SourceIntTypConvertor. Converter create element for TypeNode")]
+        public void AssemblyNode_TypeNode_SourceIntTypConvertor_value()
+        {
+            SourceIntTypConvertor intTypConvertor = new SourceIntTypConvertor();
+            ILink n1 = factoryLink.Make("Link", "AssemblyNode", "бЬви.123321.001-001");
+            Assert.IsNotNull(intTypConvertor.Convert((n1.Info as BaseInfoObject).TypeNode, typeof(string), null, null));
+        }
+
+        [Test(Description = "AssemblyNode test StringTypeNode make node")]
+        public void AssemblyNode_TypeNode_enum_StringTypeNode()
+        {
+            ILink n1 = factoryLink.Make("Link", StringTypeNode.AssemblyNode.ToString(), "бЬви.123321.001-001");
+            Assert.AreEqual((int)StringTypeNode.AssemblyNode, (n1.Info as BaseInfoObject).TypeNode);
+        }
+
+        [Test(Description = "Test DetailNode int TypeNode not null")]
+        public void DetailNode_TypeNode_NotNull()
+        {
+            DetailNode n1 = new DetailNode();
+            Assert.IsNotNull(n1.TypeNode);
+        }
+
+        [Test(Description = "Test ITecnologyNodeFactory create object DetailNode all type realization")]
+        public void ITecnologyNodeFactory_DetailNode_Created()
+        {
+            IInformation as1 = DetailNode.CreateNode("test");
+            Assert.IsTrue(as1 is IVersion);
+            Assert.IsTrue(as1 is INumberNomenclature);
+            Assert.IsTrue(as1 is ICaption);
+            Assert.IsTrue(as1 is DetailNode);
+            Assert.IsTrue(as1 is BaseInfoObject);
+
+            IInformation Inf1 = factoryInfo.Make("DetailNode", "test");
+            Assert.IsTrue(Inf1 is IVersion);
+            Assert.IsTrue(Inf1 is INumberNomenclature);
+            Assert.IsTrue(Inf1 is ICaption);
+            Assert.IsTrue(Inf1 is DetailNode);
+            Assert.IsTrue(Inf1 is BaseInfoObject);
+
+            ILink n1 = factoryLink.Make("Link", "DetailNode", "test");
+
+            Assert.IsTrue(n1 is ILink);
+            Assert.IsTrue(n1.Info is IVersion);
+            Assert.IsTrue(n1.Info is INumberNomenclature);
+            Assert.IsTrue(n1.Info is ICaption);
+            Assert.IsTrue(n1.Info is IInformation);
+            Assert.IsTrue(n1.Info is DetailNode);
+            Assert.IsTrue(n1.Info is BaseInfoObject);
+        }
+
+        [Test(Description = "Test DetailNode string INumberNomenclature correct")]
+        public void DetailNode_INumberNomenclature_NumberCorrect()
+        {
+            ILink n1 = factoryLink.Make("Link", "DetailNode", "number_1");
+            Assert.IsNotNull((n1.Info as INumberNomenclature).Number);
+            Assert.AreEqual((n1.Info as INumberNomenclature).Number, "number_1");
+        }
+
+        [Test(Description = "Test DetailNode string ICaption correct")]
+        public void DetailNode_ICaption_NameCorrect()
+        {
+            ILink n1 = factoryLink.Make("Link", "DetailNode", "number_1");
+            Assert.IsNotNull((n1.Info as ICaption).Name);
+            Assert.AreEqual((n1.Info as ICaption).Name, "number_1");
+        }
+
+        [Test(Description = "Test DetailNode Number equal Name")]
+        public void DetailNode_Number_Name()
+        {
+            ILink n1 = factoryLink.Make("Link", "DetailNode", "number_1");
+            Assert.AreEqual((n1.Info as INumberNomenclature).Number, (n1.Info as ICaption).Name);
+        }
+
+        [Test(Description = "IVersion test property Ver new versions and test IFindCollection count to DetailNode")]
+        public void DetailNode_MakeAsembly_GenerateNewVersions()
+        {
+            DetailNode.ClearItemsCollections();
+            ILink n1 = factoryLink.Make("Link", "DetailNode", "number_1");
+            int countPerTest = (n1.Info as IFindCollection).FullItemsCollection.Count();
+            ILink n2 = factoryLink.Make("Link", "DetailNode", "number_1");
+            Assert.AreEqual((n1.Info as IFindCollection).FullItemsCollection.Count(), countPerTest);
+            Assert.AreEqual((n2.Info as IFindCollection).FullItemsCollection.Count(), countPerTest);
+            Assert.AreEqual(n1.Info, n2.Info);
+            ILink n3 = factoryLink.Make("Link", "DetailNode", "number_1", 1);
+            Assert.AreNotEqual(n1.Info, n3.Info);
+            Assert.AreEqual((n1.Info as IVersion).Ver, 0);
+            Assert.AreEqual((n2.Info as IVersion).Ver, 0);
+            Assert.AreEqual((n3.Info as IVersion).Ver, 1);
+            Assert.AreEqual((n1.Info as IFindCollection).FullItemsCollection.Count(), countPerTest + 1);
+            Assert.AreEqual((n3.Info as IFindCollection).FullItemsCollection.Count(), countPerTest + 1);
+            ILink n4 = factoryLink.Make("Link", "DetailNode", "number_1", 1);
+            Assert.AreEqual(n3.Info, n4.Info);
+            Assert.AreEqual((n4.Info as IVersion).Ver, 1);
+            Assert.AreEqual((n1.Info as IFindCollection).FullItemsCollection.Count(), countPerTest + 1);
+            Assert.AreEqual((n4.Info as IFindCollection).FullItemsCollection.Count(), countPerTest + 1);
+            ILink n5 = factoryLink.Make("Link", "DetailNode", "number_1", 2000);
+            Assert.AreEqual((n5.Info as IVersion).Ver, 2);
+            Assert.AreEqual((n1.Info as IFindCollection).FullItemsCollection.Count(), countPerTest + 2);
+            Assert.AreEqual((n5.Info as IFindCollection).FullItemsCollection.Count(), countPerTest + 2);
+            ILink n6 = factoryLink.Make("Link", "DetailNode", "number_1", -1);
+            Assert.AreEqual((n6.Info as IVersion).Ver, 3);
+            Assert.AreEqual((n1.Info as IFindCollection).FullItemsCollection.Count(), countPerTest + 3);
+            Assert.AreEqual((n6.Info as IFindCollection).FullItemsCollection.Count(), countPerTest + 3);
+            ILink n7 = factoryLink.Make("Link", "DetailNode", "number_2", -1);
+            Assert.AreEqual((n7.Info as IVersion).Ver, 0);
+            Assert.AreEqual((n1.Info as IFindCollection).FullItemsCollection.Count(), countPerTest + 4);
+            Assert.AreEqual((n7.Info as IFindCollection).FullItemsCollection.Count(), countPerTest + 4);
+        }
+
+        [Test(Description = "IDescription test property Description to DetailNode")]
+        public void IDescription_DetailNode_DescriptionCreate()
+        {
+            ILink n1 = factoryLink.Make("Link", "DetailNode", "number_1");
+            Assert.IsNotNull((n1.Info as IDescription).Description);
+            ILink n2 = factoryLink.Make("Link", "DetailNode", "number_2");
+            Assert.IsNotNull((n2.Info as IDescription).Description);
+            (n1.Info as IDescription).SetDescription = "test1";
+            Assert.AreEqual((n1.Info as IDescription).Description, "test1");
+            Assert.AreEqual((n2.Info as IDescription).Description, "");
+            (n2.Info as IDescription).SetDescription = "test2";
+            Assert.AreEqual((n2.Info as IDescription).Description, "test2");
+            (n1.Info as IDescription).SetDescription = "test3";
+            Assert.AreEqual((n1.Info as IDescription).Description, "test3");
+        }
+
+        [Test(Description = "DetailNode test SourceIntTypConvertor. Converter create element for TypeNode")]
+        public void DetailNode_TypeNode_SourceIntTypConvertor_value()
+        {
+            SourceIntTypConvertor intTypConvertor = new SourceIntTypConvertor();
+            ILink n1 = factoryLink.Make("Link", "DetailNode", "бЬви.123321.001-001");
+            Assert.IsNotNull(intTypConvertor.Convert((n1.Info as BaseInfoObject).TypeNode, typeof(string), null, null));
+        }
+
+        [Test(Description = "DetailNode test StringTypeNode make node")]
+        public void DetailNode_TypeNode_enum_StringTypeNode()
+        {
+            ILink n1 = factoryLink.Make("Link", StringTypeNode.DetailNode.ToString(), "бЬви.123321.001-001");
+            Assert.AreEqual((int)StringTypeNode.DetailNode, (n1.Info as BaseInfoObject).TypeNode);
+        }
+
+        [Test(Description = "DetailNode test method AddNode link detail-assembly wrong")]
+        public void DetailNode_AddNode_NotAdded_Assembly()
+        {
+            ILink n1 = factoryLink.Make("Link", StringTypeNode.DetailNode.ToString(), "бЬви.123321.100");
+            ILink n2 = factoryLink.Make("Link", StringTypeNode.AssemblyNode.ToString(), "бЬви.123321.101");
+            n1.AddNode(n2);
+            Assert.AreEqual(n1.Children.Count, 0);
+            Assert.IsFalse(n1.Children.Contains(n2));
+            n2.AddNode(n1);
+            Assert.AreEqual(n2.Children.Count, 1);
+            Assert.IsTrue(n2.Children.Contains(n1));
+        }
         /*
-[Test(Description = "IVersion test property Ver")]
-public void IVersion_Ver_New()
-{
-ILink n1 = factory.Make("AssemblyNode", "number_1");
-Assert.IsNotNull((n1 as IVersion).Ver);
-Assert.AreEqual((n1 as IVersion).Ver, 0);
-}
-[Test(Description = "IVersion test property Ver new versions and test IFindCollection count")]
-public void AseemblyNode_MakeAsembly_GenerateNewVersions()
-{
-ILink n1 = factory.Make("AssemblyNode", "number_1");
-ILink n2 = factory.Make("AssemblyNode", "number_1");
-Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 1);
-Assert.AreEqual((n2 as IFindCollection).FullItemsCollection.Count(), 1);
-Assert.AreEqual(n1,n2);
-ILink n3 = factory.Make("AssemblyNode", "number_1",1);
-Assert.AreNotEqual(n1, n3);
-Assert.AreEqual((n1 as IVersion).Ver, 0);
-Assert.AreEqual((n2 as IVersion).Ver, 0);
-Assert.AreEqual((n3 as IVersion).Ver, 1);
-Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 2);
-Assert.AreEqual((n3 as IFindCollection).FullItemsCollection.Count(), 2);
-ILink n4 = factory.Make("AssemblyNode", "number_1", 1);
-Assert.AreEqual(n3, n4);
-Assert.AreEqual((n4 as IVersion).Ver, 1);
-Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 2);
-Assert.AreEqual((n4 as IFindCollection).FullItemsCollection.Count(), 2);
-ILink n5 = factory.Make("AssemblyNode", "number_1", 2000);
-Assert.AreEqual((n5 as IVersion).Ver, 2);
-Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 3);
-Assert.AreEqual((n5 as IFindCollection).FullItemsCollection.Count(), 3);
-ILink n6 = factory.Make("AssemblyNode", "number_1", -1);
-Assert.AreEqual((n6 as IVersion).Ver, 3);
-Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 4);
-Assert.AreEqual((n6 as IFindCollection).FullItemsCollection.Count(), 4);
-ILink n7 = factory.Make("AssemblyNode", "number_2", -1);
-Assert.AreEqual((n7 as IVersion).Ver, 0);
-Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), 5);
-Assert.AreEqual((n7 as IFindCollection).FullItemsCollection.Count(), 5);
-}
-[Test(Description = "IDescription test property Description")]
-public void IDescription_AseemblyNode_DescriptionCreate()
-{
-ILink n1 = factory.Make("AssemblyNode", "number_1");          
-Assert.IsNotNull((n1 as IDescription).Description);
-ILink n2 = factory.Make("AssemblyNode", "number_2");
-Assert.IsNotNull((n2 as IDescription).Description);
-(n1 as IDescription).SetDescription = "test1";
-Assert.AreEqual((n1 as IDescription).Description, "test1");            
-Assert.AreEqual((n2 as IDescription).Description, "");
-(n2 as IDescription).SetDescription = "test2";
-Assert.AreEqual((n2 as IDescription).Description, "test2");
-(n1 as IDescription).SetDescription = "test3";
-Assert.AreEqual((n1 as IDescription).Description, "test3");
-}
-[Test(Description = "IVersion test methods AddVersion, RemoveVersion correct OldVersion1 and OldVersion2")]
-public void IVersionOldVersion1_2_Tested()
-{
-TestNode n1 = new TestNode();
-TestNode n2 = new TestNode();
-TestNode n3 = new TestNode();
-TestNode n4 = new TestNode();
-TestNode n5 = new TestNode();
-TestNode n6 = new TestNode();
-TestNode n7 = new TestNode();
-Assert.IsNull(n2.OldVersion1);
-Assert.IsNull(n2.OldVersion2);
-n1.AddVersion(n2);
-n1.AddVersion(n3);
-n1.AddVersion(n4);
-n3.AddVersion(n5);
-n5.AddVersion(n6);
-n2.AddVersion(n7);
-Assert.AreEqual(n2.OldVersions.Count,1);
-Assert.IsTrue(n2.OldVersions.Contains(n1));
-Assert.AreEqual(n2.OldVersion1, n1);
-Assert.IsNull(n2.OldVersion2);
-
-Assert.AreEqual(n4.OldVersions.Count, 3);
-Assert.IsTrue(n4.OldVersions.Contains(n1));
-Assert.IsTrue(n4.OldVersions.Contains(n2));
-Assert.IsTrue(n4.OldVersions.Contains(n3));
-Assert.AreEqual(n4.OldVersion1, n3);
-Assert.AreEqual(n4.OldVersion2, n2);
-
-Assert.AreEqual(n7.OldVersions.Count, 6);
-Assert.IsTrue(n7.OldVersions.Contains(n1));
-Assert.IsTrue(n7.OldVersions.Contains(n2));
-Assert.IsTrue(n7.OldVersions.Contains(n3));
-Assert.IsTrue(n7.OldVersions.Contains(n4));
-Assert.IsTrue(n7.OldVersions.Contains(n5));
-Assert.IsTrue(n7.OldVersions.Contains(n6));
-Assert.AreEqual(n7.OldVersion1, n6);
-Assert.AreEqual(n7.OldVersion2, n5);
-n7.RemoveVersion(n6);
-
-Assert.AreEqual(n2.OldVersions.Count, 1);
-Assert.IsTrue(n2.OldVersions.Contains(n1));
-Assert.AreEqual(n2.OldVersion1, n1);
-Assert.IsNull(n2.OldVersion2);
-Assert.AreEqual(n4.OldVersions.Count, 3);
-Assert.IsTrue(n4.OldVersions.Contains(n1));
-Assert.IsTrue(n4.OldVersions.Contains(n2));
-Assert.IsTrue(n4.OldVersions.Contains(n3));
-Assert.AreEqual(n4.OldVersion1, n3);
-Assert.AreEqual(n4.OldVersion2, n2);
-Assert.AreEqual(n7.OldVersions.Count, 5);
-Assert.IsTrue(n7.OldVersions.Contains(n1));
-Assert.IsTrue(n7.OldVersions.Contains(n2));
-Assert.IsTrue(n7.OldVersions.Contains(n3));
-Assert.IsTrue(n7.OldVersions.Contains(n4));
-Assert.IsTrue(n7.OldVersions.Contains(n5));
-Assert.IsFalse(n7.OldVersions.Contains(n6));
-Assert.AreEqual(n7.OldVersion1, n5);
-Assert.AreEqual(n7.OldVersion2, n4);
-n3.RemoveVersion(n3);
-
-Assert.AreEqual(n2.OldVersions.Count, 1);
-Assert.IsTrue(n2.OldVersions.Contains(n1));
-Assert.AreEqual(n2.OldVersion1, n1);
-Assert.IsNull(n2.OldVersion2);
-Assert.AreEqual(n4.OldVersions.Count, 2);
-Assert.IsTrue(n4.OldVersions.Contains(n1));
-Assert.IsTrue(n4.OldVersions.Contains(n2));
-Assert.IsFalse(n4.OldVersions.Contains(n3));
-Assert.AreEqual(n4.OldVersion1, n2);
-Assert.AreEqual(n4.OldVersion2, n1);
-Assert.AreEqual(n7.OldVersions.Count, 4);
-Assert.IsTrue(n7.OldVersions.Contains(n1));
-Assert.IsTrue(n7.OldVersions.Contains(n2));
-Assert.IsFalse(n7.OldVersions.Contains(n3));
-Assert.IsTrue(n7.OldVersions.Contains(n4));
-Assert.IsTrue(n7.OldVersions.Contains(n5));
-Assert.IsFalse(n7.OldVersions.Contains(n6));
-Assert.AreEqual(n7.OldVersion1, n5);
-Assert.AreEqual(n7.OldVersion2, n4);
-n6.RemoveVersion(n7);//n7 already deleted n6 not delete           
-Assert.AreEqual(n2.OldVersions.Count, 1);
-Assert.AreEqual(n4.OldVersions.Count, 2);
-Assert.AreEqual(n7.OldVersions.Count, 4);
-n5.RemoveVersion();
-
-Assert.AreEqual(n2.OldVersions.Count, 1);
-Assert.IsTrue(n2.OldVersions.Contains(n1));
-Assert.AreEqual(n2.OldVersion1, n1);
-Assert.IsNull(n2.OldVersion2);
-Assert.AreEqual(n4.OldVersions.Count, 2);
-Assert.IsTrue(n4.OldVersions.Contains(n1));
-Assert.IsTrue(n4.OldVersions.Contains(n2));
-Assert.IsFalse(n4.OldVersions.Contains(n3));
-Assert.AreEqual(n4.OldVersion1, n2);
-Assert.AreEqual(n4.OldVersion2, n1);
-Assert.AreEqual(n7.OldVersions.Count, 3);
-Assert.IsTrue(n7.OldVersions.Contains(n1));
-Assert.IsTrue(n7.OldVersions.Contains(n2));
-Assert.IsFalse(n7.OldVersions.Contains(n3));
-Assert.IsTrue(n7.OldVersions.Contains(n4));
-Assert.IsFalse(n7.OldVersions.Contains(n5));
-Assert.IsFalse(n7.OldVersions.Contains(n6));
-Assert.AreEqual(n7.OldVersion1, n4);
-Assert.AreEqual(n7.OldVersion2, n2);
-n4.RemoveVersion(n2);
-
-Assert.AreEqual(n4.OldVersions.Count, 1);
-Assert.IsTrue(n4.OldVersions.Contains(n1));
-Assert.IsFalse(n4.OldVersions.Contains(n2));
-Assert.IsFalse(n4.OldVersions.Contains(n3));
-Assert.AreEqual(n4.OldVersion1, n1);
-Assert.IsNull(n4.OldVersion2);
-Assert.AreEqual(n7.OldVersions.Count, 2);
-Assert.IsTrue(n7.OldVersions.Contains(n1));
-Assert.IsFalse(n7.OldVersions.Contains(n2));
-Assert.IsFalse(n7.OldVersions.Contains(n3));
-Assert.IsTrue(n7.OldVersions.Contains(n4));
-Assert.IsFalse(n7.OldVersions.Contains(n5));
-Assert.IsFalse(n7.OldVersions.Contains(n6));
-Assert.AreEqual(n7.OldVersion1, n4);
-Assert.AreEqual(n7.OldVersion2, n1);           
-}
-[Test(Description = "IVersion test methods AddVersion, RemoveVersion correct NextVersion1 and NextVersion2")]
-public void IVersionNextVersion1_2_Tested()
-{
-TestNode n1 = new TestNode();
-TestNode n2 = new TestNode();
-TestNode n3 = new TestNode();
-TestNode n4 = new TestNode();
-TestNode n5 = new TestNode();
-TestNode n6 = new TestNode();
-TestNode n7 = new TestNode();
-Assert.IsNull(n1.NextVersion1);
-Assert.IsNull(n1.NextVersion2);
-
-n1.AddVersion(n2);
-Assert.AreEqual(n1.NextVersion1,n2);
-Assert.IsNull(n1.NextVersion2);
-
-n1.AddVersion(n3);
-Assert.AreEqual(n1.NextVersion1, n2);
-Assert.AreEqual(n1.NextVersion2, n3);
-Assert.AreEqual(n2.NextVersion1, n3);
-Assert.IsNull(n2.NextVersion2);
-Assert.IsNull(n3.NextVersion1);
-Assert.IsNull(n3.NextVersion2);
-
-n1.AddVersion(n4);
-Assert.AreEqual(n1.NextVersion1, n2);
-Assert.AreEqual(n1.NextVersion2, n3);
-Assert.AreEqual(n2.NextVersion1, n3);
-Assert.AreEqual(n2.NextVersion2, n4);
-Assert.AreEqual(n3.NextVersion1, n4);
-Assert.IsNull(n3.NextVersion2);
-Assert.IsNull(n4.NextVersion1);
-Assert.IsNull(n4.NextVersion2);
-
-n3.AddVersion(n5);
-Assert.AreEqual(n1.NextVersion1, n2);
-Assert.AreEqual(n1.NextVersion2, n3);
-Assert.AreEqual(n2.NextVersion1, n3);
-Assert.AreEqual(n2.NextVersion2, n4);
-Assert.AreEqual(n3.NextVersion1, n4);
-Assert.AreEqual(n3.NextVersion2, n5);
-Assert.AreEqual(n4.NextVersion1, n5);
-Assert.IsNull(n4.NextVersion2);
-Assert.IsNull(n5.NextVersion1);
-Assert.IsNull(n5.NextVersion2);
-
-n5.AddVersion(n6);
-Assert.AreEqual(n1.NextVersion1, n2);
-Assert.AreEqual(n1.NextVersion2, n3);
-Assert.AreEqual(n2.NextVersion1, n3);
-Assert.AreEqual(n2.NextVersion2, n4);
-Assert.AreEqual(n3.NextVersion1, n4);
-Assert.AreEqual(n3.NextVersion2, n5);
-Assert.AreEqual(n4.NextVersion1, n5);
-Assert.AreEqual(n4.NextVersion2, n6);
-Assert.AreEqual(n5.NextVersion1, n6);
-Assert.IsNull(n5.NextVersion2);
-Assert.IsNull(n6.NextVersion1);
-Assert.IsNull(n6.NextVersion2);
-
-n2.AddVersion(n7);
-Assert.AreEqual(n1.NextVersion1, n2);
-Assert.AreEqual(n1.NextVersion2, n3);
-Assert.AreEqual(n2.NextVersion1, n3);
-Assert.AreEqual(n2.NextVersion2, n4);
-Assert.AreEqual(n3.NextVersion1, n4);
-Assert.AreEqual(n3.NextVersion2, n5);
-Assert.AreEqual(n4.NextVersion1, n5);
-Assert.AreEqual(n4.NextVersion2, n6);
-Assert.AreEqual(n5.NextVersion1, n6);
-Assert.AreEqual(n5.NextVersion2, n7);
-Assert.AreEqual(n6.NextVersion1, n7);
-Assert.IsNull(n6.NextVersion2);
-Assert.IsNull(n7.NextVersion1);
-Assert.IsNull(n7.NextVersion2);
-
-n7.RemoveVersion(n6);
-Assert.AreEqual(n1.NextVersion1, n2);
-Assert.AreEqual(n1.NextVersion2, n3);
-Assert.AreEqual(n2.NextVersion1, n3);
-Assert.AreEqual(n2.NextVersion2, n4);
-Assert.AreEqual(n3.NextVersion1, n4);
-Assert.AreEqual(n3.NextVersion2, n5);
-Assert.AreEqual(n4.NextVersion1, n5);
-Assert.AreEqual(n4.NextVersion2, n7);
-Assert.AreEqual(n5.NextVersion1, n7);
-Assert.IsNull(n5.NextVersion2);
-Assert.IsNull(n7.NextVersion1);
-Assert.IsNull(n7.NextVersion2);
-
-n3.RemoveVersion(n3);
-Assert.AreEqual(n1.NextVersion1, n2);
-Assert.AreEqual(n1.NextVersion2, n4);
-Assert.AreEqual(n2.NextVersion1, n4);
-Assert.AreEqual(n2.NextVersion2, n5);           
-Assert.AreEqual(n4.NextVersion1, n5);
-Assert.AreEqual(n4.NextVersion2, n7);
-Assert.AreEqual(n5.NextVersion1, n7);
-Assert.IsNull(n5.NextVersion2);
-Assert.IsNull(n7.NextVersion1);
-Assert.IsNull(n7.NextVersion2);
-
-n6.RemoveVersion(n7);//n7 already deleted n6 not delete           
-Assert.AreEqual(n1.NextVersion1, n2);
-Assert.AreEqual(n1.NextVersion2, n4);
-Assert.AreEqual(n2.NextVersion1, n4);
-Assert.AreEqual(n2.NextVersion2, n5);
-Assert.AreEqual(n4.NextVersion1, n5);
-Assert.AreEqual(n4.NextVersion2, n7);
-Assert.AreEqual(n5.NextVersion1, n7);
-Assert.IsNull(n5.NextVersion2);
-Assert.IsNull(n7.NextVersion1);
-Assert.IsNull(n7.NextVersion2);
-
-n5.RemoveVersion();
-Assert.AreEqual(n1.NextVersion1, n2);
-Assert.AreEqual(n1.NextVersion2, n4);
-Assert.AreEqual(n2.NextVersion1, n4);
-Assert.AreEqual(n2.NextVersion2, n7);
-Assert.AreEqual(n4.NextVersion1, n7);
-Assert.IsNull(n4.NextVersion2);
-Assert.IsNull(n7.NextVersion1);
-Assert.IsNull(n7.NextVersion2);
-
-n4.RemoveVersion(n2);
-Assert.AreEqual(n1.NextVersion1, n4);
-Assert.AreEqual(n1.NextVersion2, n7);           
-Assert.AreEqual(n4.NextVersion1, n7);
-Assert.IsNull(n4.NextVersion2);
-Assert.IsNull(n7.NextVersion1);
-Assert.IsNull(n7.NextVersion2);
-
-}
-[Test(Description = "IVersion test methods AddVersion, RemoveVersion correct NextVersion1 and NextVersion2")]
-public void INodes_AddNode_andVersionTest()
-{
-ILink n1 = factory.Make("AssemblyNode", "бЬви.123321.001-001");
-Assert.IsTrue(n1 is AssemblyNode);
-Assert.AreEqual((n1 as IVersion).Ver, 0);
-Assert.AreEqual((n1 as ICaption).Name, "бЬви.123321.001-001");
-Assert.IsNull((n1 as IVersion).NextVersion1);
-ILink n2 = factory.Make("AssemblyNode", "бЬви.123321.001-001",-1);
-Assert.IsTrue(n2 is AssemblyNode);
-Assert.AreEqual((n2 as IVersion).Ver, 1);
-Assert.AreEqual((n2 as ICaption).Name, "бЬви.123321.001-001");
-Assert.AreEqual((n1 as IVersion).NextVersion1,n2);
-Assert.AreEqual((n2 as IVersion).OldVersion1, n1);
-ILink n3 = factory.Make("AssemblyNode", "бЬви.123321.002");
-Assert.IsTrue(n3 is AssemblyNode);
-Assert.AreEqual((n3 as IVersion).Ver, 0);
-Assert.AreEqual((n3 as ICaption).Name, "бЬви.123321.002");
-Assert.IsNull((n3 as IVersion).NextVersion1);
-ILink n4 = factory.Make("AssemblyNode", "бЬви.123321.002", -1);
-Assert.IsTrue(n4 is AssemblyNode);
-Assert.AreEqual((n4 as IVersion).Ver, 1);
-Assert.AreEqual((n4 as ICaption).Name, "бЬви.123321.002");
-Assert.AreEqual((n3 as IVersion).NextVersion1, n4);
-Assert.AreEqual((n4 as IVersion).OldVersion1, n3);
-n1.AddNode(n4);
-Assert.AreEqual(n1.Children.Count,1);
-Assert.IsTrue(n1.Children.Contains(n4));
-}
-[Test(Description = "AssemblyNode test SourceIntTypConvertor. Converter create element for TypeNode")]
-public void AssemblyNode_TypeNode_SourceIntTypConvertor_value()
-{
-SourceIntTypConvertor intTypConvertor = new SourceIntTypConvertor();
-ILink n1 = factory.Make("AssemblyNode", "бЬви.123321.001-001");
-Assert.IsNotNull(intTypConvertor.Convert((n1 as BaseInfoObject).TypeNode, typeof(string), null, null));
-}
-[Test(Description = "AssemblyNode test StringTypeNode make node")]
-public void AssemblyNode_TypeNode_enum_StringTypeNode()
-{           
-ILink n1 = factory.Make(StringTypeNode.AssemblyNode.ToString(), "бЬви.123321.001-001");
-Assert.AreEqual((int)StringTypeNode.AssemblyNode, (n1 as BaseInfoObject).TypeNode);
-}
-[Test(Description = "Test DetailNode int TypeNode not null")]
-public void DetailNode_TypeNode_NotNull()
-{
-DetailNode n1 = new DetailNode();
-Assert.IsNotNull(n1.TypeNode);
-}
-[Test(Description = "Test ITecnologyNodeFactory create object DetailNode all type realization")]
-public void ITecnologyNodeFactory_DetailNode_Created()
-{
-ILink n1 = factory.Make("DetailNode", "test");
-Assert.IsTrue(n1 is DetailNode);
-Assert.IsTrue(n1 is BaseInfoObject);
-Assert.IsTrue(n1 is ILink);
-Assert.IsTrue(n1 is IVersion);
-Assert.IsTrue(n1 is INumberNomenclature);
-Assert.IsTrue(n1 is ICaption);
-}
-[Test(Description = "Test DetailNode string INumberNomenclature correct")]
-public void DetailNode_INumberNomenclature_NumberCorrect()
-{
-ILink n1 = factory.Make("DetailNode", "number_1");
-Assert.IsNotNull((n1 as INumberNomenclature).Number);
-Assert.AreEqual((n1 as INumberNomenclature).Number, "number_1");
-}
-[Test(Description = "Test DetailNode string ICaption correct")]
-public void DetailNode_ICaption_NameCorrect()
-{
-ILink n1 = factory.Make("DetailNode", "number_1");
-Assert.IsNotNull((n1 as ICaption).Name);
-Assert.AreEqual((n1 as ICaption).Name, "number_1");
-}
-[Test(Description = "Test DetailNode Number equal Name")]
-public void DetailNode_Number_Name()
-{
-ILink n1 = factory.Make("DetailNode", "number_1");
-Assert.AreEqual((n1 as INumberNomenclature).Number, (n1 as ICaption).Name);
-}
-[Test(Description = "IVersion test property Ver new versions and test IFindCollection count to DetailNode")]
-public void DetailNode_MakeAsembly_GenerateNewVersions()
-{
-
-ILink n1 = factory.Make("DetailNode", "number_1");
-int countPerTest = (n1 as IFindCollection).FullItemsCollection.Count();
-ILink n2 = factory.Make("DetailNode", "number_1");
-Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), countPerTest);
-Assert.AreEqual((n2 as IFindCollection).FullItemsCollection.Count(), countPerTest);
-Assert.AreEqual(n1, n2);
-ILink n3 = factory.Make("DetailNode", "number_1", 1);
-Assert.AreNotEqual(n1, n3);
-Assert.AreEqual((n1 as IVersion).Ver, 0);
-Assert.AreEqual((n2 as IVersion).Ver, 0);
-Assert.AreEqual((n3 as IVersion).Ver, 1);
-Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), countPerTest+1);
-Assert.AreEqual((n3 as IFindCollection).FullItemsCollection.Count(), countPerTest+1);
-ILink n4 = factory.Make("DetailNode", "number_1", 1);
-Assert.AreEqual(n3, n4);
-Assert.AreEqual((n4 as IVersion).Ver, 1);
-Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), countPerTest + 1);
-Assert.AreEqual((n4 as IFindCollection).FullItemsCollection.Count(), countPerTest + 1);
-ILink n5 = factory.Make("DetailNode", "number_1", 2000);
-Assert.AreEqual((n5 as IVersion).Ver, 2);
-Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), countPerTest + 2);
-Assert.AreEqual((n5 as IFindCollection).FullItemsCollection.Count(), countPerTest + 2);
-ILink n6 = factory.Make("DetailNode", "number_1", -1);
-Assert.AreEqual((n6 as IVersion).Ver, 3);
-Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), countPerTest + 3);
-Assert.AreEqual((n6 as IFindCollection).FullItemsCollection.Count(), countPerTest + 3);
-ILink n7 = factory.Make("DetailNode", "number_2", -1);
-Assert.AreEqual((n7 as IVersion).Ver, 0);
-Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), countPerTest + 4);
-Assert.AreEqual((n7 as IFindCollection).FullItemsCollection.Count(), countPerTest + 4);
-}
-[Test(Description = "IDescription test property Description to DetailNode")]
-public void IDescription_DetailNode_DescriptionCreate()
-{
-ILink n1 = factory.Make("DetailNode", "number_1");
-Assert.IsNotNull((n1 as IDescription).Description);
-ILink n2 = factory.Make("DetailNode", "number_2");
-Assert.IsNotNull((n2 as IDescription).Description);
-(n1 as IDescription).SetDescription = "test1";
-Assert.AreEqual((n1 as IDescription).Description, "test1");
-Assert.AreEqual((n2 as IDescription).Description, "");
-(n2 as IDescription).SetDescription = "test2";
-Assert.AreEqual((n2 as IDescription).Description, "test2");
-(n1 as IDescription).SetDescription = "test3";
-Assert.AreEqual((n1 as IDescription).Description, "test3");
-}
-[Test(Description = "DetailNode test SourceIntTypConvertor. Converter create element for TypeNode")]
-public void DetailNode_TypeNode_SourceIntTypConvertor_value()
-{
-SourceIntTypConvertor intTypConvertor = new SourceIntTypConvertor();
-ILink n1 = factory.Make("DetailNode", "бЬви.123321.001-001");
-Assert.IsNotNull(intTypConvertor.Convert((n1 as BaseInfoObject).TypeNode, typeof(string), null, null));
-}
-[Test(Description = "DetailNode test StringTypeNode make node")]
-public void DetailNode_TypeNode_enum_StringTypeNode()
-{
-ILink n1 = factory.Make(StringTypeNode.DetailNode.ToString(), "бЬви.123321.001-001");
-Assert.AreEqual((int)StringTypeNode.DetailNode, (n1 as BaseInfoObject).TypeNode);
-}
-[Test(Description = "DetailNode test method AddNode link detail-assembly wrong")]
-public void DetailNode_AddNode_NotAdded_Assembly()
-{
-ILink n1 = factory.Make(StringTypeNode.DetailNode.ToString(), "бЬви.123321.100");
-ILink n2 = factory.Make(StringTypeNode.AssemblyNode.ToString(), "бЬви.123321.101");
-n1.AddNode(n2);
-Assert.AreEqual(n1.Children.Count, 0);
-Assert.IsFalse(n1.Children.Contains(n2));            
-n2.AddNode(n1);
-Assert.AreEqual(n2.Children.Count, 1);
-Assert.IsTrue(n2.Children.Contains(n1));
-}
 [Test(Description = "Test MaterialNode int TypeNode not null")]
 public void MaterialNode_TypeNode_NotNull()
 {

@@ -77,7 +77,7 @@ namespace MikTecnologyNew
        
     }
     public interface IFindCollection
-    {
+    {       
         IEnumerable<IInformation> FullItemsCollection { get; }       
     }   
    public interface IRepository

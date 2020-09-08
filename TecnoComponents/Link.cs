@@ -46,15 +46,18 @@ namespace TecnoComponents
         }
         public void AddNode(ILink link)
         {
-            if ((_info != link.Info) && (!this.Children.Contains(link))&&(!this.AllParents.Contains(link)))
-            {                
-                foreach (ILink tmpLink in this.AllParents)
+            if (((_info as BaseInfoObject).TypeNode == 0)|(_info as BaseInfoObject).TypeNode == (int)StringTypeNode.AssemblyNode)
+            {
+                if ((_info != link.Info) && (!this.Children.Contains(link)) && (!this.AllParents.Contains(link)))
                 {
-                    (link as Link).AddAllParent(tmpLink);
+                    foreach (ILink tmpLink in this.AllParents)
+                    {
+                        (link as Link).AddAllParent(tmpLink);
+                    }
+                  (link as Link).AddAllParent(this);
+                    (link as Link).SetParent(this);
+                    _children.Add(link);
                 }
-              (link as Link).AddAllParent(this);
-                (link as Link).SetParent(this);
-                _children.Add(link);               
             }
         }
         protected void AddAllParent(ILink link)

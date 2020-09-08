@@ -43,13 +43,11 @@ namespace TecnoComponents
             return node as AssemblyNode;
         }
 
-       
-
         private static AssemblyNode FindNode(string number, int vers = 0)
         {
             
             var listNode = (from nod in _fullItems
-                            where (nod .Number == number)// && (nod.Ver == vers)
+                            where (nod .Number == number) && (nod.Ver == vers)
                             select nod);
           
             if (listNode.Count() == 0)
@@ -60,6 +58,11 @@ namespace TecnoComponents
             {
                return listNode.First();
             }               
+        }
+
+        public static void ClearItemsCollections()
+        {
+            _fullItems.Clear();
         }
 
         public AssemblyNode(string name)

@@ -28,9 +28,9 @@ namespace TecnoComponents
             switch (info)
             {
                 case "AssemblyNode":
-                      return AssemblyNode.CreateNode(name, vers);
+                    return AssemblyNode.CreateNode(name, vers);
                 case "DetailNode":
-                //     return DetailNode.CreateNode(name, vers);
+                    return DetailNode.CreateNode(name, vers);
                 case "MaterialNode":
                 //     return MaterialNode.CreateNode(name, vers);
                 default:
