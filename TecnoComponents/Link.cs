@@ -59,6 +59,10 @@ namespace TecnoComponents
                     _children.Add(link);
                 }
             }
+            if (((_info as BaseInfoObject).TypeNode == (int)StringTypeNode.DetailNode) && ((link.Info as BaseInfoObject).TypeNode == (int)StringTypeNode.MaterialNode))
+            {
+                ((DetailNode)_info).SetMaterial((IMaterial)link.Info);
+            }
         }
         protected void AddAllParent(ILink link)
         {

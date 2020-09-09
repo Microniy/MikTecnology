@@ -1660,138 +1660,166 @@ namespace MIKUnitTestProject
             Assert.AreEqual(n2.Children.Count, 1);
             Assert.IsTrue(n2.Children.Contains(n1));
         }
-        /*
-[Test(Description = "Test MaterialNode int TypeNode not null")]
-public void MaterialNode_TypeNode_NotNull()
-{
-MaterialNode n1 = new MaterialNode();
-Assert.IsNotNull(n1.TypeNode);
-}
-[Test(Description = "Test ITecnologyNodeFactory create object MaterialNode all type realization")]
-public void ITecnologyNodeFactory_MaterialNode_Created()
-{
-ILink n1 = factory.Make("MaterialNode", "test");
-Assert.IsTrue(n1 is MaterialNode);
-Assert.IsTrue(n1 is BaseInfoObject);
-Assert.IsTrue(n1 is ILink);
-Assert.IsTrue(n1 is IVersion);
-Assert.IsTrue(n1 is INumberNomenclature);
-Assert.IsTrue(n1 is ICaption);
-}
-[Test(Description = "Test MaterialNode string INumberNomenclature correct")]
-public void MaterialNode_INumberNomenclature_NumberCorrect()
-{
-ILink n1 = factory.Make("MaterialNode", "number_1");
-Assert.IsNotNull((n1 as INumberNomenclature).Number);
-Assert.AreEqual((n1 as INumberNomenclature).Number, "number_1");
-}
-[Test(Description = "Test MaterialNode string ICaption correct")]
-public void MaterialNode_ICaption_NameCorrect()
-{
-ILink n1 = factory.Make("MaterialNode", "number_1");
-Assert.IsNotNull((n1 as ICaption).Name);
-Assert.AreEqual((n1 as ICaption).Name, "  ");
-(n1 as IMaterial).SetAssortment("“Û·‡");
-Assert.AreEqual((n1 as ICaption).Name, "“Û·‡  ");
-Assert.AreEqual((n1 as IMaterial).Assortment, "“Û·‡");
-(n1 as IMaterial).SetSize("20x30");
-Assert.AreEqual((n1 as ICaption).Name, "“Û·‡ 20x30 ");
-Assert.AreEqual((n1 as IMaterial).Size, "20x30");
-(n1 as IMaterial).SetStandard("√Œ—“.12345-99");
-Assert.AreEqual((n1 as ICaption).Name, "“Û·‡ 20x30 √Œ—“.12345-99");
-Assert.AreEqual((n1 as IMaterial).Standard, "√Œ—“.12345-99");
-}
-[Test(Description = "IVersion test property Ver new versions and test IFindCollection count to MaterialNode")]
-public void MaterialNode_MakeAsembly_GenerateNewVersions()
-{
 
-ILink n1 = factory.Make("MaterialNode", "number_1");
-int countPerTest = (n1 as IFindCollection).FullItemsCollection.Count();
-ILink n2 = factory.Make("MaterialNode", "number_1");
-Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), countPerTest);
-Assert.AreEqual((n2 as IFindCollection).FullItemsCollection.Count(), countPerTest);
-Assert.AreEqual(n1, n2);
-ILink n3 = factory.Make("MaterialNode", "number_1", 1);
-Assert.AreNotEqual(n1, n3);
-Assert.AreEqual((n1 as IVersion).Ver, 0);
-Assert.AreEqual((n2 as IVersion).Ver, 0);
-Assert.AreEqual((n3 as IVersion).Ver, 1);
-Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), countPerTest + 1);
-Assert.AreEqual((n3 as IFindCollection).FullItemsCollection.Count(), countPerTest + 1);
-ILink n4 = factory.Make("MaterialNode", "number_1", 1);
-Assert.AreEqual(n3, n4);
-Assert.AreEqual((n4 as IVersion).Ver, 1);
-Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), countPerTest + 1);
-Assert.AreEqual((n4 as IFindCollection).FullItemsCollection.Count(), countPerTest + 1);
-ILink n5 = factory.Make("MaterialNode", "number_1", 2000);
-Assert.AreEqual((n5 as IVersion).Ver, 2);
-Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), countPerTest + 2);
-Assert.AreEqual((n5 as IFindCollection).FullItemsCollection.Count(), countPerTest + 2);
-ILink n6 = factory.Make("MaterialNode", "number_1", -1);
-Assert.AreEqual((n6 as IVersion).Ver, 3);
-Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), countPerTest + 3);
-Assert.AreEqual((n6 as IFindCollection).FullItemsCollection.Count(), countPerTest + 3);
-ILink n7 = factory.Make("MaterialNode", "number_2", -1);
-Assert.AreEqual((n7 as IVersion).Ver, 0);
-Assert.AreEqual((n1 as IFindCollection).FullItemsCollection.Count(), countPerTest + 4);
-Assert.AreEqual((n7 as IFindCollection).FullItemsCollection.Count(), countPerTest + 4);
-}
-[Test(Description = "MaterialNode test SourceIntTypConvertor. Converter create element for TypeNode")]
-public void MaterialNode_TypeNode_SourceIntTypConvertor_value()
-{
-SourceIntTypConvertor intTypConvertor = new SourceIntTypConvertor();
-ILink n1 = factory.Make("MaterialNode", "—Ã“ÿ.123321.001-001");
-Assert.IsNotNull(intTypConvertor.Convert((n1 as BaseInfoObject).TypeNode, typeof(string), null, null));
-}
-[Test(Description = "MaterialNode test StringTypeNode make node")]
-public void MaterialNode_TypeNode_enum_StringTypeNode()
-{
-ILink n1 = factory.Make(StringTypeNode.MaterialNode.ToString(), "—Ã“ÿ.123321.001-001");
-Assert.AreEqual((int)StringTypeNode.MaterialNode, (n1 as BaseInfoObject).TypeNode);
-}
-[Test(Description = "MaterialNode test method AddNode link detail-assembly wrong")]
-public void MaterialNode_AddNode_NotAdded_Assembly()
-{
-ILink n1 = factory.Make(StringTypeNode.DetailNode.ToString(), "—Ã“ÿ.123321.100");
-ILink n2 = factory.Make(StringTypeNode.MaterialNode.ToString(), "—Ã“ÿ.123321.101");
-n1.AddNode(n2);
-Assert.AreEqual(n1.Children.Count, 0);
-Assert.IsFalse(n1.Children.Contains(n2));
-n2.AddNode(n1);
-Assert.AreEqual(n2.Children.Count, 0);
-Assert.IsFalse(n2.Children.Contains(n1));
-}
-[Test(Description = "DatailNode test IMaterial property")]
-public void DatailNode_AddNode_Material()
-{
-ILink n1 = factory.Make(StringTypeNode.DetailNode.ToString(), "—Ã“ÿ.123321.100");
-Assert.IsNull((n1 as IMaterial).Assortment);
-Assert.IsNull((n1 as IMaterial).Size);
-Assert.IsNull((n1 as IMaterial).Standard);
-ILink n2 = factory.Make(StringTypeNode.MaterialNode.ToString(), "123");
-n1.AddNode(n2);
-Assert.IsNull((n1 as IMaterial).Assortment);
-Assert.IsNull((n1 as IMaterial).Size);
-Assert.IsNull((n1 as IMaterial).Standard);
-(n2 as IMaterial).SetAssortment(" Û„");
-Assert.AreEqual((n2 as IMaterial).Assortment, " Û„");
-Assert.AreEqual((n1 as IMaterial).Assortment, " Û„");
-(n2 as IMaterial).SetSize("100");
-Assert.AreEqual((n2 as IMaterial).Size, "100");
-Assert.AreEqual((n1 as IMaterial).Size, "100");
-(n2 as IMaterial).SetStandard("√Œ—“");
-Assert.AreEqual((n2 as IMaterial).Standard, "√Œ—“");
-Assert.AreEqual((n1 as IMaterial).Standard, "√Œ—“");
-(n1 as IMaterial).SetAssortment("“Û·‡");
-Assert.AreEqual((n2 as IMaterial).Assortment, "“Û·‡");
-Assert.AreEqual((n1 as IMaterial).Assortment, "“Û·‡");
-(n1 as IMaterial).SetSize("60");
-Assert.AreEqual((n2 as IMaterial).Size, "60");
-Assert.AreEqual((n1 as IMaterial).Size, "60");
-(n1 as IMaterial).SetStandard("DIN");
-Assert.AreEqual((n2 as IMaterial).Standard, "DIN");
-Assert.AreEqual((n1 as IMaterial).Standard, "DIN");
-}
-*/
+        [Test(Description = "Test MaterialNode int TypeNode not null")]
+        public void MaterialNode_TypeNode_NotNull()
+        {
+            MaterialNode n1 = new MaterialNode();
+            Assert.IsNotNull(n1.TypeNode);
+        }
+
+        [Test(Description = "Test ITecnologyNodeFactory create object MaterialNode all type realization")]
+        public void ITecnologyNodeFactory_MaterialNode_Created()
+        {
+            IInformation as1 = MaterialNode.CreateNode("test");
+            Assert.IsTrue(as1 is IVersion);
+            Assert.IsTrue(as1 is INumberNomenclature);
+            Assert.IsTrue(as1 is ICaption);
+            Assert.IsTrue(as1 is IMaterial);
+            Assert.IsTrue(as1 is MaterialNode);
+            Assert.IsTrue(as1 is BaseInfoObject);
+
+            IInformation Inf1 = factoryInfo.Make("MaterialNode", "test");
+            Assert.IsTrue(Inf1 is IVersion);
+            Assert.IsTrue(Inf1 is INumberNomenclature);
+            Assert.IsTrue(Inf1 is ICaption);
+            Assert.IsTrue(Inf1 is IMaterial);
+            Assert.IsTrue(Inf1 is MaterialNode);
+            Assert.IsTrue(Inf1 is BaseInfoObject);
+
+            ILink n1 = factoryLink.Make("Link", "MaterialNode", "test");
+
+            Assert.IsTrue(n1 is ILink);
+            Assert.IsTrue(n1.Info is IVersion);
+            Assert.IsTrue(n1.Info is INumberNomenclature);
+            Assert.IsTrue(n1.Info is ICaption);
+            Assert.IsTrue(n1.Info is IMaterial);
+            Assert.IsTrue(n1.Info is IInformation);
+            Assert.IsTrue(n1.Info is MaterialNode);
+            Assert.IsTrue(n1.Info is BaseInfoObject);
+
+        }
+
+        [Test(Description = "Test MaterialNode string INumberNomenclature correct")]
+        public void MaterialNode_INumberNomenclature_NumberCorrect()
+        {
+            ILink n1 = factoryLink.Make("Link", "MaterialNode", "number_1");
+            Assert.IsNotNull((n1.Info as INumberNomenclature).Number);
+            Assert.AreEqual((n1.Info as INumberNomenclature).Number, "number_1");
+        }
+
+        [Test(Description = "Test MaterialNode string ICaption correct")]
+        public void MaterialNode_ICaption_NameCorrect()
+        {
+            ILink n1 = factoryLink.Make("Link", "MaterialNode", "number_1");
+            Assert.IsNotNull((n1.Info as ICaption).Name);
+            Assert.AreEqual((n1.Info as ICaption).Name, "  ");
+            (n1.Info as IMaterial).SetAssortment("“Û·‡");
+            Assert.AreEqual((n1.Info as ICaption).Name, "“Û·‡  ");
+            Assert.AreEqual((n1.Info as IMaterial).Assortment, "“Û·‡");
+            (n1.Info as IMaterial).SetSize("20x30");
+            Assert.AreEqual((n1.Info as ICaption).Name, "“Û·‡ 20x30 ");
+            Assert.AreEqual((n1.Info as IMaterial).Size, "20x30");
+            (n1.Info as IMaterial).SetStandard("√Œ—“.12345-99");
+            Assert.AreEqual((n1.Info as ICaption).Name, "“Û·‡ 20x30 √Œ—“.12345-99");
+            Assert.AreEqual((n1.Info as IMaterial).Standard, "√Œ—“.12345-99");
+        }
+
+        [Test(Description = "IVersion test property Ver new versions and test IFindCollection count to MaterialNode")]
+        public void MaterialNode_MakeAsembly_GenerateNewVersions()
+        {
+            MaterialNode.ClearItemsCollections();
+            ILink n1 = factoryLink.Make("Link", "MaterialNode", "number_1");
+            int countPerTest = (n1.Info as IFindCollection).FullItemsCollection.Count();
+            ILink n2 = factoryLink.Make("Link", "MaterialNode", "number_1");
+            Assert.AreEqual((n1.Info as IFindCollection).FullItemsCollection.Count(), countPerTest);
+            Assert.AreEqual((n2.Info as IFindCollection).FullItemsCollection.Count(), countPerTest);
+            Assert.AreEqual(n1.Info, n2.Info);
+            ILink n3 = factoryLink.Make("Link", "MaterialNode", "number_1", 1);
+            Assert.AreNotEqual(n1.Info, n3.Info);
+            Assert.AreEqual((n1.Info as IVersion).Ver, 0);
+            Assert.AreEqual((n2.Info as IVersion).Ver, 0);
+            Assert.AreEqual((n3.Info as IVersion).Ver, 1);
+            Assert.AreEqual((n1.Info as IFindCollection).FullItemsCollection.Count(), countPerTest + 1);
+            Assert.AreEqual((n3.Info as IFindCollection).FullItemsCollection.Count(), countPerTest + 1);
+            ILink n4 = factoryLink.Make("Link", "MaterialNode", "number_1", 1);
+            Assert.AreEqual(n3.Info, n4.Info);
+            Assert.AreEqual((n4.Info as IVersion).Ver, 1);
+            Assert.AreEqual((n1.Info as IFindCollection).FullItemsCollection.Count(), countPerTest + 1);
+            Assert.AreEqual((n4.Info as IFindCollection).FullItemsCollection.Count(), countPerTest + 1);
+            ILink n5 = factoryLink.Make("Link", "MaterialNode", "number_1", 2000);
+            Assert.AreEqual((n5.Info as IVersion).Ver, 2);
+            Assert.AreEqual((n1.Info as IFindCollection).FullItemsCollection.Count(), countPerTest + 2);
+            Assert.AreEqual((n5.Info as IFindCollection).FullItemsCollection.Count(), countPerTest + 2);
+            ILink n6 = factoryLink.Make("Link", "MaterialNode", "number_1", -1);
+            Assert.AreEqual((n6.Info as IVersion).Ver, 3);
+            Assert.AreEqual((n1.Info as IFindCollection).FullItemsCollection.Count(), countPerTest + 3);
+            Assert.AreEqual((n6.Info as IFindCollection).FullItemsCollection.Count(), countPerTest + 3);
+            ILink n7 = factoryLink.Make("Link", "MaterialNode", "number_2", -1);
+            Assert.AreEqual((n7.Info as IVersion).Ver, 0);
+            Assert.AreEqual((n1.Info as IFindCollection).FullItemsCollection.Count(), countPerTest + 4);
+            Assert.AreEqual((n7.Info as IFindCollection).FullItemsCollection.Count(), countPerTest + 4);
+        }
+
+        [Test(Description = "MaterialNode test SourceIntTypConvertor. Converter create element for TypeNode")]
+        public void MaterialNode_TypeNode_SourceIntTypConvertor_value()
+        {
+            SourceIntTypConvertor intTypConvertor = new SourceIntTypConvertor();
+            ILink n1 = factoryLink.Make("Link", "MaterialNode", "—Ã“ÿ.123321.001-001");
+            Assert.IsNotNull(intTypConvertor.Convert((n1.Info as BaseInfoObject).TypeNode, typeof(string), null, null));
+        }
+
+        [Test(Description = "MaterialNode test StringTypeNode make node")]
+        public void MaterialNode_TypeNode_enum_StringTypeNode()
+        {
+            ILink n1 = factoryLink.Make("Link", StringTypeNode.MaterialNode.ToString(), "—Ã“ÿ.123321.001-001");
+            Assert.AreEqual((int)StringTypeNode.MaterialNode, (n1.Info as BaseInfoObject).TypeNode);
+        }
+
+        [Test(Description = "MaterialNode test method AddNode link detail-assembly wrong")]
+        public void MaterialNode_AddNode_NotAdded_Assembly()
+        {
+            ILink n1 = factoryLink.Make("Link", StringTypeNode.DetailNode.ToString(), "—Ã“ÿ.123321.100");
+            ILink n2 = factoryLink.Make("Link", StringTypeNode.MaterialNode.ToString(), "—Ã“ÿ.123321.101");
+            n1.AddNode(n2);
+            Assert.AreEqual(n1.Children.Count, 0);
+            Assert.IsFalse(n1.Children.Contains(n2));
+            n2.AddNode(n1);
+            Assert.AreEqual(n2.Children.Count, 0);
+            Assert.IsFalse(n2.Children.Contains(n1));
+        }
+
+        [Test(Description = "DatailNode test IMaterial property")]
+        public void DatailNode_AddNode_Material()
+        {
+            ILink n1 = factoryLink.Make("Link", StringTypeNode.DetailNode.ToString(), "—Ã“ÿ.123321.100");
+            Assert.IsNull((n1.Info as IMaterial).Assortment);
+            Assert.IsNull((n1.Info as IMaterial).Size);
+            Assert.IsNull((n1.Info as IMaterial).Standard);
+            ILink n2 = factoryLink.Make("Link", StringTypeNode.MaterialNode.ToString(), "123");
+            n1.AddNode(n2);
+            Assert.IsNull((n1.Info as IMaterial).Assortment);
+            Assert.IsNull((n1.Info as IMaterial).Size);
+            Assert.IsNull((n1.Info as IMaterial).Standard);
+            (n2.Info as IMaterial).SetAssortment(" Û„");
+            Assert.AreEqual((n2.Info as IMaterial).Assortment, " Û„");
+            Assert.AreEqual((n1.Info as IMaterial).Assortment, " Û„");
+            (n2.Info as IMaterial).SetSize("100");
+            Assert.AreEqual((n2.Info as IMaterial).Size, "100");
+            Assert.AreEqual((n1.Info as IMaterial).Size, "100");
+            (n2.Info as IMaterial).SetStandard("√Œ—“");
+            Assert.AreEqual((n2.Info as IMaterial).Standard, "√Œ—“");
+            Assert.AreEqual((n1.Info as IMaterial).Standard, "√Œ—“");
+            (n1.Info as IMaterial).SetAssortment("“Û·‡");
+            Assert.AreEqual((n2.Info as IMaterial).Assortment, "“Û·‡");
+            Assert.AreEqual((n1.Info as IMaterial).Assortment, "“Û·‡");
+            (n1.Info as IMaterial).SetSize("60");
+            Assert.AreEqual((n2.Info as IMaterial).Size, "60");
+            Assert.AreEqual((n1.Info as IMaterial).Size, "60");
+            (n1.Info as IMaterial).SetStandard("DIN");
+            Assert.AreEqual((n2.Info as IMaterial).Standard, "DIN");
+            Assert.AreEqual((n1.Info as IMaterial).Standard, "DIN");
+        }
+
     }
 }

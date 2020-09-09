@@ -6,7 +6,7 @@ using MikTecnologyNew;
 
 namespace TecnoComponents
 {
-    public class MaterialNode //: BaseInfoObject, IFindCollection, ICaption, INumberNomenclature,IMaterial
+    public class MaterialNode : BaseInfoObject, IFindCollection, ICaption, INumberNomenclature,IMaterial
     {
         private static int _typeId = (int)StringTypeNode.MaterialNode;
        
@@ -19,13 +19,14 @@ namespace TecnoComponents
         private string _standard;
         public string Standard => _standard;
 
-        public IEnumerable<ILink> FullItemsCollection => _fullItems.Cast<ILink>();
+        public IEnumerable<IInformation> FullItemsCollection => _fullItems.Cast<IInformation>();
 
         public string Name => _assortment+" "+_size+" "+_standard;
 
         public string Number => _number;
 
-       
+        public override int TypeNode => _typeId;
+
         public static MaterialNode CreateNode(string number, int vers = 0)
         {
             MaterialNode node0 = FindNode(number, 0);
@@ -33,7 +34,7 @@ namespace TecnoComponents
             if (node is null)
             {
                 node = new MaterialNode(number);
-               // node0?.AddVersion(node);
+                node0?.AddVersion(node);
                 _fullItems.Add(node);
             }
             return node as MaterialNode;
@@ -42,7 +43,7 @@ namespace TecnoComponents
         {
 
             var listNode = (from nod in _fullItems
-                            where (nod.Number == number) //&& (nod.Ver == vers)
+                            where (nod.Number == number) && (nod.Ver == vers)
                             select nod);
 
             if (listNode.Count() == 0)
@@ -80,6 +81,11 @@ namespace TecnoComponents
         public void RemoveMaterial()
         {
             throw new NotImplementedException();
+        }
+
+        public static void ClearItemsCollections()
+        {
+            _fullItems.Clear();
         }
     }
 }
