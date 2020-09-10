@@ -33,13 +33,7 @@ namespace TecnoComponents
             if ((_info != node) && (link == null) && (parent == null))
             {
                 ILink link1 = new Link(node);
-                foreach(ILink tmpLink in this.AllParents)
-                {
-                    (link1 as Link).AddAllParent(tmpLink);
-                }
-                (link1 as Link).AddAllParent(this);
-                (link1 as Link).SetParent(this);
-                _children.Add(link1);
+                AddNode(link1);
                 return link1;
             }
             return null;

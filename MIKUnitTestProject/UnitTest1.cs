@@ -34,7 +34,7 @@ namespace MIKUnitTestProject
         [Test(Description = "ILink test method Add")]
         public void ILink_AddNode_One()
         {
-            ILink n1 = new Link();
+            ILink n1 = new Link(new TestNode());
             IInformation n2 = new TestNode();
             Assert.AreEqual(n1.Children.Count, 0);
             n1.AddNode(n2);
@@ -45,7 +45,7 @@ namespace MIKUnitTestProject
         [Test(Description = "ILink test method Add")]
         public void ILink_AddNode_Two()
         {
-            ILink n1 = new Link();
+            ILink n1 = new Link(new TestNode());
             TestNode n2 = new TestNode();
             Assert.AreEqual(n1.Children.Count, 0);
             n1.AddNode(n2);
@@ -63,7 +63,7 @@ namespace MIKUnitTestProject
         [TestCase(100, Description = "ILink test method many Add")]
         public void ILink_AddNode_Many(int value)
         {
-            ILink n1 = new Link();
+            ILink n1 = new Link(new TestNode());
 
             for (int i = 0; i < value; i++)
             {
@@ -89,7 +89,7 @@ namespace MIKUnitTestProject
         [Test(Description = "ILink test method Remove")]
         public void ILink_Remove_One()
         {
-            ILink n1 = new Link();
+            ILink n1 = new Link(new TestNode());
             TestNode n2 = new TestNode();
             Assert.AreEqual(n1.Children.Count, 0);
             n1.AddNode(n2);
@@ -101,7 +101,7 @@ namespace MIKUnitTestProject
         [Test(Description = "ILink test method Remove")]
         public void ILink_Remove_Two()
         {
-            ILink n1 = new Link();
+            ILink n1 = new Link(new TestNode());
             TestNode n2 = new TestNode();
             TestNode n3 = new TestNode();
             Assert.AreEqual(n1.Children.Count, 0);
@@ -915,7 +915,7 @@ namespace MIKUnitTestProject
         [Test(Description = "ILink test property Parent")]
         public void ILink_Parent_AddRemove()
         {
-            ILink n1 = new Link();
+            ILink n1 = new Link(new TestNode());
             TestNode nod2 = new TestNode();
 
             ILink n2 = n1.AddNode(nod2);
@@ -1013,7 +1013,7 @@ namespace MIKUnitTestProject
         [Test(Description = "ILink test cyclic links")]
         public void ILink_Added_CyclicLinks()
         {
-            ILink n1 = new Link();
+            ILink n1 = new Link(new TestNode());
             TestNode nod2 = new TestNode();
             Assert.AreEqual(n1.Children.Count, 0);
             ILink n2 = n1.AddNode(nod2);
@@ -1819,6 +1819,14 @@ namespace MIKUnitTestProject
             (n1.Info as IMaterial).SetStandard("DIN");
             Assert.AreEqual((n2.Info as IMaterial).Standard, "DIN");
             Assert.AreEqual((n1.Info as IMaterial).Standard, "DIN");
+            IInformation mat2 = factoryInfo.Make(StringTypeNode.MaterialNode.ToString(), "2 mat");
+            (mat2 as IMaterial).SetAssortment("Øâåëëåð");
+            (mat2 as IMaterial).SetSize("40õ20");
+            (mat2 as IMaterial).SetStandard("ÃÎÑÒ-1");
+            n1.AddNode(mat2);
+            Assert.AreEqual((n1.Info as IMaterial).Assortment, "Øâåëëåð");
+            Assert.AreEqual((n1.Info as IMaterial).Size, "40õ20");
+            Assert.AreEqual((n1.Info as IMaterial).Standard, "ÃÎÑÒ-1");
         }
 
     }

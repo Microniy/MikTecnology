@@ -13,11 +13,11 @@
    
        
         <StackPanel Orientation="Horizontal">
-        <Image Height="16" Width="16" Source="{Binding TypeNode,Converter={StaticResource SourceIntConverter}}"></Image>
+        <Image Height="16" Width="16" Source="{Binding Info.TypeNode,Converter={StaticResource SourceIntConverter}}"></Image>
 
-        <TextBlock Foreground="White" FontWeight="Bold" Text="{Binding Name}" Margin="0"></TextBlock>
+        <TextBlock Foreground="White" FontWeight="Bold" Text="{Binding Info.Name}" Margin="0"></TextBlock>
         <TextBlock Foreground="#FF00E8FF" VerticalAlignment="Top" FontSize="10" FontStyle="Italic" FontWeight="Bold" HorizontalAlignment="Left" Margin="2,0,0,0">v.</TextBlock>
-        <TextBlock Foreground="#FF00E8FF" VerticalAlignment="Top" FontSize="10" FontStyle="Italic" FontWeight="Bold" TextAlignment="Left" Margin="0" Text="{Binding Ver}"></TextBlock>
+        <TextBlock Foreground="#FF00E8FF" VerticalAlignment="Top" FontSize="10" FontStyle="Italic" FontWeight="Bold" TextAlignment="Left" Margin="0" Text="{Binding Info.Ver}"></TextBlock>
 
         </StackPanel>
         
