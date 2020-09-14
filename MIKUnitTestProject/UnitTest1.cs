@@ -1829,5 +1829,17 @@ namespace MIKUnitTestProject
             Assert.AreEqual((n1.Info as IMaterial).Standard, "√Œ—“-1");
         }
 
+        [Test(Description = "IInformation test method DirectLinks Added")]
+        public void IInformation_DirectLinks_Added()
+        {
+            IInformation I1 = factoryInfo.Make(StringTypeNode.DetailNode.ToString(), "New00001");
+            ILink n1 = factoryLink.Make("Link", StringTypeNode.DetailNode.ToString(), "New00001");
+            Assert.AreEqual(n1.Info.DirectLinks.Count(), 1);
+            Assert.IsTrue(n1.Info.DirectLinks.Contains(n1));
+            ILink n2 = new Link(new TestNode());
+            ILink n3 = n2.AddNode(I1);
+            Assert.AreEqual(n1.Info.DirectLinks.Count(), 2);
+            Assert.IsTrue(n1.Info.DirectLinks.Contains(n3));
+        }
     }
 }

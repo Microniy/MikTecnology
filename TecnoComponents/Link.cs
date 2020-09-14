@@ -101,6 +101,7 @@ namespace TecnoComponents
         public Link(IInformation information)
         {
             _info = information;
+            _info.DirectLinks.Add(this);
         }
         public Link() : this(null)
         {
@@ -108,8 +109,7 @@ namespace TecnoComponents
         }
         public static Link CreateLink(IInformation info)
         {
-            Link link = new Link(info);
-               
+            Link link = new Link(info);           
             return link;
         }
 

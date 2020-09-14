@@ -27,7 +27,7 @@ namespace MikTecnologyNew
     }
     public interface IInformation
     {
-        IList<IInformation> DirectParents { get; }
+        IList<ILink> DirectLinks { get; }
        
     }
     public interface IVersion

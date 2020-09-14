@@ -9,8 +9,8 @@ namespace TecnoComponents
     public abstract class BaseInfoObject : IInformation, IVersion
     {
 
-        private IList<IInformation> _directParents;
-
+       
+        private IList<ILink> _directLinks = new List<ILink>();
 
         private IList<IVersion> _versions = new List<IVersion>();
         protected IList<IVersion> Versions => _versions;
@@ -35,11 +35,10 @@ namespace TecnoComponents
 
         public IVersion NextVersion2 => _nextVersion.Skip(1).Take(1).FirstOrDefault();
 
-        public IVersion NextVersion1 => _nextVersion.FirstOrDefault();
+        public IVersion NextVersion1 => _nextVersion.FirstOrDefault();       
 
-        public IList<IInformation> DirectParents => _directParents;       
+        public IList<ILink> DirectLinks => _directLinks;
 
-       
         public void AddVersion(IVersion node)
         {
             //Children don't have to self and repeated versions
