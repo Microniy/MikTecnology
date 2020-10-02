@@ -21,6 +21,10 @@ namespace TecnoComponents
             return nodes;
         }
     }
+    public interface ISqlRepository : IRepository
+    {
+        
+    }
     public class MoocDB : IRepository
     {
         TechnologyLinkFactoryImplementation factory = new TechnologyLinkFactoryImplementation();

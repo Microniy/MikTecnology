@@ -25,7 +25,7 @@ namespace TecnoComponents
 
         public string Number => _number;
 
-        public override int TypeNode => _typeId;
+        public override int TypeNode { get => _typeId; set => _typeId = value; }
 
         public static MaterialNode CreateNode(string number, int vers = 0)
         {

@@ -62,8 +62,7 @@ namespace MikTecnologyNew
     }
     public interface IDescription
     {
-        string Description { get; }
-        string SetDescription { set; }
+        string Description { get; set; }        
     }
     public interface IMaterial
     {

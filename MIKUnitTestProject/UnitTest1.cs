@@ -27,7 +27,7 @@ namespace MIKUnitTestProject
                 this.Versions = base.Versions;
                 _name = string.Empty;
             }
-            public override int TypeNode => _idType;
+            public override int TypeNode { get => _idType; set => _idType = value; }
 
 
         }
@@ -1209,12 +1209,12 @@ namespace MIKUnitTestProject
             Assert.IsNotNull((n1.Info as IDescription).Description);
             ILink n2 = factoryLink.Make("Link", "AssemblyNode", "number_2");
             Assert.IsNotNull((n2.Info as IDescription).Description);
-            (n1.Info as IDescription).SetDescription = "test1";
+            (n1.Info as IDescription).Description = "test1";
             Assert.AreEqual((n1.Info as IDescription).Description, "test1");
             Assert.AreEqual((n2.Info as IDescription).Description, "");
-            (n2.Info as IDescription).SetDescription = "test2";
+            (n2.Info as IDescription).Description = "test2";
             Assert.AreEqual((n2.Info as IDescription).Description, "test2");
-            (n1.Info as IDescription).SetDescription = "test3";
+            (n1.Info as IDescription).Description = "test3";
             Assert.AreEqual((n1.Info as IDescription).Description, "test3");
         }
 
@@ -1624,12 +1624,12 @@ namespace MIKUnitTestProject
             Assert.IsNotNull((n1.Info as IDescription).Description);
             ILink n2 = factoryLink.Make("Link", "DetailNode", "number_2");
             Assert.IsNotNull((n2.Info as IDescription).Description);
-            (n1.Info as IDescription).SetDescription = "test1";
+            (n1.Info as IDescription).Description = "test1";
             Assert.AreEqual((n1.Info as IDescription).Description, "test1");
             Assert.AreEqual((n2.Info as IDescription).Description, "");
-            (n2.Info as IDescription).SetDescription = "test2";
+            (n2.Info as IDescription).Description = "test2";
             Assert.AreEqual((n2.Info as IDescription).Description, "test2");
-            (n1.Info as IDescription).SetDescription = "test3";
+            (n1.Info as IDescription).Description = "test3";
             Assert.AreEqual((n1.Info as IDescription).Description, "test3");
         }
 

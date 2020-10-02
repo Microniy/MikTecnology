@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using System.Linq;
 using MikTecnologyNew;
+
 
 namespace TecnoComponents
 {
@@ -12,12 +14,17 @@ namespace TecnoComponents
         private ILink _parent;
         private IInformation _info;
         private IList<ILink> _children = new List<ILink>();
+        public int Id { get; set; }
         public IList<ILink> AllParents => _allParent;
 
+        public virtual Link ParentDB { get => (Link)_parent; set => _parent = (ILink)value; } 
         public ILink Parent => _parent;
 
-        public IInformation Info => _info;
+        public int InfoId { get; set; }       
+        public BaseInfoObject InfoDB { get=> (BaseInfoObject)_info; set=>_info=value; }
+        public IInformation Info =>_info;   
 
+        public virtual IEnumerable<Link> ChildrenDB { get => _children.Cast<Link>(); set => _children = (IList<ILink>)value; }
         public IList<ILink> Children => _children;
 
         public IQuantity Count => throw new NotImplementedException();

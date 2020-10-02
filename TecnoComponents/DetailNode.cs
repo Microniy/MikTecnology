@@ -17,13 +17,12 @@ namespace TecnoComponents
 
         public IEnumerable<IInformation> FullItemsCollection => _fullItems.Cast<IInformation>();
 
-        public string Name => _name;
+        public string Name { get => _name; set => _name = value; }
 
-        public string Number => _name;
+        public string Number { get => _name; set => _name = value; }
 
-        public string Description => _description;
-
-        public string SetDescription { set => _description = value; }
+        public string Description { get => _description; set => _description = value; }
+       
 
         public string Assortment => _material?.Assortment;
 
@@ -31,7 +30,7 @@ namespace TecnoComponents
 
         public string Standard => _material?.Standard;
 
-        public override int TypeNode => _typeId;
+        public override int TypeNode { get => _typeId; set => _typeId = value; }
 
         public static DetailNode CreateNode(string name, int vers = 0)
         {

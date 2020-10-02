@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using MikTecnologyNew;
@@ -18,17 +19,15 @@ namespace TecnoComponents
         private string _description=string.Empty;
         
 
-        public string Number => _name;
+        public string Number { get => _name; set => _name = value; }
 
         public IEnumerable<IInformation> FullItemsCollection => _fullItems.Cast<IInformation>();
+       
+        public string Description { get => _description; set => _description = value; }        
 
-        public string Description =>_description;
+        public string Name { get => _name; set => _name = value; }
 
-        public string SetDescription { set => _description=value; }
-
-        public string Name => _name;
-
-        public override int TypeNode => _typeId;
+        public override int TypeNode { get => _typeId; set => _typeId = value; }
 
         public static AssemblyNode CreateNode(string name,int vers = 0)
         {

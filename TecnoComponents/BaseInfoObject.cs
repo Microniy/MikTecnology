@@ -6,6 +6,12 @@ using MikTecnologyNew;
 
 namespace TecnoComponents
 {
+    public enum StringTypeNode
+    {
+        AssemblyNode = 1,
+        DetailNode = 2,
+        MaterialNode = 3
+    }
     public abstract class BaseInfoObject : IInformation, IVersion
     {
 
@@ -13,6 +19,7 @@ namespace TecnoComponents
         private IList<ILink> _directLinks = new List<ILink>();
 
         private IList<IVersion> _versions = new List<IVersion>();
+        public int Id { get; set; }
         protected IList<IVersion> Versions => _versions;
         //First version this parameter to be null
         private IVersion _baseVersion;
@@ -24,7 +31,7 @@ namespace TecnoComponents
         
         public abstract int TypeNode
         {
-            get;
+            get; set;
         }              
 
         public int Ver => _ver;
@@ -36,8 +43,8 @@ namespace TecnoComponents
         public IVersion NextVersion2 => _nextVersion.Skip(1).Take(1).FirstOrDefault();
 
         public IVersion NextVersion1 => _nextVersion.FirstOrDefault();       
-
-        public IList<ILink> DirectLinks => _directLinks;
+        public virtual IEnumerable<Link> DirectLinkDB { get => _directLinks.Cast<Link>(); set => _directLinks = (IList<ILink>)value; }
+        public IList<ILink> DirectLinks { get => _directLinks; }
 
         public void AddVersion(IVersion node)
         {

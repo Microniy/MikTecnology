@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyVersion>1.0.51.51</AssemblyVersion>
+    <FileVersion>1.0.51.51</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20200928063831_LinksUpdateInfo2.cs" />
+    <Compile Remove="Migrations\20200928063831_LinksUpdateInfo2.Designer.cs" />
+    <Compile Remove="Migrations\20200930130245_LinksUpdateInfo1.cs" />
+    <Compile Remove="Migrations\20200930130245_LinksUpdateInfo1.Designer.cs" />
+    <Compile Remove="Migrations\20201001102234_LinksUpdateInfo3.cs" />
+    <Compile Remove="Migrations\20201001102234_LinksUpdateInfo3.Designer.cs" />
+    <Compile Remove="Migrations\20201001102541_LinksUpdateInfo3.cs" />
+    <Compile Remove="Migrations\20201001102541_LinksUpdateInfo3.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TecnoComponents\TecnoComponents.csproj" />
+  </ItemGroup>
+
+</Project>
