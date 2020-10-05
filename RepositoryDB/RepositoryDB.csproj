@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AssemblyVersion>1.0.51.51</AssemblyVersion>
-    <FileVersion>1.0.51.51</FileVersion>
+    <AssemblyVersion>1.0.55.55</AssemblyVersion>
+    <FileVersion>1.0.55.55</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,6 +15,8 @@
     <Compile Remove="Migrations\20201001102234_LinksUpdateInfo3.Designer.cs" />
     <Compile Remove="Migrations\20201001102541_LinksUpdateInfo3.cs" />
     <Compile Remove="Migrations\20201001102541_LinksUpdateInfo3.Designer.cs" />
+    <Compile Remove="Migrations\20201005080031_LinksUpdateInfo4.cs" />
+    <Compile Remove="Migrations\20201005080031_LinksUpdateInfo4.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

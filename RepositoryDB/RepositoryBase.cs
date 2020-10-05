@@ -16,7 +16,7 @@ namespace RepositoryDB
             get { return _context ?? (_context = new T()); }
         }
         public virtual IQueryable<TEntity> GetList<TEntity>(Expression<Func<TEntity,bool>> predicate) where TEntity : class
-        {
+        {           
             return DataContext.Set<TEntity>().Where(predicate);
         }
        
